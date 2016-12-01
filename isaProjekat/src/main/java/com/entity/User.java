@@ -3,6 +3,7 @@ package com.entity;
 public abstract class User {
 	private Long id;
 	private String name;
+	private String email;
 	private String password;
 	public String getPassword() {
 		return password;
@@ -21,5 +22,11 @@ public abstract class User {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
