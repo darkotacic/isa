@@ -1,31 +1,30 @@
 package com.entity;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Worker extends User {
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Entity
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+public abstract class Worker extends User {
 
 	private static final long serialVersionUID = -962979825853451275L;
-	private ArrayList<WorkSchedule> schedules;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="worker")
+	private Set<WorkSchedule> schedules;
 	
 	public Worker() {
 		super();
-		this.schedules=new ArrayList<>();
+		this.schedules=new HashSet<>();
 	}
 	
-	public int getNumberOfWorkSchedules(){
-		return schedules.size();
-	}
-	
-	public WorkSchedule getWorkScheduleAt(int index){
-		return schedules.get(index);
-	}
-	
-	public void addWorkSchedule(WorkSchedule schedule){
-		schedules.add(schedule);
-	}
-	
-	public void removeWorkSchedule(WorkSchedule schedule){
-		schedules.remove(schedule);
+	public Set<WorkSchedule> getWorkSchedules(){
+		return schedules;
 	}
 	
 }

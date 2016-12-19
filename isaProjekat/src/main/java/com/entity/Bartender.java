@@ -1,30 +1,32 @@
 package com.entity;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="bartender")
 public class Bartender extends Worker{
 
 	private static final long serialVersionUID = -7382607325679638934L;
-	private ArrayList<OrderItem> orderedDrinks;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="bartender")
+	private Set<OrderItem> orderedDrinks;
 	
 	public Bartender() {
 		super();
-		this.orderedDrinks=new ArrayList<>();
+		this.orderedDrinks=new HashSet<>();
 	}
 	
 	public int getNumberOfOrderedDrinks(){
 		return orderedDrinks.size();
 	}
 	
-	public OrderItem getOrderedDrinkAt(int index){
-		return orderedDrinks.get(index);
-	}
-	
-	public void addOrderedDrink(OrderItem orderedDrink){
-		orderedDrinks.add(orderedDrink);
-	}
-	
-	public void removeOrderedDrink(OrderItem orderedDrink){
-		orderedDrinks.remove(orderedDrink);
+	public Set<OrderItem> getOrderedDrinks(){
+		return orderedDrinks;
 	}
 }

@@ -1,49 +1,37 @@
 package com.entity;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Table;
+import javax.persistence.OneToMany;
+
+@Entity 
+@Table(name="waiter")
 public class Waiter extends Worker {
 
 	private static final long serialVersionUID = -9126299540081793972L;
-	private ArrayList<Order> orders;
-	private ArrayList<OrderItem> preparedItems;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="waiter")
+	private Set<Order> orders;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="waiter")
+	private Set<OrderItem> preparedItems;
 	
 	public Waiter() {
 		super();
-		this.orders=new ArrayList<>();
-		this.preparedItems=new ArrayList<>();
+		this.orders=new HashSet<>();
+		this.preparedItems=new HashSet<>();
 	}
 	
-	public int getNumberOfOrders(){
-		return orders.size();
+	public Set<Order> getOrders(){
+		return orders;
 	}
 	
-	public Order getOrder(int index){
-		return orders.get(index);
-	}
-	
-	public void addOrder(Order order){
-		orders.add(order);
-	}
-	
-	public void removeOrder(Order order){
-		orders.remove(order);
-	}
-	
-	public int getNumberOfPreparedItems(){
-		return preparedItems.size();
-	}
-	
-	public OrderItem getPreparedItemsAt(int index){
-		return preparedItems.get(index);
-	}
-	
-	public void addPreparedItem(OrderItem preparedItem){
-		preparedItems.add(preparedItem);
-	}
-	
-	public void removePreparedItem(OrderItem preparedItem){
-		preparedItems.remove(preparedItem);
+	public Set<OrderItem> getOrderItems(){
+		return preparedItems;
 	}
 	
 }
