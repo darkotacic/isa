@@ -1,4 +1,4 @@
-package com.entity;
+package com.isa.entity;
 
 public class Table {
 	private Long id;

@@ -1,4 +1,4 @@
-package com.entity;
+package com.isa.entity;
 
 import java.util.HashSet;
 import java.util.Set;
