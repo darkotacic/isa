@@ -1,6 +1,5 @@
 package com.isa.entity;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -18,14 +17,8 @@ public class Bartender extends Worker{
 	private Set<OrderItem> orderedDrinks;
 	
 	public Bartender() {
-		super();
-		this.orderedDrinks=new HashSet<>();
 	}
-	
-	public int getNumberOfOrderedDrinks(){
-		return orderedDrinks.size();
-	}
-	
+		
 	public Set<OrderItem> getOrderedDrinks(){
 		return orderedDrinks;
 	}

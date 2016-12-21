@@ -9,10 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "productType")
-public class ProductType implements Serializable {
+@Table(name="cookType")
+public class CookType implements Serializable {
 	
-	private static final long serialVersionUID = 4101182883304774940L;
+	
+	private static final long serialVersionUID = 9154611665791776364L;
 
 	@Id
 	@GeneratedValue
@@ -21,7 +22,7 @@ public class ProductType implements Serializable {
 	@Column(name="value")
 	private String value;
 	
-	public ProductType(){
+	public CookType(){
 		
 	}
 

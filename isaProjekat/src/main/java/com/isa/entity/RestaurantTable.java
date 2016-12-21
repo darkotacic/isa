@@ -1,8 +1,22 @@
 package com.isa.entity;
 
-public class Table {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="restaurantTable")
+public class RestaurantTable {
+	
+	@Id
+	@GeneratedValue
 	private Long id;
+	
+	@Column(name="numberOfChairs")
 	private int numberOfChairs;
+	
 	public int getNumberOfChairs() {
 		return numberOfChairs;
 	}

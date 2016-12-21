@@ -35,9 +35,6 @@ public class WorkSchedule implements Serializable{
 	private Worker shift;
 	
 	public WorkSchedule() {
-		this.date="";
-		this.startTime=0;
-		this.endTime=0;
 	}
 
 	public Worker getWorker() {

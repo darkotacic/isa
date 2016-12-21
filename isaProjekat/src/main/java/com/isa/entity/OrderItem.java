@@ -2,9 +2,11 @@ package com.isa.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,21 +20,31 @@ public class OrderItem implements Serializable{
 	@GeneratedValue
 	private Long id;
 	
-	@OneToOne(mappedBy="orderItem")
-	private Order order;
-	
-	@OneToOne(mappedBy="orderItem")
-	private Product product;
-	
+	@Column(name="quantity")
 	private int quantity;
 	
-	private int isServed;
+	@ManyToOne
+	private Order order;
+	
+	@OneToOne
+	private Product product;
+	
+	@ManyToOne(optional=false)
+	private Cook cook;
+	
+	@ManyToOne(optional=false)
+	private Bartender bartender;
 	
 	public OrderItem() {
-		this.quantity=0;
-		this.isServed=0;
+	}
+	
+	public Bartender getBartender() {
+		return bartender;
 	}
 
+	public Cook getCook() {
+		return cook;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -47,10 +59,6 @@ public class OrderItem implements Serializable{
 
 	public int getQuantity() {
 		return quantity;
-	}
-
-	public int getIsServed() {
-		return isServed;
 	}
 
 }
