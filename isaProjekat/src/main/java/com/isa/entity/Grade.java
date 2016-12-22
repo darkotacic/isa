@@ -18,6 +18,7 @@ public class Grade implements Serializable {
 	 */
 	private static final long serialVersionUID = -5958329526192915938L;
 	
+	
 	@Id
 	@GeneratedValue
 	private long id;
