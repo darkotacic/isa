@@ -1,14 +1,45 @@
 package com.isa.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class Restaurant {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="restaurant")
+public class Restaurant implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2730772573761285789L;
+	
+	@Id
+	@GeneratedValue
 	private Long id;
+	
+	@Column(name="name",unique=false,nullable=false)
 	private String name;
+	
+	@Column(name="description",unique=false,nullable=false)
 	private String description;
-	private Set<Long> foodMenu;
-	private Set<Long> drinkMenu;
-	private Set<Long> segments;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="restaurant1")
+	private Set<Product> foodMenu;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="restaurant")
+	private Set<Product> drinkMenu;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="restaurant")
+	private Set<Segment> segments;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="restaurant")
+	private Set<Grade> grades; 
 	
 
 	public String getName() {
@@ -17,23 +48,15 @@ public class Restaurant {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set<Long> getFoodMenu() {
+	
+	public Set<Product> getFoodMenu() {
 		return foodMenu;
 	}
-	public void setFoodMenu(Set<Long> foodMenu) {
-		this.foodMenu = foodMenu;
-	}
-	public Set<Long> getDrinkMenu() {
+	public Set<Product> getDrinkMenu() {
 		return drinkMenu;
 	}
-	public void setDrinkMenu(Set<Long> drinkMenu) {
-		this.drinkMenu = drinkMenu;
-	}
-	public Set<Long> getSegments() {
+	public Set<Segment> getSegments() {
 		return segments;
-	}
-	public void setSegments(Set<Long> segments) {
-		this.segments = segments;
 	}
 	public String getDescription() {
 		return description;

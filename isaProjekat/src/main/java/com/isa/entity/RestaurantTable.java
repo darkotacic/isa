@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,6 +14,9 @@ public class RestaurantTable {
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@ManyToOne
+	private Segment segment;
 	
 	@Column(name="numberOfChairs")
 	private int numberOfChairs;
@@ -29,5 +33,7 @@ public class RestaurantTable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+	public Segment getSegment() {
+		return segment;
+	}
 }
