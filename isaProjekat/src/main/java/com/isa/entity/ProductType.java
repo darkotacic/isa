@@ -5,5 +5,5 @@ import java.io.Serializable;
 
 public enum ProductType implements Serializable {
 	
-	FOOD,DRINK;
+	SALAT,FRIED,BOILED,DRINK;
 }

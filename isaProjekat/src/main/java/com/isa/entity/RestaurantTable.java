@@ -21,19 +21,30 @@ public class RestaurantTable {
 	@Column(name="RES_CHAIR")
 	private int numberOfChairs;
 	
+	@Column(name="RES_FREE")
+	private int free;
+	
 	public int getNumberOfChairs() {
 		return numberOfChairs;
 	}
+	
 	public void setNumberOfChairs(int numberOfChairs) {
 		this.numberOfChairs = numberOfChairs;
 	}
+	
 	public Long getId() {
 		return id;
 	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public Segment getSegment() {
 		return segment;
+	}
+	
+	public int getFree() {
+		return free;
 	}
 }

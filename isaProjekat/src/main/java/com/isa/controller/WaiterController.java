@@ -1,4 +1,4 @@
-package com.isa.conntroller;
+package com.isa.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -93,12 +93,10 @@ public class WaiterController {
 	}
 	
 	@RequestMapping(
-			value = "/updateInfromation",
-			method = RequestMethod.PUT,
+			value = "/getSegments",
+			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Transactional
-	public ResponseEntity<Iterable<Segment>> updateInformation(){
+	public ResponseEntity<Iterable<Segment>> getAllSegments(){
 		Iterable<Segment> segments=waiterService.getAllSegments();
 		return new ResponseEntity<Iterable<Segment>>(segments, HttpStatus.OK);
 	}

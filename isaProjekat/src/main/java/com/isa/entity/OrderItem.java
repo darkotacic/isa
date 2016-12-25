@@ -33,10 +33,10 @@ public class OrderItem implements Serializable{
 	@OneToOne
 	private Product product;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=true)
 	private Cook cook;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=true)
 	private Bartender bartender;
 	
 	public OrderItem() {
