@@ -24,7 +24,7 @@ public class Worker extends User {
 	private int shoeNumber;
 	
 	@Column(name="WRK_SHIRT")
-	private int shirtSize;
+	private String shirtSize;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="worker")
 	protected Set<WorkSchedule> workSchedules;
@@ -33,7 +33,7 @@ public class Worker extends User {
 		
 	}
 	
-	public Worker(String name,String surname,String email,String password,Date date,int shirtSize,int shoeNumber){
+	public Worker(String name,String surname,String email,String password,Date date,String shirtSize,int shoeNumber){
 		super(name,surname,email,password,date);
 		this.shirtSize = shirtSize;
 		this.shoeNumber = shoeNumber;
@@ -43,7 +43,7 @@ public class Worker extends User {
 		return shoeNumber;
 	}
 
-	public int getShirtSize() {
+	public String getShirtSize() {
 		return shirtSize;
 	}
 	

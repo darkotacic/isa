@@ -31,7 +31,7 @@ public class UserController {
 					produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> logIn(@RequestBody User user) {
 		User temp = this.userService.logIn(user);
-		if(temp!=null){
+		if(temp!=null && user.getPassword() != null && temp.getPassword().equals(user.getPassword())){
 			session.setAttribute("user", temp);
 			return new ResponseEntity<User>(temp,HttpStatus.OK);
 		}
@@ -39,10 +39,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/logout",
-			method=RequestMethod.POST,
+			method=RequestMethod.GET,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> logOut(@RequestBody User user) {
+	public ResponseEntity<User> logOut() {
 		User temp = (User) session.getAttribute("user");
 		if(temp!=null){
 			session.invalidate();
