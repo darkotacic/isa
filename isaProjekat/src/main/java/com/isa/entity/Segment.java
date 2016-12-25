@@ -15,9 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="segment")
 public class Segment implements Serializable{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 5329505235746769431L;
 	
 	@Id
@@ -33,18 +31,17 @@ public class Segment implements Serializable{
 	@Column(name="restrictions")
 	private String restrictions;
 	
-	@Column(name="numberOfTables")
-	private int numberOfTables;
-	
 	@Column(name="position")
 	private String position;
 	
 	public Long getId() {
 		return id;
 	}
+	
 	public String getPosition() {
 		return position;
 	}
+	
 	public void setPosition(String position) {
 		this.position = position;
 	}
@@ -52,15 +49,13 @@ public class Segment implements Serializable{
 	public String getRestrictions() {
 		return restrictions;
 	}
-	public int getNumberOfTables() {
-		return numberOfTables;
-	}
+	
 	public Set<RestaurantTable> getTables() {
 		return tables;
 	}
+	
 	public Restaurant getRestaurant() {
 		return restaurant;
-	}
-	
+	}	
 	
 }

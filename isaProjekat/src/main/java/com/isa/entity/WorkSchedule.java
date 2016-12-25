@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,8 +19,8 @@ public class WorkSchedule implements Serializable{
 	@Id
 	@GeneratedValue
 	private Long id;
-
-	@OneToOne
+	
+	@ManyToOne
 	private Worker worker;
 	
 	@Column(name="date")
@@ -32,13 +33,12 @@ public class WorkSchedule implements Serializable{
 	private double endTime;
 	
 	@OneToOne
+	private Segment segment;
+	
+	@OneToOne
 	private Worker shift;
 	
 	public WorkSchedule() {
-	}
-
-	public Worker getWorker() {
-		return worker;
 	}
 
 	public String getDate() {
