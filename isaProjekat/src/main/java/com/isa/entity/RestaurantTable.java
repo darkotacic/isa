@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="restaurantTable")
+@Table(name="RESTAURANT_TABLE")
 public class RestaurantTable {
 	
 	@Id
@@ -18,7 +18,7 @@ public class RestaurantTable {
 	@ManyToOne
 	private Segment segment;
 	
-	@Column(name="numberOfChairs")
+	@Column(name="RES_CHAIR")
 	private int numberOfChairs;
 	
 	public int getNumberOfChairs() {

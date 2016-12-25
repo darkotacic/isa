@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="segment")
+@Table(name="SEGMENT")
 public class Segment implements Serializable{
 	/**
 	 * 
@@ -30,13 +30,13 @@ public class Segment implements Serializable{
 	@ManyToOne
 	private Restaurant restaurant;
 	
-	@Column(name="restrictions")
+	@Column(name="SGM_REST")
 	private String restrictions;
 	
-	@Column(name="numberOfTables")
+	@Column(name="SGM_TBL")
 	private int numberOfTables;
 	
-	@Column(name="position")
+	@Column(name="SGM_POS")
 	private String position;
 	
 	public Long getId() {

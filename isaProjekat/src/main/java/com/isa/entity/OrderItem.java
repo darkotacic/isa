@@ -10,17 +10,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.isa.entity.users.Bartender;
+import com.isa.entity.users.Cook;
+
 @Entity
-@Table(name="orderItem")
+@Table(name="ORD_IT")
 public class OrderItem implements Serializable{
 	
 	private static final long serialVersionUID = 2815826624648081174L;
 
 	@Id
+	@Column(name="ORD_IT_ID")
 	@GeneratedValue
 	private Long id;
 	
-	@Column(name="quantity")
+	@Column(name="ORD_IT_QUA")
 	private int quantity;
 	
 	@ManyToOne

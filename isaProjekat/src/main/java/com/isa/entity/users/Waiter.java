@@ -1,4 +1,4 @@
-package com.isa.entity;
+package com.isa.entity.users;
 
 import java.util.Set;
 
@@ -7,8 +7,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.isa.entity.PreparedItem;
+
 @Entity 
-@Table(name="waiter")
+@Table(name="WAITER")
 public class Waiter extends Worker {
 
 	private static final long serialVersionUID = -9126299540081793972L;
@@ -23,7 +25,6 @@ public class Waiter extends Worker {
 	}
 
 	public Waiter() {
-
 	}
 
 	

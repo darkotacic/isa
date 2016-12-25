@@ -13,17 +13,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.isa.entity.users.Waiter;
+
 @Entity
-@Table(name="restaurantOrder")
+@Table(name="RES_ORD")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = -2545303099330416597L;
 	
 	@Id
+	@Column(name="RES_ORD_ID")
 	@GeneratedValue
 	private Long id;
 	
-	@Column(name="date")
+	@Column(name="RES_ORD_DATE")
 	private Date date;
 	
 	@OneToOne(optional=false)

@@ -4,14 +4,15 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="product")
+@Table(name="PRODUCT")
 public class Product implements Serializable {
 	/**
 	 * 
@@ -19,26 +20,25 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 4047551117092218814L;
 
 	@Id
+	@Column(name="PR_ID")
 	@GeneratedValue
 	private Long id;
 	
-	@Column(name="name")
+	@Column(name="PR_NAME")
 	private String name;
 	
-	@Column(name="description")
+	@Column(name="PR_DES")
 	private String description;
 	
-	@Column(name="price")
+	@Column(name="PR_PRICE")
 	private double price;
 	
-	@OneToOne
+	@Enumerated(EnumType.STRING)
 	private ProductType productType;
 	
 	@ManyToOne
 	private Restaurant restaurant;
 	
-	@ManyToOne
-	private Restaurant restaurant1;
 	
 	public Product(){
 		
@@ -64,12 +64,6 @@ public class Product implements Serializable {
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
-
-
-	public Restaurant getRestaurant1() {
-		return restaurant1;
-	}
-
 
 	public Long getId() {
 		return id;
