@@ -10,29 +10,26 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="grade")
+@Table(name="GRADE")
 public class Grade implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5958329526192915938L;
 	
-	
 	@Id
+	@Column(name="GRD_ID")
 	@GeneratedValue
 	private long id;
 	
 	@ManyToOne
 	private Restaurant restaurant;
 	
-	@Column(name="gradeOfService")
+	@Column(name="GRD_SERVICE")
 	private double gradeOfService;
 	
-	@Column(name="gradeOfOrderItem")
+	@Column(name="GRD_MEAL")
 	private double gradeOfOrderItem;
 	
-	@Column(name="gradeOfRestaurant")
+	@Column(name="GRD_RES")
 	private double gradeOfRestaurant;
 	
 	public Grade() {

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.entity.Order;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
-import com.isa.entity.Waiter;
 import com.isa.entity.WorkSchedule;
+import com.isa.entity.users.Waiter;
 import com.isa.service.WaiterService;
 
 @RestController

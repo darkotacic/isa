@@ -3,8 +3,8 @@ package com.isa.service;
 import com.isa.entity.Order;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
-import com.isa.entity.Waiter;
 import com.isa.entity.WorkSchedule;
+import com.isa.entity.users.Waiter;
 
 public interface WaiterService {
 

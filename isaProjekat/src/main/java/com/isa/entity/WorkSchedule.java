@@ -10,26 +10,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.isa.entity.users.Worker;
+
 @Entity
-@Table(name="workSchedule")
+@Table(name="WORK_SCHEDULE")
 public class WorkSchedule implements Serializable{
 	
 	private static final long serialVersionUID = -5309553359477225086L;
 
 	@Id
+	@Column(name="WORK_SCH_ID")
 	@GeneratedValue
 	private Long id;
 	
 	@ManyToOne
 	private Worker worker;
 	
-	@Column(name="date")
+	@Column(name="WORK_SCH_DATE")
 	private String date;
 	
-	@Column(name="startTime")
+	@Column(name="WORK_SCH_START")
 	private double startTime;
 	
-	@Column(name="endTime")
+	@Column(name="WORK_SCH_END")
 	private double endTime;
 	
 	@OneToOne

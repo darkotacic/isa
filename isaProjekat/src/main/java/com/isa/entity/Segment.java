@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="segment")
+@Table(name="SEGMENT")
 public class Segment implements Serializable{
 	
 	private static final long serialVersionUID = 5329505235746769431L;
@@ -28,10 +28,10 @@ public class Segment implements Serializable{
 	@ManyToOne
 	private Restaurant restaurant;
 	
-	@Column(name="restrictions")
+	@Column(name="SGM_REST")
 	private String restrictions;
 	
-	@Column(name="position")
+	@Column(name="SGM_POS")
 	private String position;
 	
 	public Long getId() {

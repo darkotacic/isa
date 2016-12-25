@@ -1,0 +1,1 @@
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (1,'16-10-15','darko.tacic@gmail.com','sifra','Darko','Tacic');
