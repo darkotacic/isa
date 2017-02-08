@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="SEGMENT")
 public class Segment implements Serializable{
@@ -22,10 +24,11 @@ public class Segment implements Serializable{
 	@GeneratedValue
 	private Long id;
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="segment")
+	@OneToMany(fetch=FetchType.LAZY)
 	private Set<RestaurantTable> tables;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Restaurant restaurant;
 	
 	@Column(name="SGM_REST")

@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.users.Waiter;
 
 @Entity
@@ -33,6 +34,7 @@ public class Order implements Serializable {
 	private RestaurantTable table;
 	
 	@OneToOne(optional=false)
+	@JsonIgnore
 	private Waiter waiter;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="order")

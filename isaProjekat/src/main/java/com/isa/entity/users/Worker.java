@@ -11,6 +11,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.WorkSchedule;
 
 @Entity
@@ -27,6 +28,7 @@ public class Worker extends User {
 	private String shirtSize;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="worker")
+	@JsonIgnore
 	protected Set<WorkSchedule> workSchedules;
 	
 	public Worker(){

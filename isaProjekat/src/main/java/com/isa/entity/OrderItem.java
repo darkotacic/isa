@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.users.Bartender;
 import com.isa.entity.users.Cook;
 
@@ -28,15 +29,18 @@ public class OrderItem implements Serializable{
 	private int quantity;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Order order;
 	
 	@OneToOne
 	private Product product;
 	
-	@ManyToOne(optional=true)
+	@ManyToOne
+	@JsonIgnore
 	private Cook cook;
 	
-	@ManyToOne(optional=true)
+	@ManyToOne
+	@JsonIgnore
 	private Bartender bartender;
 	
 	public OrderItem() {
