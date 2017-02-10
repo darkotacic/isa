@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.isa.entity.users.RestaurantManager;
 
 @Entity
 @Table(name="RESTAURANT")
@@ -42,11 +43,24 @@ public class Restaurant implements Serializable {
 	@JsonIgnore
 	private Set<Grade> grades; 
 	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="restaurant")
+	@JsonIgnore
+	private Set<RestaurantManager> restaurantManagers; 
+	
+
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Set<Grade> getGrades() {
+		return grades;
+	}
+	
+	public Set<RestaurantManager> getRestraurantManagers() {
+		return restaurantManagers;
 	}
 	
 	public Set<Product> getMenu() {

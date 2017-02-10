@@ -7,5 +7,9 @@ import com.isa.entity.users.User;
 public interface UserRepository extends CrudRepository<User, Long> {
 	
 	public User findByEmail(String email);
+	
+	@SuppressWarnings("unchecked")
+	public User save(User user);
+	
 
 }

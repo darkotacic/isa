@@ -23,11 +23,13 @@ insert into cook (user_id,cook_type) values (5,'SALAT');
 insert into cook (user_id,cook_type) values (6,'FRIED');
 insert into system_manager (user_id) values (7);
 insert into bartender (user_id) values (8);
-insert into restaurant_manager (user_id) values (9);
-insert into restaurant_manager (user_id) values (10);
 
 insert into restaurant(res_id, res_desc, res_name) values(1,'Kineski restoran','Dva stapica');
 insert into restaurant(res_id, res_desc, res_name) values(2,'Restoran domace kuhinje','Kod cice');
+
+insert into restaurant_manager (user_id,restaurant_res_id) values (9,1);
+insert into restaurant_manager (user_id,restaurant_res_id) values (10,1);
+
 
 insert into product(pr_id, pr_des, pr_name, pr_price, product_type, restaurant_res_id) values(1,'description','Coca cola',120.3,'DRINK',1);
 insert into product(pr_id, pr_des, pr_name, pr_price, product_type, restaurant_res_id) values(2,'description1','Karadjordjeva snicla',750.0,'FRIED',1);

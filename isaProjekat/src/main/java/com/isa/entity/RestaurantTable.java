@@ -7,8 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name="RESTAURANT_TABLE")
 public class RestaurantTable {
@@ -18,7 +16,6 @@ public class RestaurantTable {
 	private Long id;
 	
 	@ManyToOne
-	@JsonIgnore
 	private Segment segment;
 	
 	@Column(name="RES_CHAIR")

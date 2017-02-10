@@ -25,10 +25,10 @@ public class Segment implements Serializable{
 	private Long id;
 	
 	@OneToMany(fetch=FetchType.LAZY)
+	@JsonIgnore
 	private Set<RestaurantTable> tables;
 	
 	@ManyToOne
-	@JsonIgnore
 	private Restaurant restaurant;
 	
 	@Column(name="SGM_REST")

@@ -32,7 +32,7 @@ public class WaiterServiceImpl implements WaiterService {
 	
 	@Override
 	public Iterable<WorkSchedule> getWorkScheduleForWaiters(){
-		return workScheduleRepository.getWorkScheduleForWaiters();
+		return workScheduleRepository.findAll();
 	}
 	
 	@Override

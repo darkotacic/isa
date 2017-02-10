@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.OrderItem;
 
 @Entity
@@ -16,6 +17,7 @@ public class Bartender extends Worker{
 	private static final long serialVersionUID = -7382607325679638934L;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="bartender")
+	@JsonIgnore
 	private Set<OrderItem> orderedDrinks;
 	
 	public Bartender() {

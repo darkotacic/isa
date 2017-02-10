@@ -23,7 +23,10 @@ public class UserSeviceImpl implements UserService {
 	@Override
 	public User register(User user) {
 		
-		return null;
+
+		User mrs = userRepository.save(user);
+		//guestR.save(mrs.getID());
+		return mrs;
 	}
 
 }

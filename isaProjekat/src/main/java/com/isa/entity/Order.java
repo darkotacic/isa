@@ -34,10 +34,10 @@ public class Order implements Serializable {
 	private RestaurantTable table;
 	
 	@OneToOne(optional=false)
-	@JsonIgnore
 	private Waiter waiter;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="order")
+	@JsonIgnore
 	private Set<OrderItem> orderedItems;
 	
 	public Order() {

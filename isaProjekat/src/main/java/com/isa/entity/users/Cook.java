@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.OrderItem;
 
 @Entity
@@ -21,6 +22,7 @@ public class Cook extends Worker{
 	private CookType cookType;
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="cook")
+	@JsonIgnore
 	private Set<OrderItem> orderedFood;
 	
 	public Cook() {
