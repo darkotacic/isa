@@ -1,6 +1,7 @@
 package com.isa.entity;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +9,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,9 +39,17 @@ public class Product implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private ProductType productType;
 	
-	@ManyToOne
+	@ManyToMany
+	@JoinTable(
+		      name="RESTAURANT_PRODUCTS",
+		      joinColumns=@JoinColumn(name="PR_ID", referencedColumnName="PR_ID"),
+		      inverseJoinColumns=@JoinColumn(name="RES_ID", referencedColumnName="RES_ID"))
 	@JsonIgnore
-	private Restaurant restaurant;
+	private Set<Restaurant> restaurants;
+	
+	@ManyToMany
+	@JsonIgnore
+	private Set<RequestOffer> requestOffers;
 	
 	
 	public Product(){
@@ -60,10 +71,6 @@ public class Product implements Serializable {
 
 	public double getPrice() {
 		return price;
-	}
-
-	public Restaurant getRestaurant() {
-		return restaurant;
 	}
 
 	public Long getId() {

@@ -31,10 +31,13 @@ insert into restaurant_manager (user_id,restaurant_res_id) values (9,1);
 insert into restaurant_manager (user_id,restaurant_res_id) values (10,1);
 
 
-insert into product(pr_id, pr_des, pr_name, pr_price, product_type, restaurant_res_id) values(1,'description','Coca cola',120.3,'DRINK',1);
-insert into product(pr_id, pr_des, pr_name, pr_price, product_type, restaurant_res_id) values(2,'description1','Karadjordjeva snicla',750.0,'FRIED',1);
-insert into product(pr_id, pr_des, pr_name, pr_price, product_type, restaurant_res_id) values(3,'description1','Ruska salata',150.0,'SALAT',1);
-insert into product(pr_id, pr_des, pr_name, pr_price, product_type, restaurant_res_id) values(4,'description3','Kineska supa',350.0,'BOILED',2);
+insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(1,'description','Coca cola',120.3,'DRINK');
+insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(2,'description1','Karadjordjeva snicla',750.0,'FRIED');
+insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(3,'description1','Ruska salata',150.0,'SALAT');
+insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(4,'description3','Kineska supa',350.0,'BOILED');
+
+insert into restaurant_products(pr_id, res_id) values (1, 1);
+
 
 insert into segment(id, sgm_pos, sgm_rest, restaurant_res_id) values(1,'basta','pusacki',1);
 insert into segment(id, sgm_pos, sgm_rest, restaurant_res_id) values(2,'unutra','pusacki',1);

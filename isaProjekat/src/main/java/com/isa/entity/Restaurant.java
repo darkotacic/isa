@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -31,7 +32,7 @@ public class Restaurant implements Serializable {
 	@Column(name = "RES_DESC", unique = false, nullable = false)
 	private String description;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants")
 	@JsonIgnore
 	private Set<Product> menu;
 
