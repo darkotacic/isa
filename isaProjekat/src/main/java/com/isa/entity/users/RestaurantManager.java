@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 import com.isa.entity.Restaurant;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 @Entity
 @Table(name="RESTAURANT_MANAGER")
 public class RestaurantManager extends User implements Serializable{
@@ -15,6 +17,7 @@ public class RestaurantManager extends User implements Serializable{
 	private static final long serialVersionUID = 9073845010368338002L;
 	
 	@ManyToOne
+	@JsonIgnore
 	private Restaurant restaurant;
 	
 	public RestaurantManager()  {

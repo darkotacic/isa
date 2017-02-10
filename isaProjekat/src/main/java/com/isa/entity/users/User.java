@@ -35,6 +35,26 @@ public class User implements Serializable {
 	@Column(name="USER_PASS",unique=false,nullable=false)
 	private String password;
 	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
 	@Column(name="USER_DATE")
 	private Date dateOfBirth;
 	

@@ -8,5 +8,6 @@ import com.isa.entity.Segment;
 public interface SegmentRepository extends CrudRepository<Segment, Long>{
 
 	public Iterable<RestaurantTable> tables(Long id);
+	Segment findOne(Long id);
 	
 }
