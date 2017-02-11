@@ -8,6 +8,11 @@ insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname)
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (8,'16-10-15','nikola.sajic@gmail.com','sifra','Nikola','Sajic');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (9,'16-10-15','tamara.mrskic@gmail.com','sifra','Tamara','Mrksic');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (10,'16-10-15','stefan.varajic@gmail.com','sifra','Stevan','Varaja');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (11,'16-10-15','bider.bidic@gmail.com','sifra','Batko','Batkic');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (12,'16-10-15','bider2.bidic@gmail.com','sifra','Batko2','Batkic2');
+
+insert into bidder(user_id) values(11);
+insert into bidder(user_id) values(12);
 
 insert into worker(user_id,wrk_shirt,wrk_shoe) values(3,'S',4);
 insert into worker(user_id,wrk_shirt,wrk_shoe) values(4,'L',5);
@@ -30,13 +35,21 @@ insert into restaurant(res_id, res_desc, res_name) values(2,'Restoran domace kuh
 insert into restaurant_manager (user_id,restaurant_res_id) values (9,1);
 insert into restaurant_manager (user_id,restaurant_res_id) values (10,1);
 
-
 insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(1,'description','Coca cola',120.3,'DRINK');
 insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(2,'description1','Karadjordjeva snicla',750.0,'FRIED');
 insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(3,'description1','Ruska salata',150.0,'SALAT');
 insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(4,'description3','Kineska supa',350.0,'BOILED');
 
 insert into restaurant_products(pr_id, res_id) values (1, 1);
+
+insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (1, '12-12-15', '10-12-15', true, 9);
+insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (2, '12-12-15', '10-12-15', true, 9);
+
+
+insert into offered_products(ro_id, pr_id) values (1, 1);
+
+insert into bidder_offer(id, bo_dod, bo_garanty, bo_price, bidder_user_id, request_offer_id) values (1, '13-12-15', 'Return money', 300.3, 11, 1);
+insert into bidder_offer(id, bo_dod, bo_garanty, bo_price, bidder_user_id, request_offer_id) values (2, '13-12-15', 'Return money', 300.3, 11, 2);
 
 
 insert into segment(id, sgm_pos, sgm_rest, restaurant_res_id) values(1,'basta','pusacki',1);

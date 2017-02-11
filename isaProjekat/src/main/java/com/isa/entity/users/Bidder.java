@@ -25,9 +25,18 @@ public class Bidder extends User {
 	@JsonIgnore
 	private Set<BidderOffer> bidderOffers;
 
-	@Column(name = "FIRST_LOGIN")
-	private boolean firstLogIn;
+	@Column(name = "FIRST_LOGIN", columnDefinition = "boolean default true", insertable = true)
+	private boolean firstLogIn ;
 
 	public Bidder() {
 	}
+
+	public void setFirstLogIn(boolean firstLogIn) {
+		this.firstLogIn = firstLogIn;
+	}
+
+	public boolean isFirstLogIn() {
+		return firstLogIn;
+	}
+	
 }

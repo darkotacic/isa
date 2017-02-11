@@ -29,12 +29,12 @@ public class RequestOffer implements Serializable{
 	private static final long serialVersionUID = -715867275692660342L;
 	
 	@Id
-	@Column(name="REQUEST_OFFER_ID")
+	@Column(name="ID")
 	@GeneratedValue
 	private Long id;
 	@ManyToMany@JoinTable(
 		      name="OFFERED_PRODUCTS",
-		      joinColumns=@JoinColumn(name="RO_ID", referencedColumnName="REQUEST_OFFER_ID"),
+		      joinColumns=@JoinColumn(name="RO_ID", referencedColumnName="ID"),
 		      inverseJoinColumns=@JoinColumn(name="PR_ID", referencedColumnName="PR_ID"))
 	@JsonIgnore
 	private Set<Product> products;
@@ -45,7 +45,7 @@ public class RequestOffer implements Serializable{
 	@Column(name="START_DATE",unique=false,nullable=false)
 	private Date startDate;
 	
-	@Column(name="EXPARATION_DATE",unique=false,nullable=false)
+	@Column(name="EXPIRATION_DATE",unique=false,nullable=false)
 	private Date expirationDate;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "requestOffer")
