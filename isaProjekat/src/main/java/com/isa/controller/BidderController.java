@@ -1,5 +1,7 @@
 package com.isa.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +23,22 @@ public class BidderController {
 	private BidderService bidderService;
 	
 	@RequestMapping(value = "/updateBidder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Bidder> registerRestaurant(@RequestBody Bidder b) {
+	public ResponseEntity<Bidder> registerRestaurant(@RequestBody @Valid Bidder b) {
 		return bidderService.updateProfile(b);
 	}
 	
 	@RequestMapping(value = "/getBiddings", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Iterable<BidderOffer> getBiddings(@RequestParam(value = "id") String bidder_id) {
-		return bidderService.getAllBiddingsForThisBidder(Long.parseLong(bidder_id));
+	public Iterable<BidderOffer> getBiddings(@RequestParam(value = "id") String bidder_email) {
+		return bidderService.getAllBiddingsForThisBidder(bidder_email);
 	}
 	
 	@RequestMapping(value = "/registerBid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BidderOffer> registerBid(@RequestBody BidderOffer bo, @RequestParam(value="request_offer_id") String ro_id, @RequestParam(value="bidder_id")String b_id ) {
+	public ResponseEntity<BidderOffer> registerBid(@RequestBody @Valid BidderOffer bo, @RequestParam(value="request_offer_id") String ro_id, @RequestParam(value="bidder_email")String b_id ) {
 		return bidderService.registerBidderOffer(bo, Long.parseLong(ro_id), Long.parseLong(b_id));
 	}
 	
 	@RequestMapping(value = "/updateBid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BidderOffer> UpdateBid(@RequestBody BidderOffer bo) {
+	public ResponseEntity<BidderOffer> UpdateBid(@RequestBody @Valid BidderOffer bo) {
 		return bidderService.updateBidderOffer(bo);
 	}
 }

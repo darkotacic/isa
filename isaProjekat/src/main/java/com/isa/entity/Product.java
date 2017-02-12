@@ -13,6 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,13 +32,21 @@ public class Product implements Serializable {
 	@GeneratedValue
 	private Long id;
 	
-	@Column(name="PR_NAME")
+	@Size(min=3, max=30)
+	@Pattern(regexp="^[A-Z]\\w*")
+	@NotNull
+	@Column(name="PR_NAME", unique=true, nullable=false)
 	private String name;
 	
 	@Column(name="PR_DES")
+	@Pattern(regexp="^[A-Z]\\w*")
+	@Size(max=60)
 	private String description;
 	
-	@Column(name="PR_PRICE")
+	@DecimalMin("0.10")
+	@Digits(integer=4, fraction=2)
+	@NotNull
+	@Column(name="PR_PRICE",nullable=false)
 	private double price;
 	
 	@Enumerated(EnumType.STRING)

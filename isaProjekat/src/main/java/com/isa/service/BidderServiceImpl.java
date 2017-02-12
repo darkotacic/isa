@@ -28,9 +28,7 @@ public class BidderServiceImpl implements BidderService {
 
 	@Override
 	public ResponseEntity<Bidder> updateProfile(Bidder b) {
-		Bidder temp = this.bidderRepository.findOne(b.getId());
-		if (b.getEmail() == null || b.getName() == null || b.getSurname() == null || b.getPassword() == null)
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		Bidder temp = this.bidderRepository.findByEmail(b.getEmail());
 		temp.setDateOfBirth(b.getDateOfBirth());
 		temp.setEmail(b.getEmail());
 		temp.setName(b.getName());
@@ -40,28 +38,25 @@ public class BidderServiceImpl implements BidderService {
 	}
 
 	@Override
-	public Iterable<BidderOffer> getAllBiddingsForThisBidder(Long bidder_id) {
-		Bidder b = this.bidderRepository.findOne(bidder_id);
-		return bidderOfferRepository.allForBidder(b);
+	public Iterable<BidderOffer> getAllBiddingsForThisBidder(String bidder_email) {
+		Bidder b = this.bidderRepository.findByEmail(bidder_email);
+		return bidderOfferRepository.findByBidder(b);
 	}
 
 	@Override
 	public ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, Long b_id) {
 		Bidder temp = this.bidderRepository.findOne(b_id);
 		RequestOffer temp1 = this.requestOfferRepository.findOne(ro_id);
+		if(this.bidderOfferRepository.findByBidderAndRequestOffer(temp, temp1) != null)
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		bo.setBidder(temp);
 		bo.setRequestOffer(temp1);
-		if (bo.getDateOfDelivery() == null || bo.getPrice() == null)
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-
 		return new ResponseEntity<BidderOffer>(this.bidderOfferRepository.save(bo), HttpStatus.OK);
 	}
 	
 	@Override
 	public ResponseEntity<BidderOffer> updateBidderOffer(BidderOffer bo) {
 		BidderOffer temp = this.bidderOfferRepository.findOne(bo.getId());
-		if (bo.getDateOfDelivery() == null || bo.getPrice() == null)
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		temp.setDateOfDelivery(bo.getDateOfDelivery());
 		temp.setGaranty(bo.getGaranty());
 		temp.setPrice(bo.getPrice());

@@ -17,43 +17,39 @@ import com.isa.repository.UserRepository;
 @Service
 @Transactional
 public class SystemManagerServiceImpl implements SystemManagerService {
-	
+
 	@Autowired
 	private SystemManagerRepository systemManagerRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private RestaurantManagerRepository restaurantManagerRepository;
 
 	@Autowired
 	private RestaurantRepository restaurantRepository;
-	
+
 	@Override
 	public ResponseEntity<SystemManager> registerSystemManager(SystemManager sm) {
-		if (this.userRepository.findByEmail(sm.getEmail()) != null || sm.getEmail() == null || sm.getName() == null
-				|| sm.getPassword() == null || sm.getSurname() == null)
+		if (this.userRepository.findByEmail(sm.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		return new ResponseEntity<SystemManager>(this.systemManagerRepository.save(sm),HttpStatus.CREATED);
+		return new ResponseEntity<SystemManager>(this.systemManagerRepository.save(sm), HttpStatus.CREATED);
 	}
-	
+
 	@Override
-	public ResponseEntity<RestaurantManager> registerRestaurantManager(RestaurantManager sm, String param) {
-		if (this.userRepository.findByEmail(sm.getEmail()) != null || sm.getEmail() == null || sm.getName() == null
-				|| sm.getPassword() == null || sm.getSurname() == null)
+	public ResponseEntity<RestaurantManager> registerRestaurantManager(RestaurantManager sm, String restaurant_name) {
+		if (this.userRepository.findByEmail(sm.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		if(this.restaurantRepository.findById(Long.parseLong(param)) == null)
+		if (this.restaurantRepository.findByName(restaurant_name) == null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		Restaurant r = this.restaurantRepository.findById(Long.parseLong(param));
+		Restaurant r = this.restaurantRepository.findByName(restaurant_name);
 		sm.setRestaurnat(r);
 		return new ResponseEntity<RestaurantManager>(this.restaurantManagerRepository.save(sm), HttpStatus.CREATED);
 	}
 
 	@Override
 	public ResponseEntity<Restaurant> registerRestaurant(Restaurant r) {
-		if(r.getName() == null || r.getDescription() == null) 
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(r), HttpStatus.CREATED);
 	}
 

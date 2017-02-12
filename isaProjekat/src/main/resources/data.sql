@@ -1,3 +1,5 @@
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (15,'16-10-15','darko','sifra','Darko','Tacic');
+
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (1,'16-10-15','darko.tacic@gmail.com','sifra','Darko','Tacic');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (2,'16-10-15','marko.kljajic@gmail.com','sifra','Marko','Kljajic');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname) values (3,'16-10-15','milica.govedarica@gmail.com','sifra','Milca','Govedarica');
@@ -13,6 +15,8 @@ insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname)
 
 insert into bidder(user_id) values(11);
 insert into bidder(user_id) values(12);
+insert into bidder(user_id) values(15);
+
 
 insert into worker(user_id,wrk_shirt,wrk_shoe) values(3,'S',4);
 insert into worker(user_id,wrk_shirt,wrk_shoe) values(4,'L',5);
@@ -51,10 +55,9 @@ insert into offered_products(ro_id, pr_id) values (1, 1);
 insert into bidder_offer(id, bo_dod, bo_garanty, bo_price, bidder_user_id, request_offer_id) values (1, '13-12-15', 'Return money', 300.3, 11, 1);
 insert into bidder_offer(id, bo_dod, bo_garanty, bo_price, bidder_user_id, request_offer_id) values (2, '13-12-15', 'Return money', 300.3, 11, 2);
 
-
-insert into segment(id, sgm_pos, sgm_rest, restaurant_res_id) values(1,'basta','pusacki',1);
-insert into segment(id, sgm_pos, sgm_rest, restaurant_res_id) values(2,'unutra','pusacki',1);
-insert into segment(id, sgm_pos, sgm_rest, restaurant_res_id) values(3,'unutra','nepusacki',1);
+insert into segment(id, sgm_pos, sgm_smoking, restaurant_res_id) values(1,'basta',false,1);
+insert into segment(id, sgm_pos, restaurant_res_id) values(2,'unutra',1);
+insert into segment(id, sgm_pos, restaurant_res_id) values(3,'unutra',1);
 
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(1,true,4,1);
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(2,true,2,1);

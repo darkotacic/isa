@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="RESTAURANT_TABLE")
@@ -18,11 +21,15 @@ public class RestaurantTable {
 	@ManyToOne
 	private Segment segment;
 	
+	@Size(min=1, max=20)
+	@NotNull
 	@Column(name="RES_CHAIR")
 	private int numberOfChairs;
 	
-	@Column(name="RES_FREE")
-	private int free;
+	@Max(1)
+	@NotNull
+	@Column(name="RES_FREE",columnDefinition = "boolean default true", insertable=true )
+	private boolean free;
 	
 	public int getNumberOfChairs() {
 		return numberOfChairs;
@@ -36,15 +43,20 @@ public class RestaurantTable {
 		return id;
 	}
 	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	public Segment getSegment() {
 		return segment;
 	}
-	
-	public int getFree() {
+
+	public boolean isFree() {
 		return free;
 	}
+
+	public void setFree(boolean free) {
+		this.free = free;
+	}
+
+	public void setSegment(Segment segment) {
+		this.segment = segment;
+	}
+	
 }

@@ -15,6 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.users.RestaurantManager;
@@ -31,6 +35,7 @@ public class RequestOffer implements Serializable{
 	@Id
 	@Column(name="ID")
 	@GeneratedValue
+	
 	private Long id;
 	@ManyToMany@JoinTable(
 		      name="OFFERED_PRODUCTS",
@@ -39,12 +44,17 @@ public class RequestOffer implements Serializable{
 	@JsonIgnore
 	private Set<Product> products;
 	
-	@Column(name="STATUS",unique=false,nullable=false)
+	@Column(name="STATUS",columnDefinition = "boolean default true", insertable = true)
 	private boolean status;
 	
+	@Future
+	@NotNull
+	@Temporal(TemporalType.DATE)
 	@Column(name="START_DATE",unique=false,nullable=false)
 	private Date startDate;
 	
+	@Temporal(TemporalType.DATE)
+	@Future
 	@Column(name="EXPIRATION_DATE",unique=false,nullable=false)
 	private Date expirationDate;
 	

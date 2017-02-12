@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.users.RestaurantManager;
@@ -26,9 +29,15 @@ public class Restaurant implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	@Column(name = "RES_NAME", unique = false, nullable = false)
+	@Size(min=3, max=30)
+	@Pattern(regexp="^[A-Z]\\w*")
+	@NotNull
+	@Column(name = "RES_NAME", unique = true, nullable = false)
 	private String name;
 
+	@Size(max=50)
+	@Pattern(regexp="^[A-Z]\\w*")
+	@NotNull
 	@Column(name = "RES_DESC", unique = false, nullable = false)
 	private String description;
 

@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,12 +34,27 @@ public class Segment implements Serializable{
 	@ManyToOne
 	private Restaurant restaurant;
 	
-	@Column(name="SGM_REST")
-	private String restrictions;
+	@Column(name="SGM_SMOKING", columnDefinition = "boolean default true", insertable = true)
+	private boolean smokingAllowed;
 	
+	@Pattern(regexp="^[A-Z]\\w*")
+	@Size(max=60)
+	@NotNull
 	@Column(name="SGM_POS")
 	private String position;
 	
+	public void setTables(Set<RestaurantTable> tables) {
+		this.tables = tables;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+
+	public void setSmokingAllowed(Boolean allowed) {
+		this.smokingAllowed = allowed;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -49,8 +67,8 @@ public class Segment implements Serializable{
 		this.position = position;
 	}
 	
-	public String getRestrictions() {
-		return restrictions;
+	public boolean isSmokingAllowed() {
+		return smokingAllowed;
 	}
 	
 	public Set<RestaurantTable> getTables() {

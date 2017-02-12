@@ -1,6 +1,7 @@
 package com.isa.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,11 +10,20 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 
 import com.isa.entity.users.Worker;
 
 @Entity
-@Table(name="WORK_SCHEDULE")
+@Table(name="WORK_SCHEDULE", uniqueConstraints = { @UniqueConstraint(columnNames = 
+{ "WORKER_USER_ID", "WORK_SCH_DATE", "WORK_SCH_START", "WORK_SCH_END"})})
 public class WorkSchedule implements Serializable{
 	
 	private static final long serialVersionUID = -5309553359477225086L;
@@ -26,12 +36,23 @@ public class WorkSchedule implements Serializable{
 	@ManyToOne
 	private Worker worker;
 	
+	@Temporal(TemporalType.DATE)
+	@NotNull
 	@Column(name="WORK_SCH_DATE")
-	private String date;
+	@Future
+	private Date date;
 	
+	@DecimalMin("00.00")
+	@DecimalMax("24.00")
+	@Digits(integer=2, fraction=2)
+	@NotNull
 	@Column(name="WORK_SCH_START")
 	private double startTime;
 	
+	@DecimalMin("00.00")
+	@DecimalMax("24.00")
+	@Digits(integer=2, fraction=2)
+	@NotNull
 	@Column(name="WORK_SCH_END")
 	private double endTime;
 	
@@ -42,10 +63,6 @@ public class WorkSchedule implements Serializable{
 	private Worker shift;
 	
 	public WorkSchedule() {
-	}
-
-	public String getDate() {
-		return date;
 	}
 
 	public double getStartTime() {
@@ -59,5 +76,42 @@ public class WorkSchedule implements Serializable{
 	public Worker getShift() {
 		return shift;
 	}
+
+	public Worker getWorker() {
+		return worker;
+	}
+
+	public void setWorker(Worker worker) {
+		this.worker = worker;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Segment getSegment() {
+		return segment;
+	}
+
+	public void setSegment(Segment segment) {
+		this.segment = segment;
+	}
+
+	public void setStartTime(double startTime) {
+		this.startTime = startTime;
+	}
+
+	public void setEndTime(double endTime) {
+		this.endTime = endTime;
+	}
+
+	public void setShift(Worker shift) {
+		this.shift = shift;
+	}
+	
 	
 }

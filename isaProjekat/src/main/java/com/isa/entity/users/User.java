@@ -10,6 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name="USER")
@@ -23,17 +30,30 @@ public class User implements Serializable {
 	@GeneratedValue
 	private Long id;
 
+	@NotNull
+	@Email(message = "Email must be a well-formed address")
 	@Column(name="USER_EMAIL",unique=true,nullable=false)
 	private String email;
 	
+	@Pattern(regexp="^[A-Z][a-z_A-Z]*")
+	@NotNull
 	@Column(name="USER_NAME",unique=false,nullable=false)
 	private String name;
 	
+	@Pattern(regexp="^[A-Z][a-z_A-Z]*")
+	@NotNull
 	@Column(name="USER_SURNAME",unique=false,nullable=false)
 	private String surname;
 	
+	@Pattern(regexp="\\w*")
+	@NotNull
 	@Column(name="USER_PASS",unique=false,nullable=false)
 	private String password;
+	
+	@Past
+	@Temporal(TemporalType.DATE)
+	@Column(name="USER_DATE")
+	private Date dateOfBirth;
 	
 	public void setEmail(String email) {
 		this.email = email;
@@ -54,10 +74,6 @@ public class User implements Serializable {
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-
-	@Column(name="USER_DATE")
-	private Date dateOfBirth;
-	
 	
 	public User(String name, String surname, String email, String password, Date dateOfBirth) {
 		this.name = name;

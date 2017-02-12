@@ -9,4 +9,6 @@ public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
 	@SuppressWarnings("unchecked")
 	Restaurant save(Restaurant r);
 	
+	Restaurant findByName(String name);
+	
 }

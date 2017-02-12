@@ -9,6 +9,8 @@ public interface BidderRepository extends CrudRepository<Bidder, Long> {
 	@SuppressWarnings("unchecked")
 	Bidder save(Bidder b);
 	
+	Bidder findByEmail(String email);
+	
 	Bidder findOne(Long id);
 	
 }
