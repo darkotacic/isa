@@ -10,4 +10,11 @@ public interface SegmentRepository extends CrudRepository<Segment, Long>{
 	public Iterable<RestaurantTable> tables(Long id);
 	Segment findOne(Long id);
 	
+	@SuppressWarnings("unchecked")
+	Segment save(Segment s);
+	
+	void delete(Segment s);
+	
+	void delete(Long id);
+	
 }

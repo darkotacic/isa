@@ -86,6 +86,46 @@ public class Product implements Serializable {
 		return price;
 	}
 
+	public Set<Restaurant> getRestaurants() {
+		return restaurants;
+	}
+
+
+	public void setRestaurants(Set<Restaurant> restaurants) {
+		this.restaurants = restaurants;
+	}
+
+
+	public Set<RequestOffer> getRequestOffers() {
+		return requestOffers;
+	}
+
+
+	public void setRequestOffers(Set<RequestOffer> requestOffers) {
+		this.requestOffers = requestOffers;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+
+	public void setProductType(ProductType productType) {
+		this.productType = productType;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
