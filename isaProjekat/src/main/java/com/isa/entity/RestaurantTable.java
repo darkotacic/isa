@@ -14,6 +14,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "RESTAURANT_TABLE")
 public class RestaurantTable {
@@ -26,6 +28,7 @@ public class RestaurantTable {
 	private Segment segment;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "table", orphanRemoval = true)
+	@JsonIgnore
 	private Set<Order> orders;
 
 	@Min(1)

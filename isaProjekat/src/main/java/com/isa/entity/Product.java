@@ -64,6 +64,7 @@ public class Product implements Serializable {
 	private Set<RequestOffer> requestOffers;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
+	@JsonIgnore
 	private Set<OrderItem> item;
 
 	public Product() {
