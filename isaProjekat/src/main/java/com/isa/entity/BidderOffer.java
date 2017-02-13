@@ -101,7 +101,6 @@ public class BidderOffer implements Serializable {
 
 	public void setGaranty(String garanty) {
 		this.garanty = garanty;
-		
 	}
 
 	public void setBidder(Bidder bidder) {
