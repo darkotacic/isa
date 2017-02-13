@@ -21,7 +21,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "PRODUCT")
@@ -56,15 +57,15 @@ public class Product implements Serializable {
 
 	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinTable(name = "RESTAURANT_PRODUCTS", joinColumns = @JoinColumn(name = "PR_ID", referencedColumnName = "PR_ID"), inverseJoinColumns = @JoinColumn(name = "RES_ID", referencedColumnName = "RES_ID"))
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<Restaurant> restaurants;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "products")
-	@JsonIgnore
+	@JsonBackReference
 	private Set<RequestOffer> requestOffers;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<OrderItem> item;
 
 	public Product() {

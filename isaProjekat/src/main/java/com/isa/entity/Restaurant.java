@@ -16,7 +16,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.entity.users.RestaurantManager;
 
 @Entity
@@ -43,19 +44,19 @@ public class Restaurant implements Serializable {
 	private String description;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants", cascade = { CascadeType.REMOVE, CascadeType.MERGE })
-	@JsonIgnore
+	@JsonBackReference
 	private Set<Product> menu;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<Segment> segments;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<Grade> grades;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<RestaurantManager> restaurantManagers;
 
 	public Restaurant() {

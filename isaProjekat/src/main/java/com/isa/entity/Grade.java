@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "GRADE")
 public class Grade implements Serializable {
@@ -21,6 +23,7 @@ public class Grade implements Serializable {
 	private long id;
 
 	@ManyToOne
+	@JsonBackReference
 	private Restaurant restaurant;
 
 	@Column(name = "GRD_SERVICE")

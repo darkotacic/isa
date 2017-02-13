@@ -16,7 +16,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "SEGMENT")
@@ -29,14 +30,15 @@ public class Segment implements Serializable {
 	private Long id;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "segment", orphanRemoval = true)
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<RestaurantTable> tables;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "segment", orphanRemoval = true)
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<WorkSchedule> schedules;
 
 	@ManyToOne
+	@JsonBackReference
 	private Restaurant restaurant;
 
 	@Column(name = "SGM_SMOKING", columnDefinition = "boolean default true", insertable = true)

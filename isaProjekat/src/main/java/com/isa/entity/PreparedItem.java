@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.entity.users.Waiter;
 
 @Entity
@@ -29,6 +30,7 @@ public class PreparedItem implements Serializable {
 	private Date date;
 
 	@ManyToOne(optional = false)
+	@JsonBackReference
 	private Waiter waiter;
 
 	public PreparedItem() {

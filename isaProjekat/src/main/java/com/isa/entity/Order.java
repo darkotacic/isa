@@ -13,8 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.entity.users.Waiter;
 
 @Entity
@@ -29,16 +32,19 @@ public class Order implements Serializable {
 	private Long id;
 
 	@Column(name = "RES_ORD_DATE")
+	@Temporal(TemporalType.DATE)
 	private Date date;
 
 	@ManyToOne(optional = false)
+	@JsonBackReference
 	private RestaurantTable table;
 
 	@ManyToOne(optional = false)
+	@JsonBackReference
 	private Waiter waiter;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<OrderItem> orderedItems;
 
 	public Order() {

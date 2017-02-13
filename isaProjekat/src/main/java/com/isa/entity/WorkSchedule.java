@@ -22,7 +22,8 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.entity.users.Worker;
 
 @Entity
@@ -38,7 +39,7 @@ public class WorkSchedule implements Serializable {
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "WORKER_SCHEDULE", joinColumns = @JoinColumn(name = "WORK_SCH_ID", referencedColumnName = "WORK_SCH_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID"))
-	@JsonIgnore
+	@JsonManagedReference
 	private Set<Worker> worker;
 
 	@Temporal(TemporalType.DATE)
@@ -62,9 +63,11 @@ public class WorkSchedule implements Serializable {
 	private double endTime;
 
 	@ManyToOne
+	@JsonBackReference
 	private Segment segment;
 
 	@ManyToOne
+	@JsonBackReference
 	private Worker replacement;
 
 	public WorkSchedule() {
