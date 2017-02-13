@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -25,10 +24,6 @@ public class Restaurant implements Serializable {
 	private static final long serialVersionUID = -2730772573761285789L;
 
 	@Id
-	@Column(name = "RES_ID")
-	@GeneratedValue
-	private Long id;
-
 	@Size(min=3, max=30)
 	@Pattern(regexp="^[A-Z]\\w*")
 	@NotNull
@@ -87,10 +82,6 @@ public class Restaurant implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public Set<RestaurantManager> getRestaurantManagers() {

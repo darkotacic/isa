@@ -33,8 +33,8 @@ public class BidderController {
 	}
 	
 	@RequestMapping(value = "/registerBid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BidderOffer> registerBid(@RequestBody @Valid BidderOffer bo, @RequestParam(value="request_offer_id") String ro_id, @RequestParam(value="bidder_email")String b_id ) {
-		return bidderService.registerBidderOffer(bo, Long.parseLong(ro_id), Long.parseLong(b_id));
+	public ResponseEntity<BidderOffer> registerBid(@RequestBody @Valid BidderOffer bo, @RequestParam(value="request_offer_id") String ro_id, @RequestParam(value="bidder_email")String b_email ) {
+		return bidderService.registerBidderOffer(bo, Long.parseLong(ro_id), b_email);
 	}
 	
 	@RequestMapping(value = "/updateBid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

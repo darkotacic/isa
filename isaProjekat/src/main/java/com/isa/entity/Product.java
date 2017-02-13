@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -26,12 +25,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Product implements Serializable {
 	
 	private static final long serialVersionUID = 4047551117092218814L;
-
-	@Id
-	@Column(name="PR_ID")
-	@GeneratedValue
-	private Long id;
 	
+	@Id
 	@Size(min=3, max=30)
 	@Pattern(regexp="^[A-Z]\\w*")
 	@NotNull
@@ -55,8 +50,8 @@ public class Product implements Serializable {
 	@ManyToMany
 	@JoinTable(
 		      name="RESTAURANT_PRODUCTS",
-		      joinColumns=@JoinColumn(name="PR_ID", referencedColumnName="PR_ID"),
-		      inverseJoinColumns=@JoinColumn(name="RES_ID", referencedColumnName="RES_ID"))
+		      joinColumns=@JoinColumn(name="PR_NAME", referencedColumnName="PR_NAME"),
+		      inverseJoinColumns=@JoinColumn(name="RES_NAME", referencedColumnName="RES_NAME"))
 	@JsonIgnore
 	private Set<Restaurant> restaurants;
 	
@@ -123,11 +118,6 @@ public class Product implements Serializable {
 
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
-	}
-
-
-	public Long getId() {
-		return id;
 	}
 	
 }

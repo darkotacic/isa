@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
@@ -23,7 +24,8 @@ import javax.validation.constraints.Size;
 import com.isa.entity.users.Bidder;
 
 @Entity
-@Table(name="BIDDER_OFFER")
+@Table(name="BIDDER_OFFER", uniqueConstraints = { @UniqueConstraint(columnNames = 
+{ "BIDDER_USER_EMAIL", "REQUEST_OFFER_ID"})})
 public class BidderOffer implements Serializable {
 
 	/**
