@@ -28,7 +28,7 @@ public class BidderServiceImpl implements BidderService {
 
 	@Override
 	public ResponseEntity<Bidder> updateProfile(Bidder b) {
-		Bidder temp = this.bidderRepository.findByEmail(b.getEmail());
+		Bidder temp = this.bidderRepository.findOne(b.getEmail());
 		temp.setDateOfBirth(b.getDateOfBirth());
 		temp.setEmail(b.getEmail());
 		temp.setName(b.getName());
@@ -39,13 +39,13 @@ public class BidderServiceImpl implements BidderService {
 
 	@Override
 	public Iterable<BidderOffer> getAllBiddingsForThisBidder(String bidder_email) {
-		Bidder b = this.bidderRepository.findByEmail(bidder_email);
+		Bidder b = this.bidderRepository.findOne(bidder_email);
 		return bidderOfferRepository.findByBidder(b);
 	}
 
 	@Override
-	public ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, Long b_id) {
-		Bidder temp = this.bidderRepository.findOne(b_id);
+	public ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, String b_email) {
+		Bidder temp = this.bidderRepository.findOne(b_email);
 		RequestOffer temp1 = this.requestOfferRepository.findOne(ro_id);
 		if(this.bidderOfferRepository.findByBidderAndRequestOffer(temp, temp1) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);

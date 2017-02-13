@@ -32,18 +32,18 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 
 	@Override
 	public ResponseEntity<SystemManager> registerSystemManager(SystemManager sm) {
-		if (this.userRepository.findByEmail(sm.getEmail()) != null)
+		if (this.userRepository.findOne(sm.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		return new ResponseEntity<SystemManager>(this.systemManagerRepository.save(sm), HttpStatus.CREATED);
 	}
 
 	@Override
 	public ResponseEntity<RestaurantManager> registerRestaurantManager(RestaurantManager sm, String restaurant_name) {
-		if (this.userRepository.findByEmail(sm.getEmail()) != null)
+		if (this.userRepository.findOne(sm.getEmail()) != null)
+			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);	
+		if (this.restaurantRepository.findOne(restaurant_name) == null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		if (this.restaurantRepository.findByName(restaurant_name) == null)
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		Restaurant r = this.restaurantRepository.findByName(restaurant_name);
+		Restaurant r = this.restaurantRepository.findOne(restaurant_name);
 		sm.setRestaurnat(r);
 		return new ResponseEntity<RestaurantManager>(this.restaurantManagerRepository.save(sm), HttpStatus.CREATED);
 	}

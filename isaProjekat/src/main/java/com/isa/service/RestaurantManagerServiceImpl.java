@@ -21,21 +21,19 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Autowired
 	private RestaurantRepository restaurantRepository;
-	
-	@Autowired 
+
+	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private SegmentRepository segmentRepository;
-	
+
 	@Autowired
 	private RestaurantTableRepository restaurantTableRepository;
-	
+
 	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
-		if(this.restaurantRepository.findByName(r.getName()) != null)
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		Restaurant temp = this.restaurantRepository.findByName(r.getName());
+		Restaurant temp = this.restaurantRepository.findOne(r.getName());
 		temp.setDescription(r.getDescription());
 		temp.setName(r.getName());
 		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(temp), HttpStatus.CREATED);
@@ -43,12 +41,12 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<String> defineRestaurantMenu(String[] products, String rest_name) {
-	/*	Restaurant r = this.restaurantRepository.findByName(rest_name);
-		for(int i = 0; i < products.length; i++) {
-			Product p = this.productRepository.findByName(products[i]);
-			//this.restaurantRepository.write(p.getId(), r.getId());
-		}
-		*/
+		/*
+		 * Restaurant r = this.restaurantRepository.findByName(rest_name);
+		 * for(int i = 0; i < products.length; i++) { Product p =
+		 * this.productRepository.findByName(products[i]);
+		 * //this.restaurantRepository.write(p.getId(), r.getId()); }
+		 */
 		return new ResponseEntity<String>("Vidi bazu", HttpStatus.CREATED);
 	}
 
@@ -60,10 +58,8 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<Segment> addSegmentToRestaurnat(Segment s, String r_name) {
-		Restaurant r = this.restaurantRepository.findByName(r_name);
-		System.out.println("BBBBBBBBBBBBBBBBBBBB " + r.getDescription());
+		Restaurant r = this.restaurantRepository.findOne(r_name);
 		s.setRestaurant(r);
-		System.out.println("AAAAAAAAAAAAAAAAAAA " + s.getRestaurant().getId());
 		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.CREATED);
 	}
 
@@ -82,7 +78,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<String> removeRestaurantTable(Long id) {
-		
+
 		this.restaurantTableRepository.delete(id);
 		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
 	}

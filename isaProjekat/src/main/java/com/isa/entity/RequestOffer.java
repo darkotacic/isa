@@ -35,12 +35,13 @@ public class RequestOffer implements Serializable{
 	@Id
 	@Column(name="ID")
 	@GeneratedValue
-	
 	private Long id;
-	@ManyToMany@JoinTable(
+	
+	@ManyToMany
+	@JoinTable(
 		      name="OFFERED_PRODUCTS",
 		      joinColumns=@JoinColumn(name="RO_ID", referencedColumnName="ID"),
-		      inverseJoinColumns=@JoinColumn(name="PR_ID", referencedColumnName="PR_ID"))
+		      inverseJoinColumns=@JoinColumn(name="PR_NAME", referencedColumnName="PR_NAME"))
 	@JsonIgnore
 	private Set<Product> products;
 	

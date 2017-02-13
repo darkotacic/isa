@@ -4,13 +4,11 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.isa.entity.users.Bidder;
 
-public interface BidderRepository extends CrudRepository<Bidder, Long> {
+public interface BidderRepository extends CrudRepository<Bidder, String> {
 
 	@SuppressWarnings("unchecked")
 	Bidder save(Bidder b);
 	
-	Bidder findByEmail(String email);
-	
-	Bidder findOne(Long id);
+	Bidder findOne(String name);
 	
 }

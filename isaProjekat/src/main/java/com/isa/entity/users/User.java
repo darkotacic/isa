@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -24,12 +23,8 @@ import org.hibernate.validator.constraints.Email;
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = 2626562778387146532L;
-	
-	@Id
-	@Column(name="USER_ID")
-	@GeneratedValue
-	private Long id;
 
+	@Id
 	@NotNull
 	@Email(message = "Email must be a well-formed address")
 	@Column(name="USER_EMAIL",unique=true,nullable=false)
@@ -84,10 +79,6 @@ public class User implements Serializable {
 	}
 
 	public User() {
-	}
-	
-	public Long getId() {
-		return id;
 	}
 	
 	public Date getDateOfBirth() {
