@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -25,6 +26,10 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 2626562778387146532L;
 
 	@Id
+	@Column(name="USER_ID")
+	@GeneratedValue
+	private long id;
+	
 	@NotNull
 	@Email(message = "Email must be a well-formed address")
 	@Column(name="USER_EMAIL",unique=true,nullable=false)
@@ -35,6 +40,10 @@ public class User implements Serializable {
 	@Column(name="USER_NAME",unique=false,nullable=false)
 	private String name;
 	
+	public long getId() {
+		return id;
+	}
+
 	@Pattern(regexp="^[A-Z][a-z_A-Z]*")
 	@NotNull
 	@Column(name="USER_SURNAME",unique=false,nullable=false)

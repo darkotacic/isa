@@ -23,7 +23,7 @@ import com.isa.entity.users.Worker;
 
 @Entity
 @Table(name="WORK_SCHEDULE", uniqueConstraints = { @UniqueConstraint(columnNames = 
-{ "WORKER_USER_EMAIL", "WORK_SCH_DATE", "WORK_SCH_START", "WORK_SCH_END"})})
+{ "WORKER_USER_ID", "WORK_SCH_DATE", "WORK_SCH_START", "WORK_SCH_END"})})
 public class WorkSchedule implements Serializable{
 	
 	private static final long serialVersionUID = -5309553359477225086L;

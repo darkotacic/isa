@@ -24,8 +24,8 @@ public class SystemManagerController {
 	private SystemManagerService systemManagerService;
 	
 	@RequestMapping(value = "/registerRestaurantManager", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RestaurantManager> register(@RequestBody @Valid RestaurantManager sm, @RequestParam(value="name") String param) {
-		return systemManagerService.registerRestaurantManager(sm, param);
+	public ResponseEntity<RestaurantManager> register(@RequestBody @Valid RestaurantManager sm, @RequestParam(value="id") Long id) {
+		return systemManagerService.registerRestaurantManager(sm, id);
 	}
 	
 	@RequestMapping(value = "/registerSystem", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

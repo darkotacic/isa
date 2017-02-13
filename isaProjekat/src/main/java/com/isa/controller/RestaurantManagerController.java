@@ -36,8 +36,8 @@ public class RestaurantManagerController {
 		return restaurantManagerService.addRestaurantTableToSegment(rt, id);
 	}
 	@RequestMapping(value = "/addSegment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Segment> addSegment(@RequestBody @Valid Segment s, @RequestParam(value="rest") String name) {
-		return restaurantManagerService.addSegmentToRestaurnat(s, name);
+	public ResponseEntity<Segment> addSegment(@RequestBody @Valid Segment s, @RequestParam(value="rest") Long id) {
+		return restaurantManagerService.addSegmentToRestaurnat(s, id);
 	}
 	@RequestMapping(value = "/removeSegment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> removeSegment(@RequestParam(value="id") Long id) {

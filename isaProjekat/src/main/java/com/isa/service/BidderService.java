@@ -9,9 +9,9 @@ public interface BidderService {
 	
 	ResponseEntity<Bidder> updateProfile(Bidder b);
 
-	Iterable<BidderOffer> getAllBiddingsForThisBidder(String bidder_id);
+	Iterable<BidderOffer> getAllBiddingsForThisBidder(Long bidder_id);
 
-	ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, String b_id);
+	ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, Long b_id);
 
 	ResponseEntity<BidderOffer> updateBidderOffer(BidderOffer bo);
 	

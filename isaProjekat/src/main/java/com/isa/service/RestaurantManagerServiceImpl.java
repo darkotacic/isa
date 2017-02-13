@@ -33,7 +33,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
-		Restaurant temp = this.restaurantRepository.findOne(r.getName());
+		Restaurant temp = this.restaurantRepository.findOne(r.getId());
 		temp.setDescription(r.getDescription());
 		temp.setName(r.getName());
 		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(temp), HttpStatus.CREATED);
@@ -57,8 +57,8 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<Segment> addSegmentToRestaurnat(Segment s, String r_name) {
-		Restaurant r = this.restaurantRepository.findOne(r_name);
+	public ResponseEntity<Segment> addSegmentToRestaurnat(Segment s, Long r_id) {
+		Restaurant r = this.restaurantRepository.findOne(r_id);
 		s.setRestaurant(r);
 		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.CREATED);
 	}

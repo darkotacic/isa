@@ -25,7 +25,7 @@ import com.isa.entity.users.Bidder;
 
 @Entity
 @Table(name="BIDDER_OFFER", uniqueConstraints = { @UniqueConstraint(columnNames = 
-{ "BIDDER_USER_EMAIL", "REQUEST_OFFER_ID"})})
+{ "BIDDER_USER_ID", "REQUEST_OFFER_ID"})})
 public class BidderOffer implements Serializable {
 
 	/**

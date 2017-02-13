@@ -41,7 +41,7 @@ public class RequestOffer implements Serializable{
 	@JoinTable(
 		      name="OFFERED_PRODUCTS",
 		      joinColumns=@JoinColumn(name="RO_ID", referencedColumnName="ID"),
-		      inverseJoinColumns=@JoinColumn(name="PR_NAME", referencedColumnName="PR_NAME"))
+		      inverseJoinColumns=@JoinColumn(name="PR_ID", referencedColumnName="PR_ID"))
 	@JsonIgnore
 	private Set<Product> products;
 	
