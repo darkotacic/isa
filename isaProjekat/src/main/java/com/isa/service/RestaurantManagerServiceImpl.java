@@ -1,5 +1,8 @@
 package com.isa.service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Autowired
 	private RestaurantTableRepository restaurantTableRepository;
 
+/*	@Autowired
+	private OrderRepository orderRepository;
+*/
 	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
 		Restaurant temp = this.restaurantRepository.findOne(r.getId());
@@ -40,20 +46,39 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<String> defineRestaurantMenu(String[] products, String rest_name) {
-		/*
-		 * Restaurant r = this.restaurantRepository.findByName(rest_name);
-		 * for(int i = 0; i < products.length; i++) { Product p =
-		 * this.productRepository.findByName(products[i]);
-		 * //this.restaurantRepository.write(p.getId(), r.getId()); }
-		 */
-		return new ResponseEntity<String>("Vidi bazu", HttpStatus.CREATED);
+	public ResponseEntity<String> defineRestaurantMenu(Long[] products, Long rest_id) {
+		Restaurant t = this.restaurantRepository.findOne(rest_id);
+		Set<Product> pro = new HashSet<Product>();
+		if (t.getMenu() != null)
+			pro = t.getMenu();
+		for (int i = 0; i < products.length; i++) {
+			Set<Restaurant> rest = new HashSet<Restaurant>();
+			Product p = this.productRepository.findOne(products[i]);
+			if (p.getRestaurants() != null)
+				rest = p.getRestaurants();
+			rest.add(t);
+			pro.add(p);
+			p.setRestaurants(rest);
+			this.productRepository.save(p);
+		}
+		t.setMenu(pro);
+		this.restaurantRepository.save(t);
+		return new ResponseEntity<String>("vidi bazu", HttpStatus.ACCEPTED);
 	}
 
 	@Override
-	public ResponseEntity<Product> addProductToMenu(Product p, String r_name) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<Product> addProductToMenu(Product p, Long r_id) {
+		Restaurant t = this.restaurantRepository.findOne(r_id);
+		Set<Product> pro = new HashSet<Product>();
+		if (t.getMenu() != null)
+			pro = t.getMenu();
+		Set<Restaurant> rest = new HashSet<Restaurant>();
+		rest.add(t);
+		p.setRestaurants(rest);
+		pro.add(p);
+		t.setMenu(pro);
+		this.restaurantRepository.save(t);
+		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
 	}
 
 	@Override
@@ -78,7 +103,6 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<String> removeRestaurantTable(Long id) {
-
 		this.restaurantTableRepository.delete(id);
 		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
 	}
@@ -90,7 +114,6 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<Segment> updateSegment(Segment s) {
-		// TODO Auto-generated method stub
 		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.ACCEPTED);
 	}
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,50 +25,87 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.users.RestaurantManager;
 
 @Entity
-@Table(name="REQUEST_OFFER")
-public class RequestOffer implements Serializable{
+@Table(name = "REQUEST_OFFER")
+public class RequestOffer implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -715867275692660342L;
-	
+
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue
 	private Long id;
-	
-	@ManyToMany
-	@JoinTable(
-		      name="OFFERED_PRODUCTS",
-		      joinColumns=@JoinColumn(name="RO_ID", referencedColumnName="ID"),
-		      inverseJoinColumns=@JoinColumn(name="PR_ID", referencedColumnName="PR_ID"))
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "OFFERED_PRODUCTS", joinColumns = @JoinColumn(name = "RO_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PR_ID", referencedColumnName = "PR_ID"))
 	@JsonIgnore
 	private Set<Product> products;
-	
-	@Column(name="STATUS",columnDefinition = "boolean default true", insertable = true)
+
+	@Column(name = "STATUS", columnDefinition = "boolean default true", insertable = true)
 	private boolean status;
-	
+
 	@Future
 	@NotNull
 	@Temporal(TemporalType.DATE)
-	@Column(name="START_DATE",unique=false,nullable=false)
+	@Column(name = "START_DATE", unique = false, nullable = false)
 	private Date startDate;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Future
-	@Column(name="EXPIRATION_DATE",unique=false,nullable=false)
+	@Column(name = "EXPIRATION_DATE", unique = false, nullable = false)
 	private Date expirationDate;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "requestOffer")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "requestOffer", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private Set<BidderOffer> bidderOffers;
-	
+
 	@ManyToOne
 	private RestaurantManager restaurantManager;
-	
+
 	public RequestOffer() {
-		
+
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Set<BidderOffer> getBidderOffers() {
+		return bidderOffers;
+	}
+
+	public void setBidderOffers(Set<BidderOffer> bidderOffers) {
+		this.bidderOffers = bidderOffers;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
+	public void setRestaurantManager(RestaurantManager restaurantManager) {
+		this.restaurantManager = restaurantManager;
 	}
 
 	public Set<Product> getProducts() {
@@ -81,6 +119,5 @@ public class RequestOffer implements Serializable{
 	public RestaurantManager getRestaurantManager() {
 		return restaurantManager;
 	}
-	
-	
+
 }

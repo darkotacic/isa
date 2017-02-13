@@ -53,4 +53,11 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(r), HttpStatus.CREATED);
 	}
 
+	@Override
+	public ResponseEntity<String> removeRestaurant(Long r_id) {
+		// TODO Auto-generated method stub
+		this.restaurantRepository.delete(r_id);
+		return new ResponseEntity<String>("Oha", HttpStatus.MOVED_PERMANENTLY);
+	}
+
 }

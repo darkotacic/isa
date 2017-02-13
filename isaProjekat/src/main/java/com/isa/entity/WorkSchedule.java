@@ -2,67 +2,76 @@ package com.isa.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.users.Worker;
 
 @Entity
-@Table(name="WORK_SCHEDULE", uniqueConstraints = { @UniqueConstraint(columnNames = 
-{ "WORKER_USER_ID", "WORK_SCH_DATE", "WORK_SCH_START", "WORK_SCH_END"})})
-public class WorkSchedule implements Serializable{
-	
+@Table(name = "WORK_SCHEDULE")
+public class WorkSchedule implements Serializable {
+
 	private static final long serialVersionUID = -5309553359477225086L;
 
 	@Id
-	@Column(name="WORK_SCH_ID")
+	@Column(name = "WORK_SCH_ID")
 	@GeneratedValue
 	private Long id;
-	
-	@ManyToOne
-	private Worker worker;
-	
+
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "WORKER_SCHEDULE", joinColumns = @JoinColumn(name = "WORK_SCH_ID", referencedColumnName = "WORK_SCH_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID"))
+	@JsonIgnore
+	private Set<Worker> worker;
+
 	@Temporal(TemporalType.DATE)
 	@NotNull
-	@Column(name="WORK_SCH_DATE")
+	@Column(name = "WORK_SCH_DATE")
 	@Future
 	private Date date;
-	
+
 	@DecimalMin("00.00")
 	@DecimalMax("24.00")
-	@Digits(integer=2, fraction=2)
+	@Digits(integer = 2, fraction = 2)
 	@NotNull
-	@Column(name="WORK_SCH_START")
+	@Column(name = "WORK_SCH_START")
 	private double startTime;
-	
+
 	@DecimalMin("00.00")
 	@DecimalMax("24.00")
-	@Digits(integer=2, fraction=2)
+	@Digits(integer = 2, fraction = 2)
 	@NotNull
-	@Column(name="WORK_SCH_END")
+	@Column(name = "WORK_SCH_END")
 	private double endTime;
-	
-	@OneToOne
+
+	@ManyToOne
 	private Segment segment;
-	
-	@OneToOne
-	private Worker shift;
-	
+
+	@ManyToOne
+	private Worker replacement;
+
 	public WorkSchedule() {
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public double getStartTime() {
@@ -73,15 +82,15 @@ public class WorkSchedule implements Serializable{
 		return endTime;
 	}
 
-	public Worker getShift() {
-		return shift;
+	public Worker getReplacement() {
+		return replacement;
 	}
 
-	public Worker getWorker() {
+	public Set<Worker> getWorker() {
 		return worker;
 	}
 
-	public void setWorker(Worker worker) {
+	public void setWorker(Set<Worker> worker) {
 		this.worker = worker;
 	}
 
@@ -109,9 +118,8 @@ public class WorkSchedule implements Serializable{
 		this.endTime = endTime;
 	}
 
-	public void setShift(Worker shift) {
-		this.shift = shift;
+	public void setReplacement(Worker shift) {
+		this.replacement = shift;
 	}
-	
-	
+
 }

@@ -27,7 +27,7 @@ public class BidderController {
 		return bidderService.updateProfile(b);
 	}
 	
-	@RequestMapping(value = "/getBiddings", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getBiddings", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<BidderOffer> getBiddings(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.getAllBiddingsForThisBidder(bidder_id);
 	}

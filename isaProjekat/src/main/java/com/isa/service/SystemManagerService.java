@@ -12,5 +12,7 @@ public interface SystemManagerService {
 	ResponseEntity<RestaurantManager> registerRestaurantManager(RestaurantManager sm, Long param);
 	
 	ResponseEntity<Restaurant> registerRestaurant(Restaurant r);
+	
+	ResponseEntity<String> removeRestaurant(Long r_id);
 
 }

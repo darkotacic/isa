@@ -3,6 +3,7 @@ package com.isa.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,35 +26,35 @@ public class Restaurant implements Serializable {
 	private static final long serialVersionUID = -2730772573761285789L;
 
 	@Id
-	@Column(name="RES_ID")
+	@Column(name = "RES_ID")
 	@GeneratedValue
 	private long id;
-	
-	@Size(min=3, max=30)
-	@Pattern(regexp="^[A-Z]\\w*")
+
+	@Size(min = 3, max = 30)
+	@Pattern(regexp = "^[A-Z]\\w*")
 	@NotNull
-	@Column(name = "RES_NAME", unique = true, nullable = false)
+	@Column(name = "RES_NAME", unique = false, nullable = false)
 	private String name;
 
-	@Size(max=50)
-	@Pattern(regexp="^[A-Z]\\w*")
+	@Size(max = 50)
+	@Pattern(regexp = "^[A-Z]\\w*")
 	@NotNull
 	@Column(name = "RES_DESC", unique = false, nullable = false)
 	private String description;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants", cascade = { CascadeType.REMOVE, CascadeType.MERGE })
 	@JsonIgnore
 	private Set<Product> menu;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private Set<Segment> segments;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private Set<Grade> grades;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private Set<RestaurantManager> restaurantManagers;
 
