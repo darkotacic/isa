@@ -14,8 +14,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "RESTAURANT_TABLE")
@@ -26,11 +26,10 @@ public class RestaurantTable {
 	private Long id;
 
 	@ManyToOne
-	@JsonBackReference
 	private Segment segment;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "table", orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<Order> orders;
 
 	@Min(1)
@@ -46,11 +45,11 @@ public class RestaurantTable {
 	public RestaurantTable() {
 
 	}
-
+	@JsonIgnore
 	public Set<Order> getOrders() {
 		return orders;
 	}
-
+	@JsonProperty
 	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
 	}

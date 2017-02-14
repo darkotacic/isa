@@ -9,6 +9,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.isa.entity.Order;
 import com.isa.entity.PreparedItem;
 
 @Entity
@@ -20,16 +22,28 @@ public class Waiter extends Worker {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "waiter", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private Set<PreparedItem> preparedItems;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "waiter", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private Set<Order> orders;
 
 	public Waiter() {
 	}
-
+	@JsonIgnore
 	public Set<PreparedItem> getPreparedItems() {
 		return preparedItems;
 	}
-
+	@JsonProperty
 	public void setPreparedItems(Set<PreparedItem> preparedItems) {
 		this.preparedItems = preparedItems;
+	}
+	@JsonIgnore
+	public Set<Order> getOrders() {
+		return orders;
+	}
+	@JsonProperty
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
 	}
 
 }

@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.entity.users.Bidder;
 
 @Entity
@@ -61,11 +60,9 @@ public class BidderOffer implements Serializable {
 	private BidderOfferStatus offerStatus = BidderOfferStatus.UN_DECIDED;
 	
 	@ManyToOne
-	@JsonBackReference
 	private Bidder bidder;
 	
 	@ManyToOne
-	@JsonBackReference
 	private RequestOffer requestOffer;
 	
 	public BidderOffer() {

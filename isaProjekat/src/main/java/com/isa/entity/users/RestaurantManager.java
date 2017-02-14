@@ -10,10 +10,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.RequestOffer;
 import com.isa.entity.Restaurant;
-
-import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "RESTAURANT_MANAGER")
@@ -35,24 +35,16 @@ public class RestaurantManager extends User implements Serializable {
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
-
+	
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
 	}
-
+	@JsonIgnore
 	public Set<RequestOffer> getRequestOffers() {
 		return requestOffers;
 	}
-
+	@JsonProperty
 	public void setRequestOffers(Set<RequestOffer> requestOffers) {
 		this.requestOffers = requestOffers;
-	}
-
-	public Restaurant getRestaurnat() {
-		return restaurant;
-	}
-
-	public void setRestaurnat(Restaurant restaurnat) {
-		this.restaurant = restaurnat;
 	}
 }

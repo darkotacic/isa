@@ -16,8 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.users.Waiter;
 
 @Entity
@@ -36,15 +36,13 @@ public class Order implements Serializable {
 	private Date date;
 
 	@ManyToOne(optional = false)
-	@JsonBackReference
 	private RestaurantTable table;
 
 	@ManyToOne(optional = false)
-	@JsonBackReference
 	private Waiter waiter;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<OrderItem> orderedItems;
 
 	public Order() {
@@ -61,7 +59,7 @@ public class Order implements Serializable {
 	public void setWaiter(Waiter waiter) {
 		this.waiter = waiter;
 	}
-
+	@JsonProperty
 	public void setOrderedItems(Set<OrderItem> orderedItems) {
 		this.orderedItems = orderedItems;
 	}
@@ -69,7 +67,7 @@ public class Order implements Serializable {
 	public Date getDate() {
 		return date;
 	}
-
+	@JsonIgnore
 	public Set<OrderItem> getOrderedItems() {
 		return orderedItems;
 	}

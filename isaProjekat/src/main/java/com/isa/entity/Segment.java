@@ -16,8 +16,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "SEGMENT")
@@ -30,15 +30,14 @@ public class Segment implements Serializable {
 	private Long id;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "segment", orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<RestaurantTable> tables;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "segment", orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<WorkSchedule> schedules;
 
 	@ManyToOne
-	@JsonBackReference
 	private Restaurant restaurant;
 
 	@Column(name = "SGM_SMOKING", columnDefinition = "boolean default true", insertable = true)
@@ -53,11 +52,11 @@ public class Segment implements Serializable {
 	public Segment() {
 
 	}
-
+	 @JsonIgnore
 	public Set<WorkSchedule> getWorkSchedule() {
 		return schedules;
 	}
-
+	@JsonProperty
 	public void setWorkSchedule(Set<WorkSchedule> segments) {
 		this.schedules = segments;
 	}
@@ -65,7 +64,7 @@ public class Segment implements Serializable {
 	public void setSmokingAllowed(boolean smokingAllowed) {
 		this.smokingAllowed = smokingAllowed;
 	}
-
+	@JsonProperty
 	public void setTables(Set<RestaurantTable> tables) {
 		this.tables = tables;
 	}
@@ -93,7 +92,7 @@ public class Segment implements Serializable {
 	public boolean isSmokingAllowed() {
 		return smokingAllowed;
 	}
-
+	@JsonIgnore
 	public Set<RestaurantTable> getTables() {
 		return tables;
 	}

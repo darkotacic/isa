@@ -42,4 +42,5 @@ public class SystemManagerController {
 	public ResponseEntity<String> deleteRestaurant(@RequestParam(value="id") Long r_id) {
 		return systemManagerService.removeRestaurant(r_id);
 	}
+	
 }

@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.entity.users.Bartender;
 import com.isa.entity.users.Cook;
 
@@ -28,19 +27,15 @@ public class OrderItem implements Serializable {
 	private int quantity;
 
 	@ManyToOne
-	@JsonBackReference
 	private Order order;
 
 	@ManyToOne
-	@JsonBackReference
 	private Product product;
 
 	@ManyToOne
-	@JsonBackReference
 	private Cook cook;
 
 	@ManyToOne
-	@JsonBackReference
 	private Bartender bartender;
 
 	public OrderItem() {

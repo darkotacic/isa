@@ -15,4 +15,7 @@ public interface SystemManagerService {
 	
 	ResponseEntity<String> removeRestaurant(Long r_id);
 
+	
+	
+
 }

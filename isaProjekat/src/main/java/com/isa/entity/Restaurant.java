@@ -16,8 +16,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.users.RestaurantManager;
 
 @Entity
@@ -44,19 +44,19 @@ public class Restaurant implements Serializable {
 	private String description;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants", cascade = { CascadeType.REMOVE, CascadeType.MERGE })
-	@JsonBackReference
+	@JsonIgnore
 	private Set<Product> menu;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<Segment> segments;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<Grade> grades;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<RestaurantManager> restaurantManagers;
 
 	public Restaurant() {
@@ -70,15 +70,15 @@ public class Restaurant implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	@JsonIgnore
 	public Set<Grade> getGrades() {
 		return grades;
 	}
-
+	@JsonIgnore
 	public Set<Product> getMenu() {
 		return menu;
 	}
-
+	@JsonIgnore
 	public Set<Segment> getSegments() {
 		return segments;
 	}
@@ -90,23 +90,23 @@ public class Restaurant implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	@JsonIgnore
 	public Set<RestaurantManager> getRestaurantManagers() {
 		return restaurantManagers;
 	}
-
+	@JsonProperty
 	public void setRestaurantManagers(Set<RestaurantManager> restaurantManagers) {
 		this.restaurantManagers = restaurantManagers;
 	}
-
+	@JsonProperty
 	public void setMenu(Set<Product> menu) {
 		this.menu = menu;
 	}
-
+	@JsonProperty
 	public void setSegments(Set<Segment> segments) {
 		this.segments = segments;
 	}
-
+	@JsonProperty
 	public void setGrades(Set<Grade> grades) {
 		this.grades = grades;
 	}

@@ -21,8 +21,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.users.RestaurantManager;
 
 @Entity
@@ -41,7 +41,7 @@ public class RequestOffer implements Serializable {
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "OFFERED_PRODUCTS", joinColumns = @JoinColumn(name = "RO_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PR_ID", referencedColumnName = "PR_ID"))
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<Product> products;
 
 	@Column(name = "STATUS", columnDefinition = "boolean default true", insertable = true)
@@ -59,11 +59,10 @@ public class RequestOffer implements Serializable {
 	private Date expirationDate;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "requestOffer", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<BidderOffer> bidderOffers;
 
 	@ManyToOne
-	@JsonBackReference
 	private RestaurantManager restaurantManager;
 
 	public RequestOffer() {
@@ -85,11 +84,11 @@ public class RequestOffer implements Serializable {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-
+	@JsonIgnore
 	public Set<BidderOffer> getBidderOffers() {
 		return bidderOffers;
 	}
-
+	@JsonProperty
 	public void setBidderOffers(Set<BidderOffer> bidderOffers) {
 		this.bidderOffers = bidderOffers;
 	}
@@ -97,7 +96,7 @@ public class RequestOffer implements Serializable {
 	public Long getId() {
 		return id;
 	}
-
+	@JsonProperty
 	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
@@ -109,7 +108,7 @@ public class RequestOffer implements Serializable {
 	public void setRestaurantManager(RestaurantManager restaurantManager) {
 		this.restaurantManager = restaurantManager;
 	}
-
+	@JsonIgnore
 	public Set<Product> getProducts() {
 		return products;
 	}

@@ -6,14 +6,13 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.WorkSchedule;
 
 @Entity
@@ -29,7 +28,7 @@ public class Worker extends User {
 	@Column(name = "WRK_SHIRT")
 	private String shirtSize;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "worker", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
 	@JsonIgnore
 	protected Set<WorkSchedule> workSchedules;
 
@@ -47,15 +46,15 @@ public class Worker extends User {
 		this.shirtSize = shirtSize;
 		this.shoeNumber = shoeNumber;
 	}
-
+	@JsonIgnore
 	public Set<WorkSchedule> getReplacements() {
 		return replacements;
 	}
-
+	@JsonProperty
 	public void setReplacements(Set<WorkSchedule> replacements) {
 		this.replacements = replacements;
 	}
-
+	
 	public void setShoeNumber(int shoeNumber) {
 		this.shoeNumber = shoeNumber;
 	}
@@ -63,7 +62,7 @@ public class Worker extends User {
 	public void setShirtSize(String shirtSize) {
 		this.shirtSize = shirtSize;
 	}
-
+	@JsonProperty
 	public void setWorkSchedules(Set<WorkSchedule> workSchedules) {
 		this.workSchedules = workSchedules;
 	}
@@ -75,7 +74,7 @@ public class Worker extends User {
 	public String getShirtSize() {
 		return shirtSize;
 	}
-
+	@JsonIgnore
 	public Set<WorkSchedule> getWorkSchedules() {
 		return workSchedules;
 	}

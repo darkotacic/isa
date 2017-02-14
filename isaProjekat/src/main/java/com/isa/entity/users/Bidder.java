@@ -9,9 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.BidderOffer;
-
-import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "BIDDER")
@@ -31,11 +31,11 @@ public class Bidder extends User {
 
 	public Bidder() {
 	}
-
+	@JsonIgnore
 	public Set<BidderOffer> getBidderOffers() {
 		return bidderOffers;
 	}
-
+	@JsonProperty
 	public void setBidderOffers(Set<BidderOffer> bidderOffers) {
 		this.bidderOffers = bidderOffers;
 	}

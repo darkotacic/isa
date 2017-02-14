@@ -1,0 +1,84 @@
+<div role="form"  ng-controller="registerController">
+	<h1 class="page-header">Register</h1> 
+	<div class="alert alert-danger" ng-show="error">
+		<p>User already exists</p>
+	</div>
+	
+	<form class="form-horizontal" name = "myForm" novalidate style="width:50%">
+	  <div class="form-group">
+	    <label class="control-label col-sm-3" for="usr">Username:</label>
+	    <div class="col-sm-9">
+	      <input type="text" class="form-control" placeholder="Enter username"
+	      required ng-Model="user.username" id = "usr">
+	    </div>
+	  </div>  
+	  <div class="form-group">
+	    <label class="control-label col-sm-3" for="pwd">Password:</label>
+	    <div class="col-sm-9"> 
+	      <input type="password" class="form-control" id="pwd" placeholder="Enter password"
+	      required ng-Model="user.password">
+	    </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label class="control-label col-sm-3" for="ime">First name:</label>
+	    <div class="col-sm-9"> 
+	      <input type="text" class="form-control" id="ime" placeholder="Enter name"
+	      required ng-Model="user.name">
+	    </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label class="control-label col-sm-3" for="prz">Last name:</label>
+	    <div class="col-sm-9"> 
+	      <input type="text" class="form-control" id="prz" placeholder="Enter last name"
+	      required ng-Model="user.lastName">
+	    </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label class="control-label col-sm-3" for="nbr">Phone:</label>
+	    <div class="col-sm-9"> 
+	      <input type="text" class="form-control" id="nbr" placeholder="Enter phone number"
+	      required ng-Model="user.phone">
+	    </div>
+	  </div>
+	  
+	  	  <div class="form-group">
+	    <label class="control-label col-sm-3" for="add">Adress:</label>
+	    <div class="col-sm-9"> 
+	      <input type="text" class="form-control" id="add" placeholder="Enter address"
+	      required ng-Model="user.address">
+	    </div>
+	  </div>
+	  
+	  	  <div class="form-group">
+	    <label class="control-label col-sm-3" for="cnt">Country:</label>
+	    <div class="col-sm-9"> 
+	      <input type="text" class="form-control" id="pcnt" placeholder="Enter country"
+	      required ng-Model="user.country">
+	    </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label class="control-label col-sm-3" for="email">Email:</label>
+	    <div class="col-sm-9"> 
+	      <input type="email" class="form-control" id="email" placeholder="Enter email"
+	      required ng-Model="user.email">
+	    </div>
+	  </div>
+
+	  <div class="form-group"> 
+	    <div class="col-sm-offset-2 col-sm-10">
+	      <button type="submit" 
+	              ng-disabled="myForm.$invalid" 
+	      		  class="btn btn-success" 
+	      		  ng-Click="register()" 
+	      		  title="Form invalid!" 
+	      		  data-toggle="tooltip" 
+	      		  data-placement="top" 
+	      		  tooltip>Submit</button>
+	    </div>
+	  </div>
+	</form>
+</div>

@@ -1,0 +1,23 @@
+<div role="form" class="form-inline" ng-controller="loginController">
+	<h1 class="page-header">Login</h1>
+	<div class="alert alert-danger" ng-show="error">
+		<p>Bad credentials, try again</p>
+	</div>
+	<form name="myForm" novalidate>
+		<div class="form-group">
+			<label>Username:</label> <input type="text" ng-Model="user.username" class="form-control"
+			placeholder = "Enter username" required/>
+		</div>
+		<div class="form-group">
+			<label>Password:</label> <input type="password" ng-Model="user.password" class="form-control"
+			placeholder = "Enter password" required/>
+		</div>
+		<div class="form-group">
+			<button class="btn btn-success" type="submit" ng-click="myForm.$valid ? login() : angular.noop()">Login</button>
+		</div>
+		
+		 <div class="form-group">
+			<button class="btn btn-success" type="submit" ng-click="register()">Sign up</button>
+		</div>
+	</form>
+</div>

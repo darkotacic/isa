@@ -9,6 +9,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.OrderItem;
 
 @Entity
@@ -23,8 +24,14 @@ public class Bartender extends Worker {
 
 	public Bartender() {
 	}
-
+	
+	@JsonIgnore
 	public Set<OrderItem> getOrderedDrinks() {
 		return orderedDrinks;
 	}
+	@JsonProperty
+	public void setOrderedDrinks(Set<OrderItem> orderedDrinks) {
+		this.orderedDrinks = orderedDrinks;
+	}
+	
 }

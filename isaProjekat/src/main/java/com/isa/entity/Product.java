@@ -21,8 +21,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "PRODUCT")
@@ -57,25 +57,25 @@ public class Product implements Serializable {
 
 	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinTable(name = "RESTAURANT_PRODUCTS", joinColumns = @JoinColumn(name = "PR_ID", referencedColumnName = "PR_ID"), inverseJoinColumns = @JoinColumn(name = "RES_ID", referencedColumnName = "RES_ID"))
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<Restaurant> restaurants;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "products")
-	@JsonBackReference
+	@JsonIgnore
 	private Set<RequestOffer> requestOffers;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
-	@JsonManagedReference
+	@JsonIgnore
 	private Set<OrderItem> item;
 
 	public Product() {
 
 	}
-
+	@JsonIgnore
 	public Set<OrderItem> getItem() {
 		return item;
 	}
-
+	@JsonProperty
 	public void setItem(Set<OrderItem> item) {
 		this.item = item;
 	}
@@ -99,19 +99,19 @@ public class Product implements Serializable {
 	public double getPrice() {
 		return price;
 	}
-
+	@JsonIgnore
 	public Set<Restaurant> getRestaurants() {
 		return restaurants;
 	}
-
+	@JsonProperty
 	public void setRestaurants(Set<Restaurant> restaurants) {
 		this.restaurants = restaurants;
 	}
-
+	@JsonIgnore
 	public Set<RequestOffer> getRequestOffers() {
 		return requestOffers;
 	}
-
+	@JsonProperty
 	public void setRequestOffers(Set<RequestOffer> requestOffers) {
 		this.requestOffers = requestOffers;
 	}

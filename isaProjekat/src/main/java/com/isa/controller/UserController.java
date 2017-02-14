@@ -64,6 +64,15 @@ public class UserController {
 	}
 	
 	
+	@RequestMapping(value="/loggedUser",
+			method=RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<User> getLoggedUser() {
+		User u = (User)session.getAttribute("user");
+		return new ResponseEntity<User>(u,HttpStatus.OK);
+	}
+	
+	
 	
 	
 }

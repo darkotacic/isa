@@ -68,15 +68,11 @@ insert into restaurant_table(id, res_free, res_chair, segment_id) values(6,true,
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(7,true,4,3);
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(8,true,8,3);
 
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_start, work_sch_end, segment_id, replacement_user_id) values(1,'16-10-15',8.0,15.0,1,4);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_start, work_sch_end, segment_id, replacement_user_id) values(2,'16-10-15',15.0,22.0,2,null);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_start, work_sch_end, segment_id, replacement_user_id) values(3,'16-10-16',7.0,14.0,2,4);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_start, work_sch_end, segment_id, replacement_user_id) values(4,'16-10-16',14.0,21.0,3,null);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(1,'16-10-15',8.0,15.0,1,4,3);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(2,'16-10-15',15.0,22.0,2,null,4);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(3,'16-10-16',7.0,14.0,2,4,3);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(4,'16-10-16',14.0,21.0,3,null,4);
 
-insert into worker_schedule(work_sch_id, user_id) values(1, 3);
-insert into worker_schedule(work_sch_id, user_id) values(2, 4);
-insert into worker_schedule(work_sch_id, user_id) values(3, 3);
-insert into worker_schedule(work_sch_id, user_id) values(4, 4);
 
 insert into res_ord(res_ord_id, res_ord_date, table_id, waiter_user_id) values(1,'16-10-15',1,3);
 insert into res_ord(res_ord_id, res_ord_date, table_id, waiter_user_id) values(2,'16-10-16',3,4);

@@ -29,6 +29,7 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 
 	@Autowired
 	private RestaurantRepository restaurantRepository;
+	
 
 	@Override
 	public ResponseEntity<SystemManager> registerSystemManager(SystemManager sm) {
@@ -39,19 +40,21 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 
 	@Override
 	public ResponseEntity<RestaurantManager> registerRestaurantManager(RestaurantManager sm, Long restaurant_id) {
-		if (this.userRepository.findOne(sm.getId()) != null)
+		if (this.userRepository.findByEmail(sm.getEmail())!= null)
 			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);	
 		if (this.restaurantRepository.findOne(restaurant_id) == null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		Restaurant r = this.restaurantRepository.findOne(restaurant_id);
-		sm.setRestaurnat(r);
-		return new ResponseEntity<RestaurantManager>(this.restaurantManagerRepository.save(sm), HttpStatus.CREATED);
+		sm.setRestaurant(r);
+		RestaurantManager rs = this.restaurantManagerRepository.save(sm);
+		return new ResponseEntity<RestaurantManager>(rs, HttpStatus.CREATED);
 	}
 
 	@Override
 	public ResponseEntity<Restaurant> registerRestaurant(Restaurant r) {
 		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(r), HttpStatus.CREATED);
 	}
+	
 
 	@Override
 	public ResponseEntity<String> removeRestaurant(Long r_id) {

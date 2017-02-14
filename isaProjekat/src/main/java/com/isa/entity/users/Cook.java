@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.OrderItem;
 
 @Entity
@@ -33,7 +34,7 @@ public class Cook extends Worker {
 	public void setCookType(CookType cookType) {
 		this.cookType = cookType;
 	}
-
+	@JsonProperty
 	public void setOrderedFood(Set<OrderItem> orderedFood) {
 		this.orderedFood = orderedFood;
 	}
@@ -41,7 +42,7 @@ public class Cook extends Worker {
 	public CookType getCookType() {
 		return cookType;
 	}
-
+	@JsonIgnore
 	public Set<OrderItem> getOrderedFood() {
 		return orderedFood;
 	}
