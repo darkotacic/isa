@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -59,6 +61,17 @@ public class User implements Serializable {
 	@Column(name="USER_DATE")
 	private Date dateOfBirth;
 	
+	@Enumerated(EnumType.STRING)
+	private UserRole userRole;
+	
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
