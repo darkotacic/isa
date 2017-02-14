@@ -15,6 +15,7 @@ import com.isa.entity.Product;
 import com.isa.entity.Restaurant;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
+import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Bartender;
 import com.isa.entity.users.Cook;
 import com.isa.entity.users.Waiter;
@@ -81,7 +82,16 @@ public class RestaurantManagerController {
 
 	@RequestMapping(value = "/removeWorker", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> removeWorker(@RequestParam(value = "id") Long id) {
-
 		return restaurantManagerService.removeWorker(id);
+	}
+	
+	@RequestMapping(value = "/registerWorkSchedule", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<WorkSchedule> registerWorkSchedule(@RequestBody @Valid WorkSchedule s, @RequestParam(value = "segment_id",required=false, defaultValue="0") Long s_id, @RequestParam(value = "worker_id") Long w_id, @RequestParam(value = "repl_id", required=false, defaultValue="0") Long r_id) {
+		return restaurantManagerService.registerWorkSchedule(s, w_id, s_id, r_id);
+	}
+	
+	@RequestMapping(value = "/removeWorkSchedule", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String removeWorkSchedule(@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.removeWorkSchedule(id);
 	}
 }

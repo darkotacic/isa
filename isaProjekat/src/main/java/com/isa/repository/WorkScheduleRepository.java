@@ -1,9 +1,12 @@
 package com.isa.repository;
 
+import java.util.Date;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.isa.entity.WorkSchedule;
+import com.isa.entity.users.Worker;
 
 public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long> {
 
@@ -15,5 +18,7 @@ public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long
 	
 	@Query("select ws from Bartender b inner join b.workSchedules as ws")
 	public Iterable<WorkSchedule> getWorkScheduleForBartenders();
+	
+	WorkSchedule findByWorkerAndDateAndStartTime(Worker w,Date d, double t);
 	
 }

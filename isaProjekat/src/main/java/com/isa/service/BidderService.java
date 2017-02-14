@@ -14,6 +14,8 @@ public interface BidderService {
 	ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, Long b_id);
 
 	ResponseEntity<BidderOffer> updateBidderOffer(BidderOffer bo);
+
+	String deleteBidderOffer(Long bidder_id);
 	
 	
 }

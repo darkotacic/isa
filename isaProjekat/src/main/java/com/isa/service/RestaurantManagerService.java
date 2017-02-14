@@ -6,6 +6,7 @@ import com.isa.entity.Product;
 import com.isa.entity.Restaurant;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
+import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Bartender;
 import com.isa.entity.users.Cook;
 import com.isa.entity.users.Waiter;
@@ -25,6 +26,8 @@ public interface RestaurantManagerService {
 	ResponseEntity<Cook> registerCook(Cook c);
 	ResponseEntity<Bartender> registerBartender(Bartender w);
 	ResponseEntity<Waiter> registerWaiter(Waiter w);
+	ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id, Long replacement_id);
+	String removeWorkSchedule(Long id);
 	
 	
 }

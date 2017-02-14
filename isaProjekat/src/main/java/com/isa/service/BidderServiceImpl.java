@@ -63,4 +63,10 @@ public class BidderServiceImpl implements BidderService {
 		return new ResponseEntity<BidderOffer>(this.bidderOfferRepository.save(temp), HttpStatus.OK);
 	}
 
+	@Override
+	public String deleteBidderOffer(Long bidder_id) {
+		this.bidderOfferRepository.delete(bidder_id);
+		return "deleted";
+	}
+
 }

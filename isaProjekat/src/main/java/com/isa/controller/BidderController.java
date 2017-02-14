@@ -27,7 +27,7 @@ public class BidderController {
 		return bidderService.updateProfile(b);
 	}
 	
-	@RequestMapping(value = "/getBiddings", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getBiddingsForBidder", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<BidderOffer> getBiddings(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.getAllBiddingsForThisBidder(bidder_id);
 	}
@@ -40,5 +40,10 @@ public class BidderController {
 	@RequestMapping(value = "/updateBid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BidderOffer> UpdateBid(@RequestBody @Valid BidderOffer bo) {
 		return bidderService.updateBidderOffer(bo);
+	}
+	
+	@RequestMapping(value = "/deleleBid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String DeleteBid(@RequestParam(value = "id") Long bidder_id) {
+		return bidderService.deleteBidderOffer(bidder_id);
 	}
 }

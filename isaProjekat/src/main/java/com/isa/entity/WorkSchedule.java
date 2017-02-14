@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
@@ -20,7 +21,8 @@ import javax.validation.constraints.NotNull;
 import com.isa.entity.users.Worker;
 
 @Entity
-@Table(name = "WORK_SCHEDULE")
+@Table(name = "WORK_SCHEDULE", uniqueConstraints = { @UniqueConstraint(columnNames = 
+{ "WORKER_USER_ID", "WORK_SCH_DATE"})})
 public class WorkSchedule implements Serializable {
 
 	private static final long serialVersionUID = -5309553359477225086L;

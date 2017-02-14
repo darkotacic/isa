@@ -13,6 +13,7 @@ import com.isa.entity.Product;
 import com.isa.entity.Restaurant;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
+import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Bartender;
 import com.isa.entity.users.Cook;
 import com.isa.entity.users.UserRole;
@@ -26,6 +27,7 @@ import com.isa.repository.RestaurantTableRepository;
 import com.isa.repository.SegmentRepository;
 import com.isa.repository.UserRepository;
 import com.isa.repository.WaiterRepository;
+import com.isa.repository.WorkScheduleRepository;
 import com.isa.repository.WorkerRepository;
 
 @Service
@@ -58,6 +60,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Autowired
 	private WorkerRepository workerRepository;
+
+	@Autowired
+	private WorkScheduleRepository workScheduleRepository;
 
 	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
@@ -153,7 +158,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		return new ResponseEntity<Bartender>(this.bartenderRepository.save(w), HttpStatus.CREATED);
 	}
-	
+
 	@Override
 	public ResponseEntity<Waiter> registerWaiter(Waiter w) {
 		if (this.userRepository.findByEmail(w.getEmail()) != null)
@@ -171,6 +176,33 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		else
 			this.bartenderRepository.delete(id);
 		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
+	}
+
+	@Override
+	public ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id,
+			Long replacement_id) {
+		Worker u = this.workerRepository.findOne(worker_id);
+		if (u.getUserRole().equals(UserRole.WAITER)) {
+			if(segment_id == 0) 
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			Segment s = this.segmentRepository.findOne(segment_id);
+			System.out.println();
+			if (replacement_id != 0) {
+				Worker r = this.workerRepository.findOne(replacement_id);
+				if (this.workScheduleRepository.findByWorkerAndDateAndStartTime(r, w.getDate(), w.getEndTime()) == null) 
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				w.setReplacement(r);
+			}
+			w.setSegment(s);
+		}
+		w.setWorker(u);
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(w), HttpStatus.CREATED);
+	}
+
+	@Override
+	public String removeWorkSchedule(Long id) {
+		this.workScheduleRepository.delete(id);
+		return "Izbrisan";
 	}
 
 }
