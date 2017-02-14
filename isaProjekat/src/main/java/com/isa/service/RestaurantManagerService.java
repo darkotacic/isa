@@ -6,6 +6,9 @@ import com.isa.entity.Product;
 import com.isa.entity.Restaurant;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
+import com.isa.entity.users.Bartender;
+import com.isa.entity.users.Cook;
+import com.isa.entity.users.Waiter;
 
 public interface RestaurantManagerService {
 
@@ -18,6 +21,10 @@ public interface RestaurantManagerService {
 	ResponseEntity<String> removeRestaurantTable(Long t);
 	ResponseEntity<RestaurantTable> updateRestaurantTable(RestaurantTable t);
 	ResponseEntity<Segment> updateSegment(Segment s);
+	ResponseEntity<String> removeWorker(Long id);
+	ResponseEntity<Cook> registerCook(Cook c);
+	ResponseEntity<Bartender> registerBartender(Bartender w);
+	ResponseEntity<Waiter> registerWaiter(Waiter w);
 	
 	
 }

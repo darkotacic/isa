@@ -13,14 +13,27 @@ import com.isa.entity.Product;
 import com.isa.entity.Restaurant;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
+import com.isa.entity.users.Bartender;
+import com.isa.entity.users.Cook;
+import com.isa.entity.users.UserRole;
+import com.isa.entity.users.Waiter;
+import com.isa.entity.users.Worker;
+import com.isa.repository.BartenderRepository;
+import com.isa.repository.CookRepository;
 import com.isa.repository.ProductRepository;
 import com.isa.repository.RestaurantRepository;
 import com.isa.repository.RestaurantTableRepository;
 import com.isa.repository.SegmentRepository;
+import com.isa.repository.UserRepository;
+import com.isa.repository.WaiterRepository;
+import com.isa.repository.WorkerRepository;
 
 @Service
 @Transactional
 public class RestaurantManagerServiceImpl implements RestaurantManagerService {
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private RestaurantRepository restaurantRepository;
@@ -34,9 +47,18 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Autowired
 	private RestaurantTableRepository restaurantTableRepository;
 
-/*	@Autowired
-	private OrderRepository orderRepository;
-*/
+	@Autowired
+	private CookRepository cookRepository;
+
+	@Autowired
+	private BartenderRepository bartenderRepository;
+
+	@Autowired
+	private WaiterRepository waiterRepository;
+
+	@Autowired
+	private WorkerRepository workerRepository;
+
 	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
 		Restaurant temp = this.restaurantRepository.findOne(r.getId());
@@ -115,6 +137,40 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Override
 	public ResponseEntity<Segment> updateSegment(Segment s) {
 		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.ACCEPTED);
+	}
+
+	@Override
+	public ResponseEntity<Cook> registerCook(Cook c) {
+		c.setUserRole(UserRole.COOK);
+		if (this.userRepository.findByEmail(c.getEmail()) != null)
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		return new ResponseEntity<Cook>(this.cookRepository.save(c), HttpStatus.CREATED);
+	}
+
+	@Override
+	public ResponseEntity<Bartender> registerBartender(Bartender w) {
+		if (this.userRepository.findByEmail(w.getEmail()) != null)
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		return new ResponseEntity<Bartender>(this.bartenderRepository.save(w), HttpStatus.CREATED);
+	}
+	
+	@Override
+	public ResponseEntity<Waiter> registerWaiter(Waiter w) {
+		if (this.userRepository.findByEmail(w.getEmail()) != null)
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		return new ResponseEntity<Waiter>(this.waiterRepository.save(w), HttpStatus.CREATED);
+	}
+
+	@Override
+	public ResponseEntity<String> removeWorker(Long id) {
+		Worker w = this.workerRepository.findOne(id);
+		if (w.getUserRole().equals(UserRole.COOK))
+			this.cookRepository.delete(id);
+		else if (w.getUserRole().equals(UserRole.WAITER))
+			this.waiterRepository.delete(id);
+		else
+			this.bartenderRepository.delete(id);
+		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
 	}
 
 }

@@ -60,7 +60,7 @@ public class Product implements Serializable {
 	@JsonIgnore
 	private Set<Restaurant> restaurants;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "products")
+	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE }, mappedBy = "products")
 	@JsonIgnore
 	private Set<RequestOffer> requestOffers;
 

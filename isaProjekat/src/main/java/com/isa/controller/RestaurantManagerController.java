@@ -15,6 +15,9 @@ import com.isa.entity.Product;
 import com.isa.entity.Restaurant;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
+import com.isa.entity.users.Bartender;
+import com.isa.entity.users.Cook;
+import com.isa.entity.users.Waiter;
 import com.isa.service.RestaurantManagerService;
 
 @RestController
@@ -60,5 +63,25 @@ public class RestaurantManagerController {
 	@RequestMapping(value = "/updateSegment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Segment> updateSegment(@RequestBody @Valid Segment s) {
 		return restaurantManagerService.updateSegment(s);
+	}
+	@RequestMapping(value = "/registerCook", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cook> updateSegment(@RequestBody @Valid Cook s) {
+		return restaurantManagerService.registerCook(s);
+	}
+
+	@RequestMapping(value = "/registerWaiter", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Waiter> registerWaiter(@RequestBody @Valid Waiter s) {
+		return restaurantManagerService.registerWaiter(s);
+	}
+	
+	@RequestMapping(value = "/registerBartender", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Bartender> registerBartender(@RequestBody @Valid Bartender s) {
+		return restaurantManagerService.registerBartender(s);
+	}
+
+	@RequestMapping(value = "/removeWorker", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> removeWorker(@RequestParam(value = "id") Long id) {
+
+		return restaurantManagerService.removeWorker(id);
 	}
 }

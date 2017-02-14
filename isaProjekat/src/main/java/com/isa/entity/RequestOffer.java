@@ -39,7 +39,7 @@ public class RequestOffer implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinTable(name = "OFFERED_PRODUCTS", joinColumns = @JoinColumn(name = "RO_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PR_ID", referencedColumnName = "PR_ID"))
 	@JsonIgnore
 	private Set<Product> products;
