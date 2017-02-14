@@ -103,7 +103,7 @@ public class WaiterController {
 	
 	@RequestMapping(
 			value = "/getTablesForSegment/{id}",
-			method = RequestMethod.PUT,
+			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional

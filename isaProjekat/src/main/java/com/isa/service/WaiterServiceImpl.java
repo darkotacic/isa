@@ -10,6 +10,7 @@ import com.isa.entity.Segment;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Waiter;
 import com.isa.repository.OrderRepository;
+import com.isa.repository.RestaurantTableRepository;
 import com.isa.repository.SegmentRepository;
 import com.isa.repository.WaiterRepository;
 import com.isa.repository.WorkScheduleRepository;
@@ -30,9 +31,12 @@ public class WaiterServiceImpl implements WaiterService {
 	@Autowired
 	private SegmentRepository segmentRepository;
 	
+	@Autowired
+	private RestaurantTableRepository restaurantTableRepository;
+	
 	@Override
 	public Iterable<WorkSchedule> getWorkScheduleForWaiters(){
-		return workScheduleRepository.findAll();
+		return workScheduleRepository.getWorkScheduleForWaiters();
 	}
 	
 	@Override
@@ -67,7 +71,8 @@ public class WaiterServiceImpl implements WaiterService {
 	
 	@Override
 	public Iterable<RestaurantTable> getAllTablesForSegment(Long segmentId) {
-		return segmentRepository.tables(segmentId);
+		Segment segment=segmentRepository.findOne(segmentId);
+		return restaurantTableRepository.findBySegment(segment);
 	}
-		
+
 }

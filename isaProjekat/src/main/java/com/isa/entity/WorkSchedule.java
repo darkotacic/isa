@@ -30,6 +30,8 @@ public class WorkSchedule implements Serializable {
 	@GeneratedValue
 	private Long id;
 
+	@ManyToOne
+	private Worker worker;
 
 	@Temporal(TemporalType.DATE)
 	@NotNull
@@ -56,9 +58,6 @@ public class WorkSchedule implements Serializable {
 
 	@ManyToOne
 	private Worker replacement;
-	
-	@ManyToOne
-	private Worker worker;
 
 	public WorkSchedule() {
 	}

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -37,6 +39,9 @@ public class OrderItem implements Serializable {
 
 	@ManyToOne
 	private Bartender bartender;
+	
+	@Enumerated(EnumType.STRING)
+	private OrderItemStatus status;
 
 	public OrderItem() {
 	}
@@ -83,6 +88,14 @@ public class OrderItem implements Serializable {
 
 	public int getQuantity() {
 		return quantity;
+	}
+	
+	public OrderItemStatus getOrderItemStatus() {
+		return status;
+	}
+	
+	public void setOrderItemStatus(OrderItemStatus status) {
+		this.status = status;
 	}
 
 }

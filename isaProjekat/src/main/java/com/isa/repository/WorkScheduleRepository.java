@@ -7,7 +7,13 @@ import com.isa.entity.WorkSchedule;
 
 public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long> {
 
-	@Query("from Waiter w left join w.workSchedules")
+	@Query("select ws from Waiter w inner join w.workSchedules as ws")
 	public Iterable<WorkSchedule> getWorkScheduleForWaiters();
+	
+	@Query("select ws from Cook c inner join c.workSchedules as ws")
+	public Iterable<WorkSchedule> getWorkScheduleForCooks();
+	
+	@Query("select ws from Bartender b inner join b.workSchedules as ws")
+	public Iterable<WorkSchedule> getWorkScheduleForBartenders();
 	
 }
