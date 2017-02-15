@@ -1,6 +1,7 @@
 package com.isa.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -31,11 +32,11 @@ public class Segment implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "segment", orphanRemoval = true)
 	@JsonIgnore
-	private Set<RestaurantTable> tables;
+	private Set<RestaurantTable> tables = new HashSet<RestaurantTable>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "segment", orphanRemoval = true)
 	@JsonIgnore
-	private Set<WorkSchedule> schedules;
+	private Set<WorkSchedule> schedules = new HashSet<WorkSchedule>();
 
 	@ManyToOne
 	private Restaurant restaurant;

@@ -1,5 +1,6 @@
 package com.isa.entity.users;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -24,7 +25,7 @@ public class Bidder extends User {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bidder", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<BidderOffer> bidderOffers;
+	private Set<BidderOffer> bidderOffers = new HashSet<BidderOffer>();
 
 	@Column(name = "FIRST_LOGIN", columnDefinition = "boolean default true", insertable = true)
 	private boolean firstLogIn;

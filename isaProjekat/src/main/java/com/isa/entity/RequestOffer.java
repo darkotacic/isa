@@ -2,6 +2,7 @@ package com.isa.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -42,7 +43,7 @@ public class RequestOffer implements Serializable {
 	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinTable(name = "OFFERED_PRODUCTS", joinColumns = @JoinColumn(name = "RO_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PR_ID", referencedColumnName = "PR_ID"))
 	@JsonIgnore
-	private Set<Product> products;
+	private Set<Product> products = new HashSet<Product>();
 
 	@Column(name = "STATUS", columnDefinition = "boolean default true", insertable = true)
 	private boolean status;
@@ -55,12 +56,13 @@ public class RequestOffer implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Future
+	@NotNull
 	@Column(name = "EXPIRATION_DATE", unique = false, nullable = false)
 	private Date expirationDate;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "requestOffer", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<BidderOffer> bidderOffers;
+	private Set<BidderOffer> bidderOffers = new HashSet<BidderOffer>();
 
 	@ManyToOne
 	private RestaurantManager restaurantManager;

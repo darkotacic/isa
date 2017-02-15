@@ -1,5 +1,6 @@
 package com.isa.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -30,7 +31,7 @@ public class RestaurantTable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "table", orphanRemoval = true)
 	@JsonIgnore
-	private Set<Order> orders;
+	private Set<Order> orders = new HashSet<Order>();
 
 	@Min(1)
 	@Max(20)

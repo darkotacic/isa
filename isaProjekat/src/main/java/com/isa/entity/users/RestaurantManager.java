@@ -1,6 +1,7 @@
 package com.isa.entity.users;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -26,7 +27,7 @@ public class RestaurantManager extends User implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurantManager", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<RequestOffer> requestOffers;
+	private Set<RequestOffer> requestOffers = new HashSet<RequestOffer>();
 
 	public RestaurantManager() {
 

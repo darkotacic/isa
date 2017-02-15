@@ -1,6 +1,7 @@
 package com.isa.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -58,15 +59,15 @@ public class Product implements Serializable {
 	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE })
 	@JoinTable(name = "RESTAURANT_PRODUCTS", joinColumns = @JoinColumn(name = "PR_ID", referencedColumnName = "PR_ID"), inverseJoinColumns = @JoinColumn(name = "RES_ID", referencedColumnName = "RES_ID"))
 	@JsonIgnore
-	private Set<Restaurant> restaurants;
+	private Set<Restaurant> restaurants = new HashSet<Restaurant>();
 
 	@ManyToMany(cascade = { CascadeType.REMOVE, CascadeType.MERGE }, mappedBy = "products")
 	@JsonIgnore
-	private Set<RequestOffer> requestOffers;
+	private Set<RequestOffer> requestOffers = new HashSet<RequestOffer>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
 	@JsonIgnore
-	private Set<OrderItem> item;
+	private Set<OrderItem> item = new HashSet<OrderItem>();
 
 	public Product() {
 

@@ -15,11 +15,15 @@ insert into bidder(user_id) values(11);
 insert into bidder(user_id) values(12);
 
 
-insert into worker(user_id,wrk_shirt,wrk_shoe) values(3,'S',4);
-insert into worker(user_id,wrk_shirt,wrk_shoe) values(4,'L',5);
-insert into worker(user_id,wrk_shirt,wrk_shoe) values(5,'XL',6);
-insert into worker(user_id,wrk_shirt,wrk_shoe) values(6,'XXL',7);
-insert into worker(user_id,wrk_shirt,wrk_shoe) values(8,'3XL',8);
+insert into restaurant(res_id, res_desc, res_name) values(1,'Kineski restoran','Dva stapica');
+insert into restaurant(res_id, res_desc, res_name) values(2,'Restoran domace kuhinje','Kod cice');
+
+
+insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(3,'S',4,1);
+insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(4,'L',5,1);
+insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(5,'XL',6, 2);
+insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(6,'XXL',7,2);
+insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(8,'3XL',8,1);
 
 insert into guest (user_id) values (1);
 insert into guest (user_id) values (2);
@@ -29,9 +33,6 @@ insert into cook (user_id,cook_type) values (5,'SALAT');
 insert into cook (user_id,cook_type) values (6,'FRIED');
 insert into system_manager (user_id) values (7);
 insert into bartender (user_id) values (8);
-
-insert into restaurant(res_id, res_desc, res_name) values(1,'Kineski restoran','Dva stapica');
-insert into restaurant(res_id, res_desc, res_name) values(2,'Restoran domace kuhinje','Kod cice');
 
 insert into restaurant_manager (user_id,restaurant_res_id) values (9,1);
 insert into restaurant_manager (user_id,restaurant_res_id) values (10,1);

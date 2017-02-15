@@ -22,7 +22,7 @@ public class BidderController {
 	@Autowired
 	private BidderService bidderService;
 	
-	@RequestMapping(value = "/updateBidder", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateBidder", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Bidder> registerRestaurant(@RequestBody @Valid Bidder b) {
 		return bidderService.updateProfile(b);
 	}
@@ -37,12 +37,12 @@ public class BidderController {
 		return bidderService.registerBidderOffer(bo, ro_id, b_id);
 	}
 	
-	@RequestMapping(value = "/updateBid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateBid", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BidderOffer> UpdateBid(@RequestBody @Valid BidderOffer bo) {
 		return bidderService.updateBidderOffer(bo);
 	}
 	
-	@RequestMapping(value = "/deleleBid", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/deleleBid", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String DeleteBid(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.deleteBidderOffer(bidder_id);
 	}

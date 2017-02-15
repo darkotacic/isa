@@ -1,5 +1,6 @@
 package com.isa.entity.users;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -25,7 +26,7 @@ public class Cook extends Worker {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cook", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<OrderItem> orderedFood;
+	private Set<OrderItem> orderedFood = new HashSet<OrderItem>();
 
 	public Cook() {
 

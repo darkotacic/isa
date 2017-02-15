@@ -1,6 +1,7 @@
 package com.isa.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -19,6 +20,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.users.RestaurantManager;
+import com.isa.entity.users.Worker;
 
 @Entity
 @Table(name = "RESTAURANT")
@@ -45,19 +47,23 @@ public class Restaurant implements Serializable {
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "restaurants", cascade = { CascadeType.REMOVE, CascadeType.MERGE })
 	@JsonIgnore
-	private Set<Product> menu;
+	private Set<Product> menu = new HashSet<Product>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<Segment> segments;
+	private Set<Segment> segments = new HashSet<Segment>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<Grade> grades;
+	private Set<Grade> grades = new HashSet<Grade>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<RestaurantManager> restaurantManagers;
+	private Set<RestaurantManager> restaurantManagers = new HashSet<RestaurantManager>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private Set<Worker> workers = new HashSet<Worker>();
 
 	public Restaurant() {
 
@@ -109,6 +115,14 @@ public class Restaurant implements Serializable {
 	@JsonProperty
 	public void setGrades(Set<Grade> grades) {
 		this.grades = grades;
+	}
+	@JsonIgnore
+	public Set<Worker> getWorkers() {
+		return workers;
+	}
+	@JsonProperty
+	public void setWorkers(Set<Worker> workers) {
+		this.workers = workers;
 	}
 
 	public Long getId() {

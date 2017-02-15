@@ -1,6 +1,7 @@
 package com.isa.entity.users;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,11 +9,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.isa.entity.Restaurant;
 import com.isa.entity.WorkSchedule;
 
 @Entity
@@ -30,11 +33,14 @@ public class Worker extends User {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "worker", orphanRemoval = true)
 	@JsonIgnore
-	protected Set<WorkSchedule> workSchedules;
+	protected Set<WorkSchedule> workSchedules = new HashSet<WorkSchedule>();
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "replacement", orphanRemoval = true)
 	@JsonIgnore
-	protected Set<WorkSchedule> replacements;
+	protected Set<WorkSchedule> replacements = new HashSet<WorkSchedule>();
+	
+	@ManyToOne
+	protected Restaurant restaurant;
 
 	public Worker() {
 
@@ -78,4 +84,13 @@ public class Worker extends User {
 	public Set<WorkSchedule> getWorkSchedules() {
 		return workSchedules;
 	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+	
 }

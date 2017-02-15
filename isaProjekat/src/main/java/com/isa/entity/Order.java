@@ -2,6 +2,7 @@ package com.isa.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -43,7 +44,7 @@ public class Order implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private Set<OrderItem> orderedItems;
+	private Set<OrderItem> orderedItems = new HashSet<OrderItem>();
 
 	public Order() {
 	}

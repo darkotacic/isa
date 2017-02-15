@@ -38,7 +38,7 @@ public class SystemManagerController {
 		return systemManagerService.registerRestaurant(r);
 	}
 	
-	@RequestMapping(value = "/deleteRestaurant", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/deleteRestaurant", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> deleteRestaurant(@RequestParam(value="id") Long r_id) {
 		return systemManagerService.removeRestaurant(r_id);
 	}
