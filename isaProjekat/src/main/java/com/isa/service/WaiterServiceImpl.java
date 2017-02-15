@@ -5,11 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.entity.Order;
+import com.isa.entity.OrderItem;
+import com.isa.entity.Product;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Waiter;
+import com.isa.repository.OrderItemRepository;
 import com.isa.repository.OrderRepository;
+import com.isa.repository.ProductRepository;
 import com.isa.repository.RestaurantTableRepository;
 import com.isa.repository.SegmentRepository;
 import com.isa.repository.WaiterRepository;
@@ -33,6 +37,12 @@ public class WaiterServiceImpl implements WaiterService {
 	
 	@Autowired
 	private RestaurantTableRepository restaurantTableRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	@Override
 	public Iterable<WorkSchedule> getWorkScheduleForWaiters(){
@@ -73,6 +83,31 @@ public class WaiterServiceImpl implements WaiterService {
 	public Iterable<RestaurantTable> getAllTablesForSegment(Long segmentId) {
 		Segment segment=segmentRepository.findOne(segmentId);
 		return restaurantTableRepository.findBySegment(segment);
+	}
+
+	@Override
+	public RestaurantTable getTable(Long id) {
+		return restaurantTableRepository.findOne(id);
+	}
+
+	@Override
+	public Product getProduct(Long id) {
+		return productRepository.findOne(id);
+	}
+
+	@Override
+	public OrderItem addOrderItem(OrderItem oi) {
+		return orderItemRepository.save(oi);
+	}
+
+	@Override
+	public void deleteOrderItem(Long id) {
+		orderItemRepository.delete(id);
+	}
+
+	@Override
+	public Iterable<OrderItem> getOrderItemsForOrder(Order order) {
+		return orderItemRepository.findByOrder(order);
 	}
 
 }
