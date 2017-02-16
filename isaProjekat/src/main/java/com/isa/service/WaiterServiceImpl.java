@@ -1,5 +1,7 @@
 package com.isa.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Waiter;
+import com.isa.entity.users.Worker;
 import com.isa.repository.OrderItemRepository;
 import com.isa.repository.OrderRepository;
 import com.isa.repository.ProductRepository;
@@ -96,11 +99,6 @@ public class WaiterServiceImpl implements WaiterService {
 	}
 
 	@Override
-	public OrderItem addOrderItem(OrderItem oi) {
-		return orderItemRepository.save(oi);
-	}
-
-	@Override
 	public void deleteOrderItem(Long id) {
 		orderItemRepository.delete(id);
 	}
@@ -108,6 +106,11 @@ public class WaiterServiceImpl implements WaiterService {
 	@Override
 	public Iterable<OrderItem> getOrderItemsForOrder(Order order) {
 		return orderItemRepository.findByOrder(order);
+	}
+
+	@Override
+	public WorkSchedule getWorkSchedule(Worker worker, Date date) {
+		return workScheduleRepository.getWorkSchedule(worker,date);
 	}
 
 }

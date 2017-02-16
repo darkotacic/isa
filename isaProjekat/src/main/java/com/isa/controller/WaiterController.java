@@ -1,5 +1,8 @@
 package com.isa.controller;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.entity.Order;
 import com.isa.entity.OrderItem;
+import com.isa.entity.OrderItemStatus;
+import com.isa.entity.OrderStatus;
 import com.isa.entity.Product;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
@@ -52,17 +57,25 @@ public class WaiterController {
 	@RequestMapping(
 			value = "/createOrder/{tableId}",
 			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Order> addOrder(@RequestBody Order order,@PathVariable("tableId")Long tableId){
+	public ResponseEntity<Order> addOrder(@PathVariable("tableId")Long tableId){
 		User user=(User) session.getAttribute("user");
 		if(user==null || !user.getUserRole().toString().equals("WAITER"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Date date=new Date();
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(date);
 		RestaurantTable rt=waiterService.getTable(tableId);
+		Order order=new Order();
 		order.setWaiter((Waiter)user);
 		order.setTable(rt);
+		double orderTime=calendar.get(Calendar.HOUR_OF_DAY)+(calendar.get(Calendar.MINUTE)/100.0);
+		order.setTime(orderTime);
+		order.setDate(date);
+		order.setPrice(0);
+		order.setOrderStatus(OrderStatus.NOTPAID);
 		Order o=waiterService.addOrder(order);
 		return new ResponseEntity<Order>(o, HttpStatus.OK);
 	}
@@ -117,7 +130,8 @@ public class WaiterController {
 		orderItem.setOrder(order);
 		Product product=waiterService.getProduct(productId);
 		orderItem.setProduct(product);
-		OrderItem oi=waiterService.addOrderItem(orderItem);
+		orderItem.setOrderItemStatus(OrderItemStatus.ONHOLD);
+		OrderItem oi=workerService.addOrderItem(orderItem);
 		return new ResponseEntity<OrderItem>(oi, HttpStatus.OK);
 	}
 	
@@ -132,7 +146,7 @@ public class WaiterController {
 		OrderItem temp=workerService.getOrderItem(orderItem.getId());
 		orderItem.setOrder(temp.getOrder());
 		orderItem.setProduct(temp.getProduct());
-		OrderItem oi=waiterService.addOrderItem(orderItem);
+		OrderItem oi=workerService.addOrderItem(orderItem);
 		return new ResponseEntity<OrderItem>(oi, HttpStatus.OK);
 	}
 	
@@ -150,24 +164,51 @@ public class WaiterController {
 	}
 	
 	@RequestMapping(
-			value="/makeBill",
+			value="/makeCheck",
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Object> createBill(@RequestBody Order order){
-		//Iterable<OrderItem> orderItems=waiterService.getOrderItemsForOrder(order);
-		return null;
+	public ResponseEntity<Order> createCheck(@RequestBody Order order){
+		Date checkDate=new Date();
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(checkDate);
+		Order o=workerService.getOrder(order.getId());
+		Iterable<OrderItem> orderItems=waiterService.getOrderItemsForOrder(o);
+		int price=0;
+		for(OrderItem oi:orderItems){
+			price+=oi.getProduct().getPrice()*oi.getQuantity();
+		}
+		WorkSchedule worker=waiterService.getWorkSchedule(o.getWaiter(), o.getDate());
+		if(worker==null)
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		double checkTime=calendar.get(Calendar.HOUR_OF_DAY)+(calendar.get(Calendar.MINUTE)/100.0);
+		if(o.getTime()>checkTime)
+			checkTime+=24.0;
+		Waiter replacement=(Waiter) worker.getReplacement();
+		if(checkTime>worker.getEndTime() && replacement!=null){
+			System.out.println("USAO");
+			WorkSchedule repSchedule=waiterService.getWorkSchedule(replacement, worker.getSecondDate());
+			double waiter1Time=repSchedule.getStartTime()-o.getTime();
+			double waiter2Time=checkTime-repSchedule.getStartTime();
+			if(waiter2Time>waiter1Time)
+				o.setWaiter(replacement);
+		}
+		o.setOrderStatus(OrderStatus.PAID);
+		o.setPrice(price);
+		waiterService.addOrder(o);
+		return new ResponseEntity<Order>(o, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
 			value = "/updateInformation",
 			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Waiter> updateInformation(Waiter waiter){
+	public ResponseEntity<Waiter> updateInformation(@RequestBody Waiter waiter){
 		Waiter w=waiterService.updateWaiterInformation(waiter);
 		return new ResponseEntity<Waiter>(w, HttpStatus.OK);
 	}

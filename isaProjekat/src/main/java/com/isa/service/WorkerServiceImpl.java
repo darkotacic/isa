@@ -20,6 +20,11 @@ public class WorkerServiceImpl implements WorkerService {
 	private OrderItemRepository orderItemRepository;
 	
 	@Override
+	public OrderItem addOrderItem(OrderItem oi) {
+		return orderItemRepository.save(oi);
+	}
+	
+	@Override
 	public Order getOrder(Long id) {
 		return orderRepository.findOne(id);
 	}

@@ -9,7 +9,7 @@ import com.isa.entity.Segment;
 
 public interface RestaurantTableRepository extends CrudRepository<RestaurantTable, Long> {
 	
-	Iterable<RestaurantTable> findBySegment(Segment segment);
+	public Iterable<RestaurantTable> findBySegment(Segment segment);
 	@Query("select t from Segment s inner join s.tables as t where s.restaurant = ?1")
 	Iterable<RestaurantTable> getTablesForRestaurant(Restaurant r);
 }
