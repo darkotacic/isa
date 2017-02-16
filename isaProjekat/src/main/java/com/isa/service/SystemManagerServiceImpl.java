@@ -63,4 +63,31 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 		return new ResponseEntity<String>("Oha", HttpStatus.MOVED_PERMANENTLY);
 	}
 
+	@Override
+	public String removeSystemManager(Long r_id) {
+		this.systemManagerRepository.delete(r_id);
+		return "vidjecemo sta nam na frontu treba";
+	}
+
+	@Override
+	public String removeRestaurantManager(Long r_id) {
+		this.restaurantManagerRepository.delete(r_id);
+		return "isto ko gore";
+	}
+
+	@Override
+	public ResponseEntity<Iterable<Restaurant>> getAllRestaurants() {
+		return new ResponseEntity<Iterable<Restaurant>>(this.restaurantRepository.findAll(), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<RestaurantManager>> getRestaurantManagersForRestaurant(Long id) {
+		return new ResponseEntity<Iterable<RestaurantManager>>(this.restaurantManagerRepository.findByRestaurant(this.restaurantRepository.findOne(id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<SystemManager>> getAllSystemManager() {
+		return new ResponseEntity<Iterable<SystemManager>>(this.systemManagerRepository.findAll(), HttpStatus.OK);
+	}
+
 }

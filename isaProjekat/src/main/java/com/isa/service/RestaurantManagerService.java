@@ -2,6 +2,7 @@ package com.isa.service;
 
 import org.springframework.http.ResponseEntity;
 
+import com.isa.entity.BidderOffer;
 import com.isa.entity.Product;
 import com.isa.entity.RequestOffer;
 import com.isa.entity.Restaurant;
@@ -12,6 +13,7 @@ import com.isa.entity.users.Bartender;
 import com.isa.entity.users.Bidder;
 import com.isa.entity.users.Cook;
 import com.isa.entity.users.Waiter;
+import com.isa.entity.users.Worker;
 
 public interface RestaurantManagerService {
 
@@ -34,6 +36,23 @@ public interface RestaurantManagerService {
 	ResponseEntity<RequestOffer> registerRequestOffer(RequestOffer ro, Long r_id, Long[] pro_ids);
 	ResponseEntity<RequestOffer> updateRequestOffer(RequestOffer ro, Long[] pro_add_ids, Long[] pro_rem_ids);
 	String removeRequestOffer(Long ro);
+	ResponseEntity<Iterable<Worker>> getAllWorkersForRestaurant(Long id);
+	ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id);
+	ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForWorker(Long id);
+	ResponseEntity<Iterable<RequestOffer>> getAllRequestOffersForManager(Long id);
+	ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForManagerOffers(Long id);
+	ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForRequestOffer(Long id);
+	ResponseEntity<Iterable<Segment>> getAllSegmentsForRestaurant(Long id);
+	ResponseEntity<Iterable<RestaurantTable>> getAllTablesForRestaurant(Long id);
+	ResponseEntity<Iterable<RestaurantTable>> getAllTablesForSegment(Long id);
+	ResponseEntity<Iterable<Product>> getAllProductsForRestaurant(Long id);
+	ResponseEntity<String> acceptBidderOffer(Long r_id, Long q_id);
+	ResponseEntity<Iterable<WorkSchedule>> getPossableReplacements(Long id);
+	ResponseEntity<Iterable<Product>> getAllProductsForRequestOffer(Long id);
+	ResponseEntity<WorkSchedule> updateWorkSchedule(WorkSchedule w);
+	ResponseEntity<WorkSchedule> updateWorkScheduleSetReplacement(Long s, Long w);
+	ResponseEntity<WorkSchedule> updateWorkScheduleSetSegment(Long s, Long w);
+	ResponseEntity<WorkSchedule> updateWorkScheduleSetWorker(Long s, Long w);
 	
 	
 }

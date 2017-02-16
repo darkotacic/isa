@@ -41,6 +41,14 @@ public class WorkSchedule implements Serializable {
 	@Future
 	private Date date;
 
+	@Column(name = "TWO_DAYS_SHIFT", columnDefinition = "boolean default false", insertable = true)
+	private boolean twoDays;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "WORK_SCH_SECOND_DATE")
+	@Future
+	private Date secondDate;
+	
 	@DecimalMin("00.00")
 	@DecimalMax("24.00")
 	@Digits(integer = 2, fraction = 2)
@@ -115,5 +123,22 @@ public class WorkSchedule implements Serializable {
 	public void setReplacement(Worker shift) {
 		this.replacement = shift;
 	}
+
+	public boolean isTwoDays() {
+		return twoDays;
+	}
+
+	public void setTwoDays(boolean twoDays) {
+		this.twoDays = twoDays;
+	}
+
+	public Date getSecondDate() {
+		return secondDate;
+	}
+
+	public void setSecondDate(Date secondDate) {
+		this.secondDate = secondDate;
+	}
+	
 
 }

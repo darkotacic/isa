@@ -1,12 +1,15 @@
 package com.isa.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.isa.entity.Product;
 
 public interface ProductRepository extends CrudRepository<Product, Long> {
-	Product findOne(Long id);
+
+	@Query("select p from Restaurant r inner join r.menu as p where r.id= ?1")
+	Iterable<Product> getProductsForRestaurant(Long t);
 	
-	@SuppressWarnings("unchecked")
-	Product save(Product p);
+	@Query("select p from RequestOffer ro inner join ro.products as p where ro.id= ?1")
+	Iterable<Product> getProductsForRequestOffer(Long t);
 }

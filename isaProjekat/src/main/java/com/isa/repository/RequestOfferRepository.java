@@ -3,11 +3,10 @@ package com.isa.repository;
 import org.springframework.data.repository.CrudRepository;
 
 import com.isa.entity.RequestOffer;
+import com.isa.entity.users.RestaurantManager;
 
 public interface RequestOfferRepository extends CrudRepository<RequestOffer, Long> {
-
-	@SuppressWarnings("unchecked")
-	RequestOffer save(RequestOffer r);
+	Iterable<RequestOffer> findByStatus(boolean b);
 	
-	RequestOffer findOne(Long id);
+	Iterable<RequestOffer> findByRestaurantManager(RestaurantManager m);
 }

@@ -38,9 +38,9 @@ public class BidderServiceImpl implements BidderService {
 	}
 
 	@Override
-	public Iterable<BidderOffer> getAllBiddingsForThisBidder(Long bidder_id) {
+	public ResponseEntity<Iterable<BidderOffer>> getAllBiddingsForThisBidder(Long bidder_id) {
 		Bidder b = this.bidderRepository.findOne(bidder_id);
-		return bidderOfferRepository.findByBidder(b);
+		return new ResponseEntity<Iterable<BidderOffer>>(bidderOfferRepository.findByBidder(b), HttpStatus.OK);
 	}
 
 	@Override
@@ -67,6 +67,11 @@ public class BidderServiceImpl implements BidderService {
 	public String deleteBidderOffer(Long bidder_id) {
 		this.bidderOfferRepository.delete(bidder_id);
 		return "deleted";
+	}
+
+	@Override
+	public ResponseEntity<Iterable<RequestOffer>> getActiveRequestOffers() {
+		return new ResponseEntity<Iterable<RequestOffer>>(this.requestOfferRepository.findByStatus(true), HttpStatus.OK);
 	}
 
 }

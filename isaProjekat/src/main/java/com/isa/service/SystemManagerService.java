@@ -15,6 +15,16 @@ public interface SystemManagerService {
 	
 	ResponseEntity<String> removeRestaurant(Long r_id);
 
+	String removeSystemManager(Long r_id);
+
+	String removeRestaurantManager(Long r_id);
+
+	ResponseEntity<Iterable<Restaurant>> getAllRestaurants();
+
+	ResponseEntity<Iterable<RestaurantManager>> getRestaurantManagersForRestaurant(Long id);
+
+	ResponseEntity<Iterable<SystemManager>> getAllSystemManager();
+
 	
 	
 

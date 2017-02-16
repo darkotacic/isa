@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.isa.entity.BidderOffer;
+import com.isa.entity.BidderOfferStatus;
 import com.isa.entity.Product;
 import com.isa.entity.RequestOffer;
 import com.isa.entity.Restaurant;
@@ -25,6 +27,7 @@ import com.isa.entity.users.UserRole;
 import com.isa.entity.users.Waiter;
 import com.isa.entity.users.Worker;
 import com.isa.repository.BartenderRepository;
+import com.isa.repository.BidderOfferRepository;
 import com.isa.repository.BidderRepository;
 import com.isa.repository.CookRepository;
 import com.isa.repository.ProductRepository;
@@ -80,6 +83,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Autowired
 	private RequestOfferRepository requestOfferRepository;
+
+	@Autowired
+	private BidderOfferRepository bidderOfferRepository;
 
 	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
@@ -179,46 +185,79 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<String> removeWorker(Long id) {
-		Worker w = this.workerRepository.findOne(id);
-		if (w.getUserRole().equals(UserRole.COOK))
-			this.cookRepository.delete(id);
-		else if (w.getUserRole().equals(UserRole.WAITER))
-			this.waiterRepository.delete(id);
-		else
-			this.bartenderRepository.delete(id);
+		this.workerRepository.delete(id);
 		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
 	}
 
 	@Override
 	public ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id,
 			Long replacement_id) {
-		if (w.getEndTime() < 10.00 && w.getStartTime() > 18.00) {
+		if (w.isTwoDays()) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(w.getDate());
 			cal.add(Calendar.DATE, 1);
 			Date nextDay = cal.getTime();
-			w.setDate(nextDay);
-		}
-
-		else if (w.getStartTime() > w.getEndTime())
+			w.setSecondDate(nextDay);
+		} else if (w.getStartTime() > w.getEndTime())
 			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
 		Worker u = this.workerRepository.findOne(worker_id);
 		if (u.getUserRole().equals(UserRole.WAITER)) {
 			if (segment_id == 0 || this.segmentRepository.findByRestaurantAndId(u.getRestaurant(), segment_id) == null)
 				return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 			Segment s = this.segmentRepository.findOne(segment_id);
-			System.out.println();
 			if (replacement_id != 0) {
 				Worker r = this.workerRepository.findOne(replacement_id);
-				if (this.workScheduleRepository.findByWorkerAndDateAndStartTime(r, w.getDate(), w.getEndTime()) == null
-						|| !u.getRestaurant().equals(r.getRestaurant()))
-					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				if (w.isTwoDays())
+					if (this.workScheduleRepository.findByWorkerAndDateAndStartTime(r, w.getSecondDate(),
+							w.getEndTime()) == null || !u.getRestaurant().equals(r.getRestaurant()))
+						return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+					else if (this.workScheduleRepository.findByWorkerAndDateAndStartTime(r, w.getDate(),
+							w.getEndTime()) == null || !u.getRestaurant().equals(r.getRestaurant()))
+						return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				w.setReplacement(r);
 			}
 			w.setSegment(s);
 		}
 		w.setWorker(u);
 		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(w), HttpStatus.CREATED);
+	}
+
+	@Override
+	public ResponseEntity<WorkSchedule> updateWorkSchedule(WorkSchedule w) {
+		WorkSchedule temp = this.workScheduleRepository.findOne(w.getId());
+		temp.setDate(w.getDate());
+		if (w.isTwoDays() && !temp.isTwoDays()) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(w.getDate());
+			cal.add(Calendar.DATE, 1);
+			Date nextDay = cal.getTime();
+			temp.setSecondDate(nextDay);
+			temp.setTwoDays(true);
+		}
+		temp.setEndTime(w.getEndTime());
+		temp.setStartTime(w.getStartTime());
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(temp), HttpStatus.CREATED);
+	}
+
+	@Override
+	public ResponseEntity<WorkSchedule> updateWorkScheduleSetReplacement(Long s, Long w) {
+		WorkSchedule ws = this.workScheduleRepository.findOne(w);
+		ws.setReplacement(this.waiterRepository.findOne(s));
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.ACCEPTED);
+	}
+
+	@Override
+	public ResponseEntity<WorkSchedule> updateWorkScheduleSetSegment(Long s, Long w) {
+		WorkSchedule ws = this.workScheduleRepository.findOne(w);
+		ws.setSegment(this.segmentRepository.findOne(s));
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.ACCEPTED);
+	}
+
+	@Override
+	public ResponseEntity<WorkSchedule> updateWorkScheduleSetWorker(Long s, Long w) {
+		WorkSchedule ws = this.workScheduleRepository.findOne(w);
+		ws.setWorker(this.workerRepository.findOne(s));
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.ACCEPTED);
 	}
 
 	@Override
@@ -277,6 +316,103 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	public String removeRequestOffer(Long ro) {
 		this.requestOfferRepository.delete(ro);
 		return "nes";
+	}
+
+	@Override
+	public ResponseEntity<Iterable<Worker>> getAllWorkersForRestaurant(Long id) {
+		return new ResponseEntity<Iterable<Worker>>(
+				this.workerRepository.findByRestaurant(this.restaurantRepository.findOne(id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id) {
+		return new ResponseEntity<Iterable<WorkSchedule>>(
+				this.workScheduleRepository.getWorkScheduleForRestaurant(this.restaurantRepository.findOne(id)),
+				HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForWorker(Long id) {
+		return new ResponseEntity<Iterable<WorkSchedule>>(
+				this.workScheduleRepository.findByWorker(this.workerRepository.findOne(id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<RequestOffer>> getAllRequestOffersForManager(Long id) {
+		return new ResponseEntity<Iterable<RequestOffer>>(
+				this.requestOfferRepository.findByRestaurantManager(this.restaurantManagerRepository.findOne(id)),
+				HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForManagerOffers(Long id) {
+		return new ResponseEntity<Iterable<BidderOffer>>(
+				this.bidderOfferRepository.getBidderOffersForManager(this.restaurantManagerRepository.findOne(id)),
+				HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForRequestOffer(Long id) {
+		return new ResponseEntity<Iterable<BidderOffer>>(
+				this.bidderOfferRepository.findByRequestOffer(this.requestOfferRepository.findOne(id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<Segment>> getAllSegmentsForRestaurant(Long id) {
+		return new ResponseEntity<Iterable<Segment>>(
+				this.segmentRepository.findByRestaurant(this.restaurantRepository.findOne(id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<RestaurantTable>> getAllTablesForRestaurant(Long id) {
+		return new ResponseEntity<Iterable<RestaurantTable>>(
+				this.restaurantTableRepository.getTablesForRestaurant(this.restaurantRepository.findOne(id)),
+				HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<RestaurantTable>> getAllTablesForSegment(Long id) {
+		return new ResponseEntity<Iterable<RestaurantTable>>(
+				this.restaurantTableRepository.findBySegment(this.segmentRepository.findOne(id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<Product>> getAllProductsForRestaurant(Long id) {
+		return new ResponseEntity<Iterable<Product>>(this.productRepository.getProductsForRestaurant(id),
+				HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<String> acceptBidderOffer(Long r_id, Long q_id) {
+		RequestOffer ro = this.requestOfferRepository.findOne(q_id);
+		ro.setStatus(false);
+		Iterable<BidderOffer> ibo = this.bidderOfferRepository.findByRequestOffer(ro);
+		while (ibo.iterator().hasNext()) {
+			if (!ibo.iterator().next().getId().equals(r_id))
+				ibo.iterator().next().setOfferStatus(BidderOfferStatus.DECLINED);
+			else
+				ibo.iterator().next().setOfferStatus(BidderOfferStatus.ACCEPTED);
+		}
+		this.bidderOfferRepository.save(ibo);
+		return new ResponseEntity<String>("Buh", HttpStatus.ACCEPTED);
+	}
+
+	@Override
+	public ResponseEntity<Iterable<WorkSchedule>> getPossableReplacements(Long id) {
+		WorkSchedule w = this.workScheduleRepository.findOne(id);
+		if (!w.isTwoDays())
+			return new ResponseEntity<Iterable<WorkSchedule>>(this.workScheduleRepository
+					.getReplacements(w.getWorker().getRestaurant(), w.getEndTime(), w.getDate()), HttpStatus.OK);
+		else
+			return new ResponseEntity<Iterable<WorkSchedule>>(this.workScheduleRepository
+					.getReplacements(w.getWorker().getRestaurant(), w.getEndTime(), w.getSecondDate()), HttpStatus.OK);
+
+	}
+
+	@Override
+	public ResponseEntity<Iterable<Product>> getAllProductsForRequestOffer(Long id) {
+		return new ResponseEntity<Iterable<Product>>(this.productRepository.getProductsForRequestOffer(id),
+				HttpStatus.OK);
 	}
 
 }

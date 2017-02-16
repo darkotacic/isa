@@ -23,6 +23,21 @@ public class SystemManagerController {
 	@Autowired 
 	private SystemManagerService systemManagerService;
 	
+	@RequestMapping(value = "/getAllRestaurants", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Iterable<Restaurant>> getAllRestaurants() {
+		return systemManagerService.getAllRestaurants();
+	}
+	
+	@RequestMapping(value = "/getRestaurantManagersForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Iterable<RestaurantManager>> getRestaurantManagersForRestaurant(@RequestParam(value="id") Long id) {
+		return systemManagerService.getRestaurantManagersForRestaurant(id);
+	}
+	
+	@RequestMapping(value = "/getAllSystemManager", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Iterable<SystemManager>> getAllSystemManager() {
+		return systemManagerService.getAllSystemManager();
+	}
+	
 	@RequestMapping(value = "/registerRestaurantManager", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RestaurantManager> register(@RequestBody @Valid RestaurantManager sm, @RequestParam(value="id") Long id) {
 		return systemManagerService.registerRestaurantManager(sm, id);
@@ -42,5 +57,12 @@ public class SystemManagerController {
 	public ResponseEntity<String> deleteRestaurant(@RequestParam(value="id") Long r_id) {
 		return systemManagerService.removeRestaurant(r_id);
 	}
-	
+	@RequestMapping(value = "/deleteSystemManager", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deleteSystemManager(@RequestParam(value="id") Long r_id) {
+		return systemManagerService.removeSystemManager(r_id);
+	}
+	@RequestMapping(value = "/deleteRestaurantManager", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deleteRestaurantManager(@RequestParam(value="id") Long r_id) {
+		return systemManagerService.removeRestaurantManager(r_id);
+	}
 }

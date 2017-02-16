@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.entity.BidderOffer;
+import com.isa.entity.RequestOffer;
 import com.isa.entity.users.Bidder;
 import com.isa.service.BidderService;
 
@@ -28,7 +29,12 @@ public class BidderController {
 	}
 	
 	@RequestMapping(value = "/getBiddingsForBidder", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Iterable<BidderOffer> getBiddings(@RequestParam(value = "id") Long bidder_id) {
+	public ResponseEntity<Iterable<BidderOffer>> getBiddings(@RequestParam(value = "id") Long bidder_id) {
+		return bidderService.getAllBiddingsForThisBidder(bidder_id);
+	}
+	
+	@RequestMapping(value = "/getActiveBiddingsForBidder", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Iterable<BidderOffer>> getActiveBiddings(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.getAllBiddingsForThisBidder(bidder_id);
 	}
 	
@@ -45,5 +51,10 @@ public class BidderController {
 	@RequestMapping(value = "/deleleBid", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String DeleteBid(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.deleteBidderOffer(bidder_id);
+	}
+	
+	@RequestMapping(value = "/getActiveRequestOffers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Iterable<RequestOffer>> getActiveRequestOffers() {
+		return bidderService.getActiveRequestOffers();
 	}
 }
