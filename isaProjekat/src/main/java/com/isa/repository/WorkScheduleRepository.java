@@ -22,6 +22,9 @@ public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long
 	
 	WorkSchedule findByWorkerAndDateAndStartTime(Worker w,Date d, double t);
 	
+	@Query("select ws from WorkSchedule ws where ws.worker=?1 and ws.date=?2")///////////
+	public WorkSchedule getWorkSchedule(Worker worker,Date date);///////////
+	
 	@Query("select ws from Worker w inner join w.workSchedules as ws where w.restaurant = ?1")
 	Iterable<WorkSchedule> getWorkScheduleForRestaurant(Restaurant r);
 	

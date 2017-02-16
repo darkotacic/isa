@@ -7,5 +7,5 @@ import com.isa.entity.RestaurantTable;
 
 public interface OrderRepository extends CrudRepository<Order, Long>{
 	
-	Iterable<Order> findByTable(RestaurantTable t);
+	public Iterable<Order> findByTable(RestaurantTable t);
 }

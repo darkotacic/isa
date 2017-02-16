@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.isa.entity.OrderItem;
 import com.isa.entity.WorkSchedule;
+import com.isa.entity.users.Bartender;
+import com.isa.repository.BartenderRepository;
+import com.isa.repository.OrderItemRepository;
 import com.isa.repository.WorkScheduleRepository;
 
 @Service
@@ -14,9 +18,25 @@ public class BartenderServiceImpl implements BartenderService {
 	@Autowired
 	private WorkScheduleRepository workScheduleRepository;
 	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	
+	@Autowired
+	private BartenderRepository bartenderRepository;
+	
 	@Override
 	public Iterable<WorkSchedule> getWorkScheduleForBartenders() {
 		return workScheduleRepository.getWorkScheduleForBartenders();
+	}
+
+	@Override
+	public Iterable<OrderItem> findDrinkOrderItems() {
+		return orderItemRepository.findDrinkOrderItems();
+	}
+
+	@Override
+	public Bartender updateBartenderInformation(Bartender bartender) {
+		return bartenderRepository.save(bartender);
 	}
 
 }
