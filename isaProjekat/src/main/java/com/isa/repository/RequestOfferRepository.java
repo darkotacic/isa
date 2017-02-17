@@ -9,4 +9,5 @@ public interface RequestOfferRepository extends CrudRepository<RequestOffer, Lon
 	Iterable<RequestOffer> findByStatus(boolean b);
 	
 	Iterable<RequestOffer> findByRestaurantManager(RestaurantManager m);
+
 }

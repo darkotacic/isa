@@ -30,6 +30,7 @@ import com.isa.repository.BartenderRepository;
 import com.isa.repository.BidderOfferRepository;
 import com.isa.repository.BidderRepository;
 import com.isa.repository.CookRepository;
+import com.isa.repository.OrderRepository;
 import com.isa.repository.ProductRepository;
 import com.isa.repository.RequestOfferRepository;
 import com.isa.repository.RestaurantManagerRepository;
@@ -86,6 +87,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Autowired
 	private BidderOfferRepository bidderOfferRepository;
+
+	@Autowired
+	private OrderRepository orderRepository;
 
 	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
@@ -144,7 +148,8 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<String> removeRestaurantTable(Long id) {
-		this.restaurantTableRepository.delete(id);
+		if (this.restaurantTableRepository.findOne(id).isFree())
+			this.restaurantTableRepository.delete(id);
 		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
 	}
 
@@ -413,6 +418,45 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	public ResponseEntity<Iterable<Product>> getAllProductsForRequestOffer(Long id) {
 		return new ResponseEntity<Iterable<Product>>(this.productRepository.getProductsForRequestOffer(id),
 				HttpStatus.OK);
+	}
+
+	@Override
+	public double gradeForOrder(Long id) {
+		return this.orderRepository.getGradeForOrder(id);
+	}
+
+	@Override
+	public double gradeForRestaurant(Long id) {
+		return this.restaurantRepository.getGradeForRestaurant(id);
+	}
+
+	@Override
+	public double restaurantEarnings(Long id, Date startDate, Date endDate) {
+		return this.waiterRepository.getEarningsForRestaurant(this.restaurantRepository.findOne(id), startDate,
+				endDate);
+	}
+
+	@Override
+	public double waiterEarinings(Long id) {
+		return this.waiterRepository.getEarningsForWaiter(id);
+	}
+
+	@Override
+	public double checkIfRequestOfferExpired() {
+		Iterable<RequestOffer> of = this.requestOfferRepository.findAll();
+		while (of.iterator().hasNext()) {
+			if (of.iterator().next().getExpirationDate().before(new Date())) {
+				System.out.println("BUhaa ");
+				of.iterator().next().setStatus(false);
+				Iterable<BidderOffer> it = this.bidderOfferRepository.findByRequestOffer(of.iterator().next());
+				while (it.iterator().hasNext())
+					it.iterator().next().setOfferStatus(BidderOfferStatus.DECLINED);
+				this.bidderOfferRepository.save(it);
+				this.requestOfferRepository.save(of.iterator().next());
+			}
+
+		}
+		return 0;
 	}
 
 }
