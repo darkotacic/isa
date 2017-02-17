@@ -6,6 +6,5 @@ import com.isa.entity.users.Friend;
 import com.isa.entity.users.FriendId;
 
 public interface FriendRepository extends CrudRepository<Friend, FriendId>{
-	
 
 }

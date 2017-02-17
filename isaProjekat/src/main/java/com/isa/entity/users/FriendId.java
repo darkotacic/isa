@@ -17,6 +17,15 @@ public class FriendId implements Serializable {
 	private Guest sender;
 	@ManyToOne
 	private Guest reciever;
+	
+	public FriendId(){
+		
+	}
+	
+	public FriendId(Guest sender,Guest reciever){
+		this.sender = sender;
+		this.reciever = reciever;
+	}
 
 	
 	public Guest getSender() {

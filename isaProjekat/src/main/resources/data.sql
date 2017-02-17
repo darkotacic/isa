@@ -1,6 +1,9 @@
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (1,'16-10-15','darko.tacic@gmail.com','sifra','Darko','Tacic','GUEST');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (2,'16-10-15','marko.kljajic@gmail.com','sifra','Marko','Kljajic','GUEST');
-insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (13,'16-10-15','test.test@gmail.com','sifra','Test','Test','GUEST');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (13,'16-10-15','test13.test@gmail.com','sifra','Test','Test','GUEST');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (14,'16-10-15','test14.test@gmail.com','sifra','Test','Test','GUEST');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (15,'16-10-15','test15.test@gmail.com','sifra','Test','Test','GUEST');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (16,'16-10-15','test16.test@gmail.com','sifra','Test','Test','GUEST');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (3,'16-10-15','milica.govedarica@gmail.com','sifra','Milca','Govedarica','WAITER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (4,'16-10-15','sasa.momcilovic@gmail.com','sifra','Sasa','Momcilovic','WAITER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (5,'16-10-15','mirko.odalovic@gmail.com','sifra','Mirko','Odalovic','COOK');
@@ -30,6 +33,9 @@ insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(8,'3XL'
 insert into guest (user_id) values (1);
 insert into guest (user_id) values (2);
 insert into guest (user_id) values (13);
+insert into guest (user_id) values (14);
+insert into guest (user_id) values (15);
+insert into guest (user_id) values (16);
 insert into waiter (user_id) values (3);
 insert into waiter (user_id) values (4);
 insert into cook (user_id,cook_type) values (5,'SALAT');
@@ -38,8 +44,14 @@ insert into system_manager (user_id) values (7);
 insert into bartender (user_id) values (8);
 
 insert into friend(sender_id,reciever_id,status) values(1,2,false);
+insert into friend(sender_id,reciever_id,status) values(1,14,false);
+insert into friend(sender_id,reciever_id,status) values(1,15,false);
+insert into friend(sender_id,reciever_id,status) values(1,16,false);
 insert into friend(sender_id,reciever_id,status) values(1,13,true);
 insert into friend(sender_id,reciever_id,status) values(13,2,true);
+insert into friend(sender_id,reciever_id,status) values(13,14,true);
+insert into friend(sender_id,reciever_id,status) values(13,15,false);
+insert into friend(sender_id,reciever_id,status) values(13,16,false);
 
 insert into restaurant_manager (user_id,restaurant_res_id) values (9,1);
 insert into restaurant_manager (user_id,restaurant_res_id) values (10,1);
