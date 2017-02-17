@@ -110,12 +110,13 @@ public class WaiterController {
 	}
 	
 	@RequestMapping(
-			value = "/deleteOrders",
+			value = "/deleteOrder",
+			consumes=MediaType.APPLICATION_JSON_VALUE,
 			method = RequestMethod.DELETE)
 	@ResponseBody
 	@Transactional
-	public void deleteOrder(Long orderId){
-		waiterService.deleteOrder(orderId);
+	public void deleteOrder(@RequestBody Order order){
+		waiterService.deleteOrder(order);
 	}
 	
 	@RequestMapping(
@@ -188,7 +189,6 @@ public class WaiterController {
 			checkTime+=24.0;
 		Waiter replacement=(Waiter) worker.getReplacement();
 		if(checkTime>worker.getEndTime() && replacement!=null){
-			System.out.println("USAO");
 			WorkSchedule repSchedule=waiterService.getWorkSchedule(replacement, worker.getSecondDate());
 			double waiter1Time=repSchedule.getStartTime()-o.getTime();
 			double waiter2Time=checkTime-repSchedule.getStartTime();

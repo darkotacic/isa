@@ -2,19 +2,28 @@ package com.isa.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.entity.Grade;
+import com.isa.entity.Order;
 import com.isa.entity.users.Guest;
+import com.isa.entity.users.User;
+import com.isa.service.GradeService;
 import com.isa.service.GuestService;
+import com.isa.service.WorkerService;
 
 @RestController
 @RequestMapping(value="/guests")
@@ -22,6 +31,15 @@ public class GuestController {
 
 	@Autowired
 	private GuestService guestService;
+	
+	@Autowired
+	private WorkerService workerService;
+	
+	@Autowired
+	private GradeService gradeService;
+	
+	@Autowired
+	private HttpSession session;
 	
 	@RequestMapping(
 			value = "/friends/{id}",
@@ -91,6 +109,35 @@ public class GuestController {
 	@Transactional
 	public ResponseEntity<Guest> removeFriend(@RequestParam(value = "user_id") Long user_id,@RequestParam(value = "friend_id") Long friend_id){
 		return this.guestService.removeFriend(user_id,friend_id);
+	}
+	
+	@RequestMapping(
+			value="/addGrade/{orderId}",
+			method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Grade> addGrade(@RequestBody Grade grade,@PathVariable("orderId")Long orderId){
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("GUEST"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		grade.setGuest((Guest) user);
+		Order order=workerService.getOrder(orderId);
+		grade.setOrder(order);
+		grade.setRestaurant(order.getWaiter().getRestaurant());
+		gradeService.addGrade(grade);
+		return new ResponseEntity<Grade>(grade, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value="/deleteGrade",
+			method=RequestMethod.DELETE,
+			consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Grade> deleteGrade(@RequestBody Grade grade){
+		gradeService.deleteGrade(grade);
+		return new ResponseEntity<Grade>(grade, HttpStatus.OK);	
 	}
 	
 }

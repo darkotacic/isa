@@ -56,6 +56,10 @@ public class Order implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="order",cascade=CascadeType.ALL)
+	@JsonIgnore
+	private Set<Grade> grades;
 
 	public Order() {
 	}
@@ -118,6 +122,16 @@ public class Order implements Serializable {
 
 	public void setTime(double time) {
 		this.time = time;
+	}
+
+	@JsonIgnore
+	public Set<Grade> getGrades() {
+		return grades;
+	}
+
+	@JsonProperty
+	public void setGrades(Set<Grade> grades) {
+		this.grades = grades;
 	}
 	
 }

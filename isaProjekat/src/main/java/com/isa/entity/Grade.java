@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.isa.entity.users.Guest;
+
 @Entity
 @Table(name = "GRADE")
 public class Grade implements Serializable {
@@ -19,10 +21,16 @@ public class Grade implements Serializable {
 	@Column(name = "GRD_ID")
 	@GeneratedValue
 	private long id;
-
+	
+	@ManyToOne
+	private Order order;
+	
+	@ManyToOne
+	private Guest guest;
+	
 	@ManyToOne
 	private Restaurant restaurant;
-
+	
 	@Column(name = "GRD_SERVICE")
 	private double gradeOfService;
 
@@ -71,4 +79,21 @@ public class Grade implements Serializable {
 	public double getGradeOfRestaurant() {
 		return gradeOfRestaurant;
 	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public Guest getGuest() {
+		return guest;
+	}
+
+	public void setGuest(Guest guest) {
+		this.guest = guest;
+	}
+	
 }

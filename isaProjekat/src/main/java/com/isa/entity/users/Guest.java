@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.isa.entity.Grade;
 
 @Entity
 @Table(name="GUEST")
@@ -24,7 +25,10 @@ public class Guest extends User {
 	@JsonIgnore
 	private Set<Friend> recieved;
 
-
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "guest", cascade=CascadeType.ALL)
+	@JsonIgnore
+	private Set<Grade> grades;
+	
 	public Guest(){
 		
 	}
@@ -48,6 +52,15 @@ public class Guest extends User {
 	public void setRecieved(Set<Friend> recieved) {
 		this.recieved = recieved;
 	}
-	
+
+	@JsonIgnore
+	public Set<Grade> getGrades() {
+		return grades;
+	}
+
+	@JsonProperty
+	public void setGrades(Set<Grade> grades) {
+		this.grades = grades;
+	}
 	
 }

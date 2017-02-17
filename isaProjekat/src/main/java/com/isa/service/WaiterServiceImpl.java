@@ -68,8 +68,8 @@ public class WaiterServiceImpl implements WaiterService {
 	}
 	
 	@Override
-	public void deleteOrder(Long orderId){
-		orderRepository.delete(orderId);
+	public void deleteOrder(Order order){
+		orderRepository.delete(order);
 	}
 	
 	@Override
