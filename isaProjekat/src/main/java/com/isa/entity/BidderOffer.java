@@ -16,7 +16,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -46,12 +45,11 @@ public class BidderOffer implements Serializable {
 	
 	@NotNull
 	@Column(name = "BO_DOD", unique = false, nullable = false)
-	@Future
 	@Temporal(TemporalType.DATE)
 	private Date dateOfDelivery;
 	
 	@Column(name = "BO_GARANTY", unique = false, nullable = true)
-	@Pattern(regexp="^[A-Z]\\w*")
+	@Pattern(regexp="^[A-Z][a-z_ A-Z0-9]*")
 	@Size(max=50)
 	private String garanty;
 	

@@ -1,5 +1,7 @@
 package com.isa.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +26,17 @@ public class SystemManagerController {
 	private SystemManagerService systemManagerService;
 	
 	@RequestMapping(value = "/getAllRestaurants", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<Restaurant>> getAllRestaurants() {
+	public ResponseEntity<List<Restaurant>> getAllRestaurants() {
 		return systemManagerService.getAllRestaurants();
 	}
 	
 	@RequestMapping(value = "/getRestaurantManagersForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<RestaurantManager>> getRestaurantManagersForRestaurant(@RequestParam(value="id") Long id) {
+	public ResponseEntity<List<RestaurantManager>> getRestaurantManagersForRestaurant(@RequestParam(value="id") Long id) {
 		return systemManagerService.getRestaurantManagersForRestaurant(id);
 	}
 	
 	@RequestMapping(value = "/getAllSystemManager", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<SystemManager>> getAllSystemManager() {
+	public ResponseEntity<List<SystemManager>> getAllSystemManager() {
 		return systemManagerService.getAllSystemManager();
 	}
 	

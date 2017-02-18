@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,14 +47,12 @@ public class RequestOffer implements Serializable {
 	@Column(name = "STATUS", columnDefinition = "boolean default true", insertable = true)
 	private boolean status;
 
-	@Future
 	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Column(name = "START_DATE", unique = false, nullable = false)
 	private Date startDate;
 
 	@Temporal(TemporalType.DATE)
-	@Future
 	@NotNull
 	@Column(name = "EXPIRATION_DATE", unique = false, nullable = false)
 	private Date expirationDate;

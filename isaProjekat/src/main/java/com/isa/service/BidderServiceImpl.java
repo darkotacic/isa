@@ -1,5 +1,7 @@
 package com.isa.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,16 +40,16 @@ public class BidderServiceImpl implements BidderService {
 	}
 
 	@Override
-	public ResponseEntity<Iterable<BidderOffer>> getAllBiddingsForThisBidder(Long bidder_id) {
+	public ResponseEntity<List<BidderOffer>> getAllBiddingsForThisBidder(Long bidder_id) {
 		Bidder b = this.bidderRepository.findOne(bidder_id);
-		return new ResponseEntity<Iterable<BidderOffer>>(bidderOfferRepository.findByBidder(b), HttpStatus.OK);
+		return new ResponseEntity<List<BidderOffer>>(this.bidderOfferRepository.findByBidder(b), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, Long b_id) {
 		Bidder temp = this.bidderRepository.findOne(b_id);
 		RequestOffer temp1 = this.requestOfferRepository.findOne(ro_id);
-		if(this.bidderOfferRepository.findByBidderAndRequestOffer(temp, temp1) != null)
+		if(this.bidderOfferRepository.findByBidderAndRequestOffer(temp, temp1) != null || bo.getDateOfDelivery().before(temp1.getExpirationDate()))
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		bo.setBidder(temp);
 		bo.setRequestOffer(temp1);
@@ -70,8 +72,8 @@ public class BidderServiceImpl implements BidderService {
 	}
 
 	@Override
-	public ResponseEntity<Iterable<RequestOffer>> getActiveRequestOffers() {
-		return new ResponseEntity<Iterable<RequestOffer>>(this.requestOfferRepository.findByStatus(true), HttpStatus.OK);
+	public ResponseEntity<List<RequestOffer>> getActiveRequestOffers() {
+		return new ResponseEntity<List<RequestOffer>>(this.requestOfferRepository.findByStatus(true), HttpStatus.OK);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.isa.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,5 +13,5 @@ public interface RestaurantTableRepository extends CrudRepository<RestaurantTabl
 	
 	public Iterable<RestaurantTable> findBySegment(Segment segment);
 	@Query("select t from Segment s inner join s.tables as t where s.restaurant = ?1")
-	Iterable<RestaurantTable> getTablesForRestaurant(Restaurant r);
+	List<RestaurantTable> getTablesForRestaurant(Restaurant r);
 }

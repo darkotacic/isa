@@ -44,7 +44,7 @@ public class Segment implements Serializable {
 	@Column(name = "SGM_SMOKING", columnDefinition = "boolean default true", insertable = true)
 	private boolean smokingAllowed;
 
-	@Pattern(regexp = "^[A-Z]\\w*")
+	@Pattern(regexp = "^[A-Z][a-z_ A-Z0-9]*")
 	@Size(max = 60)
 	@NotNull
 	@Column(name = "SGM_POS")

@@ -15,7 +15,6 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import com.isa.entity.users.Worker;
@@ -38,7 +37,6 @@ public class WorkSchedule implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@NotNull
 	@Column(name = "WORK_SCH_DATE")
-	@Future
 	private Date date;
 
 	@Column(name = "TWO_DAYS_SHIFT", columnDefinition = "boolean default false", insertable = true)
@@ -46,7 +44,6 @@ public class WorkSchedule implements Serializable {
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "WORK_SCH_SECOND_DATE")
-	@Future
 	private Date secondDate;
 	
 	@DecimalMin("00.00")

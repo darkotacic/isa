@@ -1,6 +1,7 @@
 package com.isa.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
@@ -58,31 +59,31 @@ public interface RestaurantManagerService {
 
 	String removeRequestOffer(Long ro);
 
-	ResponseEntity<Iterable<Worker>> getAllWorkersForRestaurant(Long id);
+	ResponseEntity<List<Worker>> getAllWorkersForRestaurant(Long id);
 
-	ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id);
+	ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id);
 
-	ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForWorker(Long id);
+	ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForWorker(Long id);
 
-	ResponseEntity<Iterable<RequestOffer>> getAllRequestOffersForManager(Long id);
+	ResponseEntity<List<RequestOffer>> getAllRequestOffersForManager(Long id);
 
-	ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForManagerOffers(Long id);
+	ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(Long id);
 
-	ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForRequestOffer(Long id);
+	ResponseEntity<List<BidderOffer>> getAllBidderOffersForRequestOffer(Long id);
 
-	ResponseEntity<Iterable<Segment>> getAllSegmentsForRestaurant(Long id);
+	ResponseEntity<List<Segment>> getAllSegmentsForRestaurant(Long id);
 
-	ResponseEntity<Iterable<RestaurantTable>> getAllTablesForRestaurant(Long id);
+	ResponseEntity<List<RestaurantTable>> getAllTablesForRestaurant(Long id);
 
-	ResponseEntity<Iterable<RestaurantTable>> getAllTablesForSegment(Long id);
+	ResponseEntity<List<RestaurantTable>> getAllTablesForSegment(Long id);
 
-	ResponseEntity<Iterable<Product>> getAllProductsForRestaurant(Long id);
+	ResponseEntity<List<Product>> getAllProductsForRestaurant(Long id);
 
 	ResponseEntity<String> acceptBidderOffer(Long r_id, Long q_id);
 
-	ResponseEntity<Iterable<WorkSchedule>> getPossableReplacements(Long id);
+	ResponseEntity<List<WorkSchedule>> getPossableReplacements(Long id);
 
-	ResponseEntity<Iterable<Product>> getAllProductsForRequestOffer(Long id);
+	ResponseEntity<List<Product>> getAllProductsForRequestOffer(Long id);
 
 	ResponseEntity<WorkSchedule> updateWorkSchedule(WorkSchedule w);
 

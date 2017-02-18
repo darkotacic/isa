@@ -1,6 +1,7 @@
 package com.isa.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -162,65 +163,65 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/getAllWorkersForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<Worker>> getAllWorkersForRestaurant(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<Worker>> getAllWorkersForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllWorkersForRestaurant(id);
 	}
 
 	@RequestMapping(value = "/getAllWorkSchedulesForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForRestaurant(
+	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(
 			@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllWorkSchedulesForRestaurant(id);
 	}
 
 	@RequestMapping(value = "/getAllWorkSchedulesForWorker", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForWorker(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForWorker(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllWorkSchedulesForWorker(id);
 	}
 
 	@RequestMapping(value = "/getAllRequestOffersForManager", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<RequestOffer>> getAllRequestOffersForManager(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<RequestOffer>> getAllRequestOffersForManager(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllRequestOffersForManager(id);
 	}
 
 	@RequestMapping(value = "/getAllBidderOffersForManagerOffers", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForManagerOffers(
+	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(
 			@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllBidderOffersForManagerOffers(id);
 	}
 
 	@RequestMapping(value = "/getAllBidderOffersForRequestOffer", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForRequestOffer(
+	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForRequestOffer(
 			@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllBidderOffersForRequestOffer(id);
 	}
 
 	@RequestMapping(value = "/getAllSegmentsForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<Segment>> getAllSegmentsForRestaurant(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<Segment>> getAllSegmentsForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllSegmentsForRestaurant(id);
 	}
 
 	@RequestMapping(value = "/getAllTablesForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<RestaurantTable>> getAllTablesForRestaurant(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<RestaurantTable>> getAllTablesForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllTablesForRestaurant(id);
 	}
 
 	@RequestMapping(value = "/getAllTablesForSegment", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<RestaurantTable>> getAllTablesForSegment(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<RestaurantTable>> getAllTablesForSegment(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllTablesForSegment(id);
 	}
 
 	@RequestMapping(value = "/getAllProductsForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<Product>> getAllProductsForRestaurant(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<Product>> getAllProductsForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllProductsForRestaurant(id);
 	}
 
 	@RequestMapping(value = "/getAllProductsForRequestOffer", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<Product>> getAllProductsForRequestOffer(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<Product>> getAllProductsForRequestOffer(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllProductsForRequestOffer(id);
 	}
 
 	@RequestMapping(value = "/getPossableReplacements", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<WorkSchedule>> getPossableReplacements(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<WorkSchedule>> getPossableReplacements(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getPossableReplacements(id);
 	}
 

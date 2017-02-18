@@ -1,5 +1,7 @@
 package com.isa.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.isa.entity.Restaurant;
@@ -19,11 +21,11 @@ public interface SystemManagerService {
 
 	String removeRestaurantManager(Long r_id);
 
-	ResponseEntity<Iterable<Restaurant>> getAllRestaurants();
+	ResponseEntity<List<Restaurant>> getAllRestaurants();
 
-	ResponseEntity<Iterable<RestaurantManager>> getRestaurantManagersForRestaurant(Long id);
+	ResponseEntity<List<RestaurantManager>> getRestaurantManagersForRestaurant(Long id);
 
-	ResponseEntity<Iterable<SystemManager>> getAllSystemManager();
+	ResponseEntity<List<SystemManager>> getAllSystemManager();
 
 	
 	

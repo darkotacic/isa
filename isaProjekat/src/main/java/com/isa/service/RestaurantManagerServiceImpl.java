@@ -3,6 +3,7 @@ package com.isa.service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,6 +198,8 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Override
 	public ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id,
 			Long replacement_id) {
+		if(w.getDate().before(new Date()))
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		if (w.isTwoDays()) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(w.getDate());
@@ -204,11 +207,11 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			Date nextDay = cal.getTime();
 			w.setSecondDate(nextDay);
 		} else if (w.getStartTime() > w.getEndTime())
-			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		Worker u = this.workerRepository.findOne(worker_id);
 		if (u.getUserRole().equals(UserRole.WAITER)) {
 			if (segment_id == 0 || this.segmentRepository.findByRestaurantAndId(u.getRestaurant(), segment_id) == null)
-				return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			Segment s = this.segmentRepository.findOne(segment_id);
 			if (replacement_id != 0) {
 				Worker r = this.workerRepository.findOne(replacement_id);
@@ -229,6 +232,8 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<WorkSchedule> updateWorkSchedule(WorkSchedule w) {
+		if(w.getDate().before(new Date()))
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		WorkSchedule temp = this.workScheduleRepository.findOne(w.getId());
 		temp.setDate(w.getDate());
 		if (w.isTwoDays() && !temp.isTwoDays()) {
@@ -280,7 +285,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<RequestOffer> registerRequestOffer(RequestOffer ro, Long r_id, Long[] pro_ids) {
-		if (this.restaurantManagerRepository.findOne(r_id) == null || ro.getExpirationDate().before(ro.getStartDate()))
+		if (this.restaurantManagerRepository.findOne(r_id) == null || ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		for (int i = 0; i < pro_ids.length; i++)
 			if (this.productRepository.findOne(pro_ids[i]) == null)
@@ -298,7 +303,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Override
 	public ResponseEntity<RequestOffer> updateRequestOffer(RequestOffer ro, Long[] pro_add_ids, Long[] pro_rem_ids) {
 		RequestOffer temp = this.requestOfferRepository.findOne(ro.getId());
-		if (ro.getExpirationDate().before(ro.getStartDate()))
+		if (ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		temp.setStartDate(ro.getStartDate());
 		temp.setExpirationDate(ro.getExpirationDate());
@@ -324,100 +329,99 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<Iterable<Worker>> getAllWorkersForRestaurant(Long id) {
-		return new ResponseEntity<Iterable<Worker>>(
-				this.workerRepository.findByRestaurant(this.restaurantRepository.findOne(id)), HttpStatus.OK);
+	public ResponseEntity<List<Worker>> getAllWorkersForRestaurant(Long id) {
+		return new ResponseEntity<List<Worker>>(
+				(List<Worker>) this.workerRepository.findByRestaurant(this.restaurantRepository.findOne(id)),
+				HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id) {
-		return new ResponseEntity<Iterable<WorkSchedule>>(
+	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id) {
+		return new ResponseEntity<List<WorkSchedule>>(
 				this.workScheduleRepository.getWorkScheduleForRestaurant(this.restaurantRepository.findOne(id)),
 				HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<WorkSchedule>> getAllWorkSchedulesForWorker(Long id) {
-		return new ResponseEntity<Iterable<WorkSchedule>>(
+	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForWorker(Long id) {
+		return new ResponseEntity<List<WorkSchedule>>(
 				this.workScheduleRepository.findByWorker(this.workerRepository.findOne(id)), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<RequestOffer>> getAllRequestOffersForManager(Long id) {
-		return new ResponseEntity<Iterable<RequestOffer>>(
+	public ResponseEntity<List<RequestOffer>> getAllRequestOffersForManager(Long id) {
+		return new ResponseEntity<List<RequestOffer>>(
 				this.requestOfferRepository.findByRestaurantManager(this.restaurantManagerRepository.findOne(id)),
 				HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForManagerOffers(Long id) {
-		return new ResponseEntity<Iterable<BidderOffer>>(
+	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(Long id) {
+		return new ResponseEntity<List<BidderOffer>>(
 				this.bidderOfferRepository.getBidderOffersForManager(this.restaurantManagerRepository.findOne(id)),
 				HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<BidderOffer>> getAllBidderOffersForRequestOffer(Long id) {
-		return new ResponseEntity<Iterable<BidderOffer>>(
+	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForRequestOffer(Long id) {
+		return new ResponseEntity<List<BidderOffer>>(
 				this.bidderOfferRepository.findByRequestOffer(this.requestOfferRepository.findOne(id)), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<Segment>> getAllSegmentsForRestaurant(Long id) {
-		return new ResponseEntity<Iterable<Segment>>(
+	public ResponseEntity<List<Segment>> getAllSegmentsForRestaurant(Long id) {
+		return new ResponseEntity<List<Segment>>(
 				this.segmentRepository.findByRestaurant(this.restaurantRepository.findOne(id)), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<RestaurantTable>> getAllTablesForRestaurant(Long id) {
-		return new ResponseEntity<Iterable<RestaurantTable>>(
+	public ResponseEntity<List<RestaurantTable>> getAllTablesForRestaurant(Long id) {
+		return new ResponseEntity<List<RestaurantTable>>(
 				this.restaurantTableRepository.getTablesForRestaurant(this.restaurantRepository.findOne(id)),
 				HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<RestaurantTable>> getAllTablesForSegment(Long id) {
-		return new ResponseEntity<Iterable<RestaurantTable>>(
-				this.restaurantTableRepository.findBySegment(this.segmentRepository.findOne(id)), HttpStatus.OK);
+	public ResponseEntity<List<RestaurantTable>> getAllTablesForSegment(Long id) {
+		return new ResponseEntity<List<RestaurantTable>>((List<RestaurantTable>) this.restaurantTableRepository
+				.findBySegment(this.segmentRepository.findOne(id)), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<Product>> getAllProductsForRestaurant(Long id) {
-		return new ResponseEntity<Iterable<Product>>(this.productRepository.getProductsForRestaurant(id),
-				HttpStatus.OK);
+	public ResponseEntity<List<Product>> getAllProductsForRestaurant(Long id) {
+		return new ResponseEntity<List<Product>>(this.productRepository.getProductsForRestaurant(id), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<String> acceptBidderOffer(Long r_id, Long q_id) {
 		RequestOffer ro = this.requestOfferRepository.findOne(q_id);
 		ro.setStatus(false);
-		Iterable<BidderOffer> ibo = this.bidderOfferRepository.findByRequestOffer(ro);
-		while (ibo.iterator().hasNext()) {
-			if (!ibo.iterator().next().getId().equals(r_id))
-				ibo.iterator().next().setOfferStatus(BidderOfferStatus.DECLINED);
+		List<BidderOffer> ibo = this.bidderOfferRepository.findByRequestOffer(ro);
+		for(int i = 0; i < ibo.size() ; i++) {
+			if (!ibo.get(i).getId().equals(r_id))
+				ibo.get(i).setOfferStatus(BidderOfferStatus.DECLINED);
 			else
-				ibo.iterator().next().setOfferStatus(BidderOfferStatus.ACCEPTED);
+				ibo.get(i).setOfferStatus(BidderOfferStatus.ACCEPTED);
 		}
 		this.bidderOfferRepository.save(ibo);
 		return new ResponseEntity<String>("Buh", HttpStatus.ACCEPTED);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<WorkSchedule>> getPossableReplacements(Long id) {
+	public ResponseEntity<List<WorkSchedule>> getPossableReplacements(Long id) {
 		WorkSchedule w = this.workScheduleRepository.findOne(id);
 		if (!w.isTwoDays())
-			return new ResponseEntity<Iterable<WorkSchedule>>(this.workScheduleRepository
+			return new ResponseEntity<List<WorkSchedule>>(this.workScheduleRepository
 					.getReplacements(w.getWorker().getRestaurant(), w.getEndTime(), w.getDate()), HttpStatus.OK);
 		else
-			return new ResponseEntity<Iterable<WorkSchedule>>(this.workScheduleRepository
+			return new ResponseEntity<List<WorkSchedule>>(this.workScheduleRepository
 					.getReplacements(w.getWorker().getRestaurant(), w.getEndTime(), w.getSecondDate()), HttpStatus.OK);
 
 	}
 
 	@Override
-	public ResponseEntity<Iterable<Product>> getAllProductsForRequestOffer(Long id) {
-		return new ResponseEntity<Iterable<Product>>(this.productRepository.getProductsForRequestOffer(id),
-				HttpStatus.OK);
+	public ResponseEntity<List<Product>> getAllProductsForRequestOffer(Long id) {
+		return new ResponseEntity<List<Product>>(this.productRepository.getProductsForRequestOffer(id), HttpStatus.OK);
 	}
 
 	@Override
@@ -443,14 +447,13 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public double checkIfRequestOfferExpired() {
-		Iterable<RequestOffer> of = this.requestOfferRepository.findAll();
-		while (of.iterator().hasNext()) {
-			if (of.iterator().next().getExpirationDate().before(new Date())) {
-				System.out.println("BUhaa ");
-				of.iterator().next().setStatus(false);
-				Iterable<BidderOffer> it = this.bidderOfferRepository.findByRequestOffer(of.iterator().next());
-				while (it.iterator().hasNext())
-					it.iterator().next().setOfferStatus(BidderOfferStatus.DECLINED);
+		List<RequestOffer> of = (List<RequestOffer>) this.requestOfferRepository.findAll();
+		for (int i = 0; i < of.size(); i++) {
+			if (of.get(i).getExpirationDate().before(new Date())) {
+				of.get(i).setStatus(false);
+				List<BidderOffer> it = this.bidderOfferRepository.findByRequestOffer(of.get(i));
+				for (int j = 0; j < it.size(); j++)
+					it.get(j).setOfferStatus(BidderOfferStatus.DECLINED);
 				this.bidderOfferRepository.save(it);
 				this.requestOfferRepository.save(of.iterator().next());
 			}

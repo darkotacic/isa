@@ -37,7 +37,7 @@ public class User implements Serializable {
 	@Column(name="USER_EMAIL",unique=true,nullable=false)
 	private String email;
 	
-	@Pattern(regexp="^[A-Z][a-z_A-Z]*")
+	@Pattern(regexp="^[A-Z][a-z A-Z]*")
 	@NotNull
 	@Column(name="USER_NAME",unique=false,nullable=false)
 	private String name;
@@ -46,7 +46,7 @@ public class User implements Serializable {
 		return id;
 	}
 
-	@Pattern(regexp="^[A-Z][a-z_A-Z]*")
+	@Pattern(regexp="^[A-Z][a-z A-Z]*")
 	@NotNull
 	@Column(name="USER_SURNAME",unique=false,nullable=false)
 	private String surname;

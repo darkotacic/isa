@@ -1,5 +1,7 @@
 package com.isa.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,6 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 
 	@Autowired
 	private RestaurantRepository restaurantRepository;
-	
 
 	@Override
 	public ResponseEntity<SystemManager> registerSystemManager(SystemManager sm) {
@@ -40,8 +41,8 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 
 	@Override
 	public ResponseEntity<RestaurantManager> registerRestaurantManager(RestaurantManager sm, Long restaurant_id) {
-		if (this.userRepository.findByEmail(sm.getEmail())!= null)
-			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);	
+		if (this.userRepository.findByEmail(sm.getEmail()) != null)
+			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
 		if (this.restaurantRepository.findOne(restaurant_id) == null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		Restaurant r = this.restaurantRepository.findOne(restaurant_id);
@@ -54,7 +55,6 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 	public ResponseEntity<Restaurant> registerRestaurant(Restaurant r) {
 		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(r), HttpStatus.CREATED);
 	}
-	
 
 	@Override
 	public ResponseEntity<String> removeRestaurant(Long r_id) {
@@ -76,18 +76,21 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 	}
 
 	@Override
-	public ResponseEntity<Iterable<Restaurant>> getAllRestaurants() {
-		return new ResponseEntity<Iterable<Restaurant>>(this.restaurantRepository.findAll(), HttpStatus.OK);
+	public ResponseEntity<List<Restaurant>> getAllRestaurants() {
+		return new ResponseEntity<List<Restaurant>>((List<Restaurant>) this.restaurantRepository.findAll(),
+				HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<RestaurantManager>> getRestaurantManagersForRestaurant(Long id) {
-		return new ResponseEntity<Iterable<RestaurantManager>>(this.restaurantManagerRepository.findByRestaurant(this.restaurantRepository.findOne(id)), HttpStatus.OK);
+	public ResponseEntity<List<RestaurantManager>> getRestaurantManagersForRestaurant(Long id) {
+		return new ResponseEntity<List<RestaurantManager>>((List<RestaurantManager>) this.restaurantManagerRepository
+				.findByRestaurant(this.restaurantRepository.findOne(id)), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Iterable<SystemManager>> getAllSystemManager() {
-		return new ResponseEntity<Iterable<SystemManager>>(this.systemManagerRepository.findAll(), HttpStatus.OK);
+	public ResponseEntity<List<SystemManager>> getAllSystemManager() {
+		return new ResponseEntity<List<SystemManager>>((List<SystemManager>) this.systemManagerRepository.findAll(),
+				HttpStatus.OK);
 	}
 
 }

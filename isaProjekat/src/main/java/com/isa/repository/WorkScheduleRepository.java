@@ -1,6 +1,7 @@
 package com.isa.repository;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -26,10 +27,10 @@ public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long
 	public WorkSchedule getWorkSchedule(Worker worker,Date date);
 	
 	@Query("select ws from Worker w inner join w.workSchedules as ws where w.restaurant = ?1")
-	Iterable<WorkSchedule> getWorkScheduleForRestaurant(Restaurant r);
+	List<WorkSchedule> getWorkScheduleForRestaurant(Restaurant r);
 	
-	Iterable<WorkSchedule> findByWorker(Worker w);
+	List<WorkSchedule> findByWorker(Worker w);
 	
 	@Query("select ws from Waiter w inner join w.workSchedules as ws where w.restaurant = ?1 and ws.startTime=?2 and ws.date = ?3")
-	Iterable<WorkSchedule> getReplacements(Restaurant t, double startTime, Date date);
+	List<WorkSchedule> getReplacements(Restaurant t, double startTime, Date date);
 }

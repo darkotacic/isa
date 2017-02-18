@@ -1,5 +1,7 @@
 package com.isa.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,12 @@ public class BidderController {
 	}
 	
 	@RequestMapping(value = "/getBiddingsForBidder", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<BidderOffer>> getBiddings(@RequestParam(value = "id") Long bidder_id) {
+	public ResponseEntity<List<BidderOffer>> getBiddings(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.getAllBiddingsForThisBidder(bidder_id);
 	}
 	
 	@RequestMapping(value = "/getActiveBiddingsForBidder", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<BidderOffer>> getActiveBiddings(@RequestParam(value = "id") Long bidder_id) {
+	public ResponseEntity<List<BidderOffer>> getActiveBiddings(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.getAllBiddingsForThisBidder(bidder_id);
 	}
 	
@@ -54,7 +56,7 @@ public class BidderController {
 	}
 	
 	@RequestMapping(value = "/getActiveRequestOffers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Iterable<RequestOffer>> getActiveRequestOffers() {
+	public ResponseEntity<List<RequestOffer>> getActiveRequestOffers() {
 		return bidderService.getActiveRequestOffers();
 	}
 }

@@ -34,13 +34,13 @@ public class Restaurant implements Serializable {
 	private long id;
 
 	@Size(min = 3, max = 30)
-	@Pattern(regexp = "^[A-Z]\\w*")
+	@Pattern(regexp = "^[A-Z][a-z_ A-Z]*")
 	@NotNull
 	@Column(name = "RES_NAME", unique = false, nullable = false)
 	private String name;
 
 	@Size(max = 50)
-	@Pattern(regexp = "^[A-Z]\\w*")
+	@Pattern(regexp = "^[A-Z][a-z_ A-Z0-9]*")
 	@NotNull
 	@Column(name = "RES_DESC", unique = false, nullable = false)
 	private String description;

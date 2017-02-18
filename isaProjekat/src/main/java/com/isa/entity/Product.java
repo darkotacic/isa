@@ -37,13 +37,13 @@ public class Product implements Serializable {
 	private long id;
 
 	@Size(min = 3, max = 30)
-	@Pattern(regexp = "^[A-Z]\\w*")
+	@Pattern(regexp = "^[A-Z][a-z_ A-Z]*")
 	@NotNull
 	@Column(name = "PR_NAME", unique = true, nullable = false)
 	private String name;
 
 	@Column(name = "PR_DES")
-	@Pattern(regexp = "^[A-Z]\\w*")
+	@Pattern(regexp = "^[A-Z][a-z_ A-Z0-9]*")
 	@Size(max = 60)
 	private String description;
 
