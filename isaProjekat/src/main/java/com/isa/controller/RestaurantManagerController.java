@@ -40,16 +40,22 @@ public class RestaurantManagerController {
 		return restaurantManagerService.updateRestaurantProfile(r);
 	}
 
-	@RequestMapping(value = "/defineRestaurantMenu", method = RequestMethod.POST, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> register(@RequestParam(value = "product_ids") Long[] ids,
+	@RequestMapping(value = "/addExistingProduct", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Product> register(@RequestParam(value = "product_id") Long ids,
 			@RequestParam(value = "rest_id") Long rest_id) {
-		return restaurantManagerService.defineRestaurantMenu(ids, rest_id);
+		return restaurantManagerService.addExistingProductToMenu(ids, rest_id);
+	}
+	
+	@RequestMapping(value = "/removeProduct", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Product> removeProduct(@RequestParam(value = "product_id") Long ids,
+			@RequestParam(value = "rest_id") Long rest_id) {
+		return restaurantManagerService.removeProductFromMenu(ids, rest_id);
 	}
 
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> addProduct(@RequestBody @Valid Product p,
 			@RequestParam(value = "rest_id") Long rest_id) {
-		return restaurantManagerService.addProductToMenu(p, rest_id);
+		return restaurantManagerService.addNewProductToMenu(p, rest_id);
 	}
 
 	@RequestMapping(value = "/addRestaurantTable", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,12 +69,12 @@ public class RestaurantManagerController {
 		return restaurantManagerService.addSegmentToRestaurnat(s, id);
 	}
 
-	@RequestMapping(value = "/removeSegment", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/removeSegment", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> removeSegment(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeSegment(id);
 	}
 
-	@RequestMapping(value = "/removeRestaurantTable", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/removeRestaurantTable", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> removeRestaurantTable(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeRestaurantTable(id);
 	}
@@ -99,7 +105,7 @@ public class RestaurantManagerController {
 		return restaurantManagerService.registerBartender(s, id);
 	}
 
-	@RequestMapping(value = "/removeWorker", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/removeWorker", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> removeWorker(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeWorker(id);
 	}
@@ -117,7 +123,7 @@ public class RestaurantManagerController {
 		return restaurantManagerService.updateWorkSchedule(s);
 	}
 
-	@RequestMapping(value = "/updateWorkScheduleSetReplacements", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateWorkScheduleSetReplacement", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> updateWorkScheduleSetReplacement(@RequestParam(value = "repl_id") Long s,
 			@RequestParam(value = "ws_id") Long w) {
 		return restaurantManagerService.updateWorkScheduleSetReplacement(s, w);
@@ -135,24 +141,35 @@ public class RestaurantManagerController {
 		return restaurantManagerService.updateWorkScheduleSetWorker(s, w);
 	}
 
-	@RequestMapping(value = "/removeWorkSchedule", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/removeWorkSchedule", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String removeWorkSchedule(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeWorkSchedule(id);
 	}
 
 	@RequestMapping(value = "/registerRequestOffer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RequestOffer> registerRequestOffer(@RequestBody @Valid RequestOffer ro,
-			@RequestParam(value = "rm_id") Long r_id, @RequestParam(value = "pro_id") Long[] pro_ids) {
-		return restaurantManagerService.registerRequestOffer(ro, r_id, pro_ids);
+			@RequestParam(value = "rm_id") Long r_id) {
+		return restaurantManagerService.registerRequestOffer(ro, r_id);
 	}
 
 	@RequestMapping(value = "/updateRequestOffer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RequestOffer> updateRequestOffer(@RequestBody @Valid RequestOffer ro,
-			@RequestParam(value = "add_id") Long[] r_id, @RequestParam(value = "del_id") Long[] pro_ids) {
-		return restaurantManagerService.updateRequestOffer(ro, r_id, pro_ids);
+	public ResponseEntity<RequestOffer> updateRequestOffer(@RequestBody @Valid RequestOffer ro) {
+		return restaurantManagerService.updateRequestOffer(ro);
+	}
+	
+	@RequestMapping(value = "/removeProductFromRequestOffer", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Product> removeProductFromRequestOffer(@RequestParam(value = "product_id") Long ids,
+			@RequestParam(value = "ro_id") Long rest_id) {
+		return restaurantManagerService.removeProductFromRequestOffer(ids, rest_id);
 	}
 
-	@RequestMapping(value = "/removeRequestOffer", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/addProductToRequestOffer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Product> addProductToRequestOffer(@RequestParam(value = "product_id") Long id,
+			@RequestParam(value = "rest_id") Long rest_id) {
+		return restaurantManagerService.addProductToRequestOffer(id, rest_id);
+	}
+
+	@RequestMapping(value = "/removeRequestOffer", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String removeRequestOffer(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeRequestOffer(id);
 	}
@@ -162,65 +179,65 @@ public class RestaurantManagerController {
 		return restaurantManagerService.registerBidder(s);
 	}
 
-	@RequestMapping(value = "/getAllWorkersForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllWorkersForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Worker>> getAllWorkersForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllWorkersForRestaurant(id);
 	}
 
-	@RequestMapping(value = "/getAllWorkSchedulesForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllWorkSchedulesForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(
 			@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllWorkSchedulesForRestaurant(id);
 	}
 
-	@RequestMapping(value = "/getAllWorkSchedulesForWorker", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllWorkSchedulesForWorker", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForWorker(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllWorkSchedulesForWorker(id);
 	}
 
-	@RequestMapping(value = "/getAllRequestOffersForManager", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllRequestOffersForManager", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<RequestOffer>> getAllRequestOffersForManager(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllRequestOffersForManager(id);
 	}
 
-	@RequestMapping(value = "/getAllBidderOffersForManagerOffers", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllBidderOffersForManagerOffers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(
 			@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllBidderOffersForManagerOffers(id);
 	}
 
-	@RequestMapping(value = "/getAllBidderOffersForRequestOffer", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllBidderOffersForRequestOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForRequestOffer(
 			@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllBidderOffersForRequestOffer(id);
 	}
 
-	@RequestMapping(value = "/getAllSegmentsForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllSegmentsForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Segment>> getAllSegmentsForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllSegmentsForRestaurant(id);
 	}
 
-	@RequestMapping(value = "/getAllTablesForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllTablesForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<RestaurantTable>> getAllTablesForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllTablesForRestaurant(id);
 	}
 
-	@RequestMapping(value = "/getAllTablesForSegment", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllTablesForSegment", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<RestaurantTable>> getAllTablesForSegment(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllTablesForSegment(id);
 	}
 
-	@RequestMapping(value = "/getAllProductsForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllProductsForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> getAllProductsForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllProductsForRestaurant(id);
 	}
 
-	@RequestMapping(value = "/getAllProductsForRequestOffer", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getAllProductsForRequestOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> getAllProductsForRequestOffer(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllProductsForRequestOffer(id);
 	}
 
-	@RequestMapping(value = "/getPossableReplacements", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getPossableReplacements", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<WorkSchedule>> getPossableReplacements(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getPossableReplacements(id);
 	}
@@ -231,25 +248,30 @@ public class RestaurantManagerController {
 		return restaurantManagerService.acceptBidderOffer(r_id, q_id);
 	}
 
-	@RequestMapping(value = "/getGradeForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getGradeForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public double getGradeForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.gradeForRestaurant(id);
 	}
 
-	@RequestMapping(value = "/getGradeForOrder", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getGradeForOrder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public double getGradeForOrder(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.gradeForOrder(id);
 	}
 
-	@RequestMapping(value = "/getRestaurantEarnings", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getRestaurantEarnings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public double getRestaurantEarnings(@RequestParam(value = "id") Long id,
 			@RequestParam(value = "start") Date startDate, @RequestParam(value = "end") Date endDate) {
 		return restaurantManagerService.restaurantEarnings(id, startDate, endDate);
 	}
 
-	@RequestMapping(value = "/getWaiterEarnings", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getWaiterEarnings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public double getWaiterEarnings(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.waiterEarinings(id);
+	}
+	
+	@RequestMapping(value = "/getRestaurantForManager", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Restaurant> getRestaurantForManager(@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.getRestaurantForManager(id);
 	}
 
 	@RequestMapping(value = "/checkIfRequestOfferExpired", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)

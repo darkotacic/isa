@@ -2,9 +2,7 @@ package com.isa.service;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -96,34 +94,33 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
 		Restaurant temp = this.restaurantRepository.findOne(r.getId());
 		temp.setDescription(r.getDescription());
-		temp.setName(r.getName());
+		temp.setRestaurantName(r.getRestaurantName());
 		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(temp), HttpStatus.CREATED);
 	}
 
 	@Override
-	public ResponseEntity<String> defineRestaurantMenu(Long[] products, Long rest_id) {
+	public ResponseEntity<Product> removeProductFromMenu(Long products, Long rest_id) {
 		Restaurant t = this.restaurantRepository.findOne(rest_id);
-		for (int i = 0; i < products.length; i++) {
-			Product p = this.productRepository.findOne(products[i]);
-			p.getRestaurants().add(t);
-			t.getMenu().add(p);
-		}
-		this.restaurantRepository.save(t);
-		return new ResponseEntity<String>("vidi bazu", HttpStatus.ACCEPTED);
+			Product p = this.productRepository.findOne(products);
+			p.getRestaurants().remove(t);
+			t.getMenu().remove(p);
+		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
 	}
 
 	@Override
-	public ResponseEntity<Product> addProductToMenu(Product p, Long r_id) {
+	public ResponseEntity<Product> addNewProductToMenu(Product p, Long r_id) {
 		Restaurant t = this.restaurantRepository.findOne(r_id);
-		Set<Product> pro = new HashSet<Product>();
-		if (t.getMenu() != null)
-			pro = t.getMenu();
-		Set<Restaurant> rest = new HashSet<Restaurant>();
-		rest.add(t);
-		p.setRestaurants(rest);
-		pro.add(p);
-		t.setMenu(pro);
-		this.restaurantRepository.save(t);
+		t.getMenu().add(p);
+		p.getRestaurants().add(t);
+		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
+	}
+	
+	@Override
+	public ResponseEntity<Product> addExistingProductToMenu(Long p_id, Long r_id) {
+		Restaurant t = this.restaurantRepository.findOne(r_id);
+		Product p = this.productRepository.findOne(p_id);
+		t.getMenu().add(p);
+		p.getRestaurants().add(t);
 		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
 	}
 
@@ -284,40 +281,39 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<RequestOffer> registerRequestOffer(RequestOffer ro, Long r_id, Long[] pro_ids) {
+	public ResponseEntity<RequestOffer> registerRequestOffer(RequestOffer ro, Long r_id) {
 		if (this.restaurantManagerRepository.findOne(r_id) == null || ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		for (int i = 0; i < pro_ids.length; i++)
-			if (this.productRepository.findOne(pro_ids[i]) == null)
-				return new ResponseEntity<>(HttpStatus.CONFLICT);
-			else {
-				Product p = this.productRepository.findOne(pro_ids[i]);
-				ro.getProducts().add(p);
-				p.getRequestOffers().add(ro);
-			}
 		RestaurantManager rm = this.restaurantManagerRepository.findOne(r_id);
 		ro.setRestaurantManager(rm);
 		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(ro), HttpStatus.CREATED);
 	}
+	
+	@Override
+	public ResponseEntity<Product> addProductToRequestOffer(Long p_id, Long r_id) {
+		RequestOffer t = this.requestOfferRepository.findOne(r_id);
+		Product p = this.productRepository.findOne(p_id);
+		t.getProducts().add(p);
+		p.getRequestOffers().add(t);
+		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
+	}
+	
+	@Override
+	public ResponseEntity<Product> removeProductFromRequestOffer(Long p_id, Long r_id) {
+		RequestOffer t = this.requestOfferRepository.findOne(r_id);
+		Product p = this.productRepository.findOne(p_id);
+		t.getProducts().remove(p);
+		p.getRequestOffers().remove(t);
+		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
+	}
 
 	@Override
-	public ResponseEntity<RequestOffer> updateRequestOffer(RequestOffer ro, Long[] pro_add_ids, Long[] pro_rem_ids) {
+	public ResponseEntity<RequestOffer> updateRequestOffer(RequestOffer ro) {
 		RequestOffer temp = this.requestOfferRepository.findOne(ro.getId());
 		if (ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		temp.setStartDate(ro.getStartDate());
 		temp.setExpirationDate(ro.getExpirationDate());
-		for (int i = 0; i < pro_rem_ids.length; i++) {
-			Product p = this.productRepository.findOne(pro_rem_ids[i]);
-			p.getRequestOffers().remove(ro);
-			ro.getProducts().remove(p);
-		}
-		for (int i = 0; i < pro_add_ids.length; i++) {
-			Product p = this.productRepository.findOne(pro_add_ids[i]);
-			p.getRequestOffers().add(ro);
-			ro.getProducts().add(p);
-		}
-		temp.setProducts(ro.getProducts());
 		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(temp), HttpStatus.ACCEPTED);
 
 	}
@@ -460,6 +456,11 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 		}
 		return 0;
+	}
+
+	@Override
+	public ResponseEntity<Restaurant> getRestaurantForManager(Long id) {
+		return new ResponseEntity<Restaurant>(this.restaurantRepository.getByManager(this.restaurantManagerRepository.findOne(id)), HttpStatus.OK);
 	}
 
 }

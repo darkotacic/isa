@@ -21,6 +21,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.users.RestaurantManager;
@@ -49,10 +51,12 @@ public class RequestOffer implements Serializable {
 
 	@NotNull
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="mm.dd.yyyy") 
 	@Column(name = "START_DATE", unique = false, nullable = false)
 	private Date startDate;
 
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="mm.dd.yyyy") 
 	@NotNull
 	@Column(name = "EXPIRATION_DATE", unique = false, nullable = false)
 	private Date expirationDate;

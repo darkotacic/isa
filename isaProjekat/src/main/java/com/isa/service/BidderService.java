@@ -17,10 +17,14 @@ public interface BidderService {
 	ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, Long b_id);
 
 	ResponseEntity<BidderOffer> updateBidderOffer(BidderOffer bo);
+	
+	ResponseEntity<BidderOffer> getBidderOfferByBidderAndRequestOffer(Long b_id, Long ro_id);
 
 	String deleteBidderOffer(Long bidder_id);
 
 	ResponseEntity<List<RequestOffer>> getActiveRequestOffers();
+
+	ResponseEntity<RequestOffer> getRequestOffer(Long id);
 	
 	
 }

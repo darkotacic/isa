@@ -15,17 +15,21 @@ public interface SystemManagerService {
 	
 	ResponseEntity<Restaurant> registerRestaurant(Restaurant r);
 	
-	ResponseEntity<String> removeRestaurant(Long r_id);
+	ResponseEntity<Restaurant> removeRestaurant(Long r_id);
 
-	String removeSystemManager(Long r_id);
+	ResponseEntity<SystemManager> removeSystemManager(Long r_id);
 
-	String removeRestaurantManager(Long r_id);
+	ResponseEntity<RestaurantManager> removeRestaurantManager(Long r_id);
 
 	ResponseEntity<List<Restaurant>> getAllRestaurants();
 
 	ResponseEntity<List<RestaurantManager>> getRestaurantManagersForRestaurant(Long id);
 
 	ResponseEntity<List<SystemManager>> getAllSystemManager();
+
+	ResponseEntity<SystemManager> updateSystemManager(SystemManager sm);
+
+	ResponseEntity<Restaurant> updateRestaurant(Restaurant r);
 
 	
 	

@@ -33,7 +33,7 @@ public class BidderServiceImpl implements BidderService {
 		Bidder temp = this.bidderRepository.findOne(b.getId());
 		temp.setDateOfBirth(b.getDateOfBirth());
 		temp.setEmail(b.getEmail());
-		temp.setName(b.getName());
+		temp.setUserName(b.getUserName());
 		temp.setPassword(b.getPassword());
 		temp.setSurname(b.getSurname());
 		return new ResponseEntity<Bidder>(this.bidderRepository.save(temp), HttpStatus.OK);
@@ -74,6 +74,16 @@ public class BidderServiceImpl implements BidderService {
 	@Override
 	public ResponseEntity<List<RequestOffer>> getActiveRequestOffers() {
 		return new ResponseEntity<List<RequestOffer>>(this.requestOfferRepository.findByStatus(true), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<BidderOffer> getBidderOfferByBidderAndRequestOffer(Long b_id, Long ro_id) {
+		return new ResponseEntity<BidderOffer>(this.bidderOfferRepository.findByBidderAndRequestOffer(this.bidderRepository.findOne(b_id),  this.requestOfferRepository.findOne(ro_id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<RequestOffer> getRequestOffer(Long id) {
+		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.findOne(id), HttpStatus.OK);
 	}
 
 }

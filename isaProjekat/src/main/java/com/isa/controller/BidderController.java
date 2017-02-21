@@ -30,12 +30,17 @@ public class BidderController {
 		return bidderService.updateProfile(b);
 	}
 	
-	@RequestMapping(value = "/getBiddingsForBidder", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getBiddingsForBidder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BidderOffer>> getBiddings(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.getAllBiddingsForThisBidder(bidder_id);
 	}
 	
-	@RequestMapping(value = "/getActiveBiddingsForBidder", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getRequestOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RequestOffer> getRequestOffer(@RequestParam(value = "id") Long id) {
+		return bidderService.getRequestOffer(id);
+	}
+	
+	@RequestMapping(value = "/getActiveBiddingsForBidder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BidderOffer>> getActiveBiddings(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.getAllBiddingsForThisBidder(bidder_id);
 	}
@@ -50,7 +55,7 @@ public class BidderController {
 		return bidderService.updateBidderOffer(bo);
 	}
 	
-	@RequestMapping(value = "/deleleBid", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/deleteBid", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String DeleteBid(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.deleteBidderOffer(bidder_id);
 	}
@@ -58,5 +63,10 @@ public class BidderController {
 	@RequestMapping(value = "/getActiveRequestOffers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<RequestOffer>> getActiveRequestOffers() {
 		return bidderService.getActiveRequestOffers();
+	}
+	
+	@RequestMapping(value = "/getBidderOfferForBidderAndRequestOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<BidderOffer> getBidderOfferForBidderAndRequestOffer(@RequestParam(value = "b_id") Long bidder_id, @RequestParam(value = "ro_id") Long request_offer_id) {
+		return bidderService.getBidderOfferByBidderAndRequestOffer(bidder_id, request_offer_id);
 	}
 }

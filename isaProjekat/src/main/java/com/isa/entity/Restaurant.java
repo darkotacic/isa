@@ -37,7 +37,7 @@ public class Restaurant implements Serializable {
 	@Pattern(regexp = "^[A-Z][a-z_ A-Z]*")
 	@NotNull
 	@Column(name = "RES_NAME", unique = false, nullable = false)
-	private String name;
+	private String restaurantName;
 
 	@Size(max = 50)
 	@Pattern(regexp = "^[A-Z][a-z_ A-Z0-9]*")
@@ -69,12 +69,12 @@ public class Restaurant implements Serializable {
 
 	}
 
-	public String getName() {
-		return name;
+	public String getRestaurantName() {
+		return restaurantName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setRestaurantName(String name) {
+		this.restaurantName = name;
 	}
 	@JsonIgnore
 	public Set<Grade> getGrades() {

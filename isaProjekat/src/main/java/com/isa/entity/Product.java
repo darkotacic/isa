@@ -40,7 +40,7 @@ public class Product implements Serializable {
 	@Pattern(regexp = "^[A-Z][a-z_ A-Z]*")
 	@NotNull
 	@Column(name = "PR_NAME", unique = true, nullable = false)
-	private String name;
+	private String productName;
 
 	@Column(name = "PR_DES")
 	@Pattern(regexp = "^[A-Z][a-z_ A-Z0-9]*")
@@ -89,8 +89,8 @@ public class Product implements Serializable {
 		return productType;
 	}
 
-	public String getName() {
-		return name;
+	public String getProductName() {
+		return productName;
 	}
 
 	public String getDescription() {
@@ -117,8 +117,8 @@ public class Product implements Serializable {
 		this.requestOffers = requestOffers;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setProductName(String name) {
+		this.productName = name;
 	}
 
 	public void setDescription(String description) {

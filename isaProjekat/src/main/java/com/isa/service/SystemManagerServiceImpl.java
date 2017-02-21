@@ -34,17 +34,29 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 
 	@Override
 	public ResponseEntity<SystemManager> registerSystemManager(SystemManager sm) {
-		if (this.userRepository.findOne(sm.getId()) != null)
+		if (this.userRepository.findByEmail(sm.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		return new ResponseEntity<SystemManager>(this.systemManagerRepository.save(sm), HttpStatus.CREATED);
+	}
+	
+	@Override
+	public ResponseEntity<SystemManager> updateSystemManager(SystemManager sm) {
+		SystemManager temp = this.systemManagerRepository.findOne(sm.getId());
+		if(!temp.getEmail().equals(sm.getEmail()))
+			if(this.userRepository.findByEmail(sm.getEmail()) != null)
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+		temp.setDateOfBirth(sm.getDateOfBirth());
+		temp.setEmail(sm.getEmail());
+		temp.setPassword(sm.getPassword());
+		temp.setSurname(sm.getSurname());
+		temp.setUserName(sm.getUserName());
+		return new ResponseEntity<SystemManager>(this.systemManagerRepository.save(temp), HttpStatus.CREATED);
 	}
 
 	@Override
 	public ResponseEntity<RestaurantManager> registerRestaurantManager(RestaurantManager sm, Long restaurant_id) {
 		if (this.userRepository.findByEmail(sm.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
-		if (this.restaurantRepository.findOne(restaurant_id) == null)
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		Restaurant r = this.restaurantRepository.findOne(restaurant_id);
 		sm.setRestaurant(r);
 		RestaurantManager rs = this.restaurantManagerRepository.save(sm);
@@ -55,24 +67,36 @@ public class SystemManagerServiceImpl implements SystemManagerService {
 	public ResponseEntity<Restaurant> registerRestaurant(Restaurant r) {
 		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(r), HttpStatus.CREATED);
 	}
+	
 
 	@Override
-	public ResponseEntity<String> removeRestaurant(Long r_id) {
+	public ResponseEntity<Restaurant> updateRestaurant(Restaurant r) {
+		Restaurant temp = this.restaurantRepository.findOne(r.getId());
+		temp.setDescription(r.getDescription());
+		temp.setRestaurantName(r.getRestaurantName());
+		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(temp), HttpStatus.CREATED);
+	}
+
+
+	@Override
+	public ResponseEntity<Restaurant> removeRestaurant(Long r_id) {
 		// TODO Auto-generated method stub
 		this.restaurantRepository.delete(r_id);
-		return new ResponseEntity<String>("Oha", HttpStatus.MOVED_PERMANENTLY);
+		return new ResponseEntity<Restaurant>(this.restaurantRepository.findOne(r_id), HttpStatus.MOVED_PERMANENTLY);
 	}
 
 	@Override
-	public String removeSystemManager(Long r_id) {
+	public ResponseEntity<SystemManager> removeSystemManager(Long r_id) {
 		this.systemManagerRepository.delete(r_id);
-		return "vidjecemo sta nam na frontu treba";
+		return new ResponseEntity<SystemManager>(this.systemManagerRepository.findOne(r_id),
+				HttpStatus.MOVED_PERMANENTLY);
 	}
 
 	@Override
-	public String removeRestaurantManager(Long r_id) {
+	public ResponseEntity<RestaurantManager> removeRestaurantManager(Long r_id) {
 		this.restaurantManagerRepository.delete(r_id);
-		return "isto ko gore";
+		return new ResponseEntity<RestaurantManager>(this.restaurantManagerRepository.findOne(r_id),
+				HttpStatus.MOVED_PERMANENTLY);
 	}
 
 	@Override

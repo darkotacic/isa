@@ -20,6 +20,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.isa.entity.users.Bidder;
 
 @Entity
@@ -46,6 +48,7 @@ public class BidderOffer implements Serializable {
 	@NotNull
 	@Column(name = "BO_DOD", unique = false, nullable = false)
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="mm.dd.yyyy") 
 	private Date dateOfDelivery;
 	
 	@Column(name = "BO_GARANTY", unique = false, nullable = true)

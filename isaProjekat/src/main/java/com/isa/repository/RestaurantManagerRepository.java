@@ -10,4 +10,5 @@ import com.isa.entity.users.RestaurantManager;
 public interface RestaurantManagerRepository extends CrudRepository<RestaurantManager, Long> {
 		
 	List<RestaurantManager> findByRestaurant(Restaurant t);
+
 }

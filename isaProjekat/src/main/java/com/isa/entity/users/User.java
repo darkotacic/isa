@@ -19,6 +19,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="USER")
@@ -40,7 +41,7 @@ public class User implements Serializable {
 	@Pattern(regexp="^[A-Z][a-z A-Z]*")
 	@NotNull
 	@Column(name="USER_NAME",unique=false,nullable=false)
-	private String name;
+	private String userName;
 	
 	public long getId() {
 		return id;
@@ -56,8 +57,8 @@ public class User implements Serializable {
 	@Column(name="USER_PASS",unique=false,nullable=false)
 	private String password;
 	
-	@Past
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="mm.dd.yyyy") 
 	@Column(name="USER_DATE")
 	private Date dateOfBirth;
 	
@@ -76,8 +77,8 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String name) {
+		this.userName = name;
 	}
 
 	public void setSurname(String surname) {
@@ -93,7 +94,7 @@ public class User implements Serializable {
 	}
 	
 	public User(String name, String surname, String email, String password, Date dateOfBirth) {
-		this.name = name;
+		this.userName = name;
 		this.surname = surname;
 		this.email = email;
 		this.password = password;
@@ -108,8 +109,8 @@ public class User implements Serializable {
 	}
 
 	
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return userName;
 	}
 	
 	public String getSurname() {

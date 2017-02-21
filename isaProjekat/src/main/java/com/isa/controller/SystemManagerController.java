@@ -30,7 +30,7 @@ public class SystemManagerController {
 		return systemManagerService.getAllRestaurants();
 	}
 	
-	@RequestMapping(value = "/getRestaurantManagersForRestaurant", method = RequestMethod.GET, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getRestaurantManagersForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<RestaurantManager>> getRestaurantManagersForRestaurant(@RequestParam(value="id") Long id) {
 		return systemManagerService.getRestaurantManagersForRestaurant(id);
 	}
@@ -50,21 +50,31 @@ public class SystemManagerController {
 		return systemManagerService.registerSystemManager(sm);
 	}
 	
+	@RequestMapping(value = "/updateSystem", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SystemManager> updateSystem(@RequestBody @Valid SystemManager sm) {
+		return systemManagerService.updateSystemManager(sm);
+	}
+	
 	@RequestMapping(value = "/registerRestaurant", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Restaurant> registerRestaurant(@RequestBody @Valid Restaurant r) {
 		return systemManagerService.registerRestaurant(r);
 	}
 	
-	@RequestMapping(value = "/deleteRestaurant", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> deleteRestaurant(@RequestParam(value="id") Long r_id) {
+	@RequestMapping(value = "/updateRestaurant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Restaurant> updateRestaurant(@RequestBody @Valid Restaurant r) {
+		return systemManagerService.updateRestaurant(r);
+	}
+	
+	@RequestMapping(value = "/deleteRestaurant", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Restaurant> deleteRestaurant(@RequestParam(value="id") Long r_id) {
 		return systemManagerService.removeRestaurant(r_id);
 	}
-	@RequestMapping(value = "/deleteSystemManager", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String deleteSystemManager(@RequestParam(value="id") Long r_id) {
+	@RequestMapping(value = "/deleteSystemManager", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SystemManager>  deleteSystemManager(@RequestParam(value="id") Long r_id) {
 		return systemManagerService.removeSystemManager(r_id);
 	}
-	@RequestMapping(value = "/deleteRestaurantManager", method = RequestMethod.DELETE, consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String deleteRestaurantManager(@RequestParam(value="id") Long r_id) {
+	@RequestMapping(value = "/deleteRestaurantManager", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RestaurantManager> deleteRestaurantManager(@RequestParam(value="id") Long r_id) {
 		return systemManagerService.removeRestaurantManager(r_id);
 	}
 }
