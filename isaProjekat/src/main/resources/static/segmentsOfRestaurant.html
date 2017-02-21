@@ -1,0 +1,53 @@
+<div class="container" ng-controller="restaurantManagerController">
+	<h1 class="page-header">Segments of {{$scope.restaurant.name}}</h1>
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Position</th>
+						<th>Smoking allowed</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="segment in restaurantSegments"
+						ng-click="setSelectedSegment(segment)"
+						ng-class="{'info' : selectedSegment===segment}">
+						<td>{{segment.id}}</td>
+						<td>{{segment.position}}</td>
+						<td>{{!!segment.smokingAllowed}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary"
+						ng-click="displaySegment(1)">Register segment</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="displaySegment(2)" ng-disabled="!selectedSegment">Edit
+						this</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="deleteSegment()" ng-disabled="!selectedSegment">Delete
+						this</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="showSegmentTables()" ng-disabled="!selectedSegment">Show
+						segment tables</button>
+					<button type="button" class="btn btn-primary" ng-click="displaySegment(4)"
+						ng-disabled="!selectedSegment">Add table to segment</button>
+				</div>
+			</div>
+		</div>
+		<br />
+	</div>
+	<div ng-show="showS==1" ng-include src="'pages/registerSegment.html'"></div>
+	<div ng-show="showS==2" ng-include src="'pages/editSegment.html'"></div>
+	<div ng-show="showS==3" ng-include src="'pages/segmentTables.html'"></div>
+	<div ng-show="showS==4" ng-include src="'pages/registerTable.html'"></div>
+</div>

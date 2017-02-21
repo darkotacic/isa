@@ -1,0 +1,36 @@
+<h2 class="page-header">Register restaurant manager for {{$parent.selected.restaurantName}}</h2>
+<div class="alert alert-danger" ng-show="error">
+	<p>Code or name already exists!</p>
+</div>
+<form name="myForm" novalidate>
+	<div class="form-group">
+		<label>Name:</label> <input type="text"
+			ng-Model="$parent.newRestaurantManager.userName" class="form-control"
+			placeholder="Enter name" required />
+	</div>
+	<div class="form-group">
+		<label>Surname:</label> <input type="text"
+			ng-Model="$parent.newRestaurantManager.surname" class="form-control"
+			placeholder="Enter surname" required />
+	</div>
+	<div class="form-group">
+		<label>Email:</label> <input type="text"
+			ng-Model="$parent.newRestaurantManager.email" class="form-control"
+			placeholder="Enter email" required />
+	</div>
+	<div class="form-group">
+		<label>Password:</label> <input type="password"
+			ng-Model="$parent.newRestaurantManager.password" class="form-control"
+			placeholder="Enter password" required />
+	</div>
+	<div class="form-group">
+		<label>Date of birth:</label> <input type="date"
+			ng-Model="$parent.newRestaurantManager.dateOfBirth" class="form-control"
+			placeholder="Enter date of birth" />
+	</div>
+	<div class="form-group">
+		<button type="submit"
+			class="btn btn-success" ng-Click="$parent.registerRestaurantManager()"
+			>Submit</button>
+	</div>
+</form>

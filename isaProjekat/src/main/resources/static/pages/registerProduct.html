@@ -1,0 +1,37 @@
+<h2 class="page-header">Register product for {{$parent.restaurant.restaurantName}}</h2>
+<div class="alert alert-danger" ng-show="error">
+	<p>Check your input</p>
+</div>
+<form name="myForm" novalidate>
+	<div class="form-group">
+		<label>Name:</label> <input type="text"
+			ng-Model="$parent.product.productName" class="form-control"
+			placeholder="Enter name" required />
+	</div>
+	<div class="form-group">
+		<label>Description:</label> <input type="text"
+			ng-Model="$parent.product.description" class="form-control"
+			placeholder="Enter description" required />
+	</div>
+	<div class="form-group">
+		<label>Price:</label> <input type="text"
+			ng-Model="$parent.product.price" class="form-control"
+			placeholder="Enter price" required />
+	</div>
+	 <label>Product type?</label>
+    <div class="form-group">
+            <label class="radio-inline">
+                <input type="radio" value="FOOD" ng-model="$parent.product.productType">
+               	Food
+            </label>
+            <label class="radio-inline">
+                <input type="radio" value="DRINK" ng-model="$parent.product.productType">
+                Drink
+            </label >
+    </div>
+	<div class="form-group">
+		<button type="submit"
+			class="btn btn-success" ng-disabled="myForm.$invalid" ng-Click="$parent.registerProduct()"
+			>Submit</button>
+	</div>
+</form>

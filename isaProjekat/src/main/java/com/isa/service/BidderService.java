@@ -20,7 +20,7 @@ public interface BidderService {
 	
 	ResponseEntity<BidderOffer> getBidderOfferByBidderAndRequestOffer(Long b_id, Long ro_id);
 
-	String deleteBidderOffer(Long bidder_id);
+	ResponseEntity<BidderOffer> deleteBidderOffer(Long bidder_id);
 
 	ResponseEntity<List<RequestOffer>> getActiveRequestOffers();
 

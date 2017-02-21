@@ -49,8 +49,8 @@ public class BidderServiceImpl implements BidderService {
 	public ResponseEntity<BidderOffer> registerBidderOffer(BidderOffer bo, Long ro_id, Long b_id) {
 		Bidder temp = this.bidderRepository.findOne(b_id);
 		RequestOffer temp1 = this.requestOfferRepository.findOne(ro_id);
-		if(this.bidderOfferRepository.findByBidderAndRequestOffer(temp, temp1) != null || bo.getDateOfDelivery().before(temp1.getExpirationDate()))
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		if(bo.getDateOfDelivery().before(temp1.getExpirationDate()))
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		bo.setBidder(temp);
 		bo.setRequestOffer(temp1);
 		return new ResponseEntity<BidderOffer>(this.bidderOfferRepository.save(bo), HttpStatus.OK);
@@ -66,9 +66,9 @@ public class BidderServiceImpl implements BidderService {
 	}
 
 	@Override
-	public String deleteBidderOffer(Long bidder_id) {
+	public ResponseEntity<BidderOffer> deleteBidderOffer(Long bidder_id) {
 		this.bidderOfferRepository.delete(bidder_id);
-		return "deleted";
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override

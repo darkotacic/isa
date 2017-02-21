@@ -1,0 +1,36 @@
+<h1 class="page-header">All products</h1>
+<div class="container">
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Product type</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="product in allProducts"
+					ng-click="setSelectedProduct(product)"
+					ng-class="{'info' : selectedProduct===product}">
+					<td>{{product.id}}</td>
+					<td>{{product.productName}}</td>
+					<td>{{product.description}}</td>
+					<td>{{product.productType}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary"
+						ng-click="addProduct()"
+						ng-disabled="!selectedProduct">Add this to restaurant</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

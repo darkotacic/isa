@@ -1,0 +1,24 @@
+<h2 class="page-header">Register segment for
+	{{$parent.restaurant.restaurantName}}</h2>
+<div class="alert alert-danger" ng-show="error">
+	<p>Code or name already exists!</p>
+</div>
+<form name="myForm" novalidate>
+	<div class="form-group">
+		<label>Position:</label> <input type="text"
+			ng-Model="$parent.segment.position" class="form-control"
+			placeholder="Enter position" required />
+	</div>
+	<label>Smoking allowed?</label>
+	<div class="form-group">
+		<label class="radio-inline"> <input type="radio" value=true
+			ng-model="$parent.segment.smokingAllowed"> Yes
+		</label> <label class="radio-inline"> <input type="radio" value=false
+			ng-model="$parent.segment.smokingAllowed"> No
+		</label>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-success"
+			ng-disabled="myForm.$invalid" ng-Click="$parent.registerSegment()">Submit</button>
+	</div>
+</form>

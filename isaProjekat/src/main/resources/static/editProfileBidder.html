@@ -1,0 +1,37 @@
+<div class="container" ng-controller="bidderController">
+	<h2 class="page-header">Edit your profile {{$parent.loggedUser.userName}}</h2>
+	<div class="alert alert-danger" ng-show="error">
+		<p>Code or name already exists!</p>
+	</div>
+	<form name="myForm" novalidate>
+		<div class="form-group">
+			<label>Name:</label> <input type="text"
+				ng-Model="editBidder.userName" class="form-control"
+				placeholder="Enter name" required ng-value="loggedUser.userName"/>
+		</div>
+		<div class="form-group">
+			<label>Surname:</label> <input type="text"
+				ng-Model="editBidder.surname" class="form-control"
+				placeholder="Enter surname" required  ng-value="loggedUser.surname"/>
+		</div>
+		<div class="form-group">
+			<label>Email:</label> <input type="text"
+				ng-Model="editBidder.email" class="form-control"
+				placeholder="Enter email" required ng-value="loggedUser.email"/>
+		</div>
+		<div class="form-group">
+			<label>Password:</label> <input type="password"
+				ng-Model="editBidder.password" class="form-control"
+				placeholder="Enter password" required ng-value="loggedUser.password"/>
+		</div>
+		<div class="form-group">
+			<label>Date of birth:</label> <input type="date"
+				ng-Model="editBidder.dateOfBirth" class="form-control"
+				placeholder="Enter date of birth" ng-value="loggedUser.dateOfBirth"/>
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-success"
+				ng-Click="editBidder()">Submit</button>
+		</div>
+	</form>
+</div>

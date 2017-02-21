@@ -1,0 +1,50 @@
+<h1 class="page-header">{{$parent.loggedUser.userName}} , welcome.</h1>
+<div class="container" ng-controller="restaurantManagerController">
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{restaurant.id}}</td>
+						<td>{{restaurant.restaurantName}}</td>
+						<td>{{restaurant.description}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary" ng-click="display(3)">Edit
+						this</button>
+					<button type="button" class="btn btn-primary" ng-click="display(1)">Register
+						product</button>
+					<button type="button" class="btn btn-primary" ng-click="display(2)">Register
+						segment</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="getProductsForRestaurant()">Show restaurant
+						products</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="getAllProducts()">Show all products</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div ng-show="show==1" ng-include src="'pages/registerProduct.html'"></div>
+	<div ng-show="show==2" ng-include
+		src="'pages/editRestaurantByRestaurantManager.html'"></div>
+	<div ng-show="show==3" ng-include src="'pages/restaurantProducts.html'"></div>
+	<div ng-show="show==4" ng-include src="'pages/allProducts.html'"></div>
+</div>
+</div>

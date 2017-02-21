@@ -1,0 +1,12 @@
+<form name="myForm" novalidate>
+	<div class="form-group">
+		<label>Number of chairs:</label> <input type="text"
+			ng-Model="$parent.table.numberOfChairs" class="form-control"
+			placeholder="Enter number of chairs" required/>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-success"
+			ng-disabled="myForm.$invalid" ng-Click="$parent.registerTable()"
+			>Submit</button>
+	</div>
+</form>

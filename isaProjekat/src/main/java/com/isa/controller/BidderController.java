@@ -56,7 +56,7 @@ public class BidderController {
 	}
 	
 	@RequestMapping(value = "/deleteBid", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String DeleteBid(@RequestParam(value = "id") Long bidder_id) {
+	public ResponseEntity<BidderOffer> DeleteBid(@RequestParam(value = "id") Long bidder_id) {
 		return bidderService.deleteBidderOffer(bidder_id);
 	}
 	

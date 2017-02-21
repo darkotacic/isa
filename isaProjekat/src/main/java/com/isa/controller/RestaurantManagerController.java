@@ -45,7 +45,7 @@ public class RestaurantManagerController {
 			@RequestParam(value = "rest_id") Long rest_id) {
 		return restaurantManagerService.addExistingProductToMenu(ids, rest_id);
 	}
-	
+
 	@RequestMapping(value = "/removeProduct", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> removeProduct(@RequestParam(value = "product_id") Long ids,
 			@RequestParam(value = "rest_id") Long rest_id) {
@@ -70,12 +70,12 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/removeSegment", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> removeSegment(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<Segment> removeSegment(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeSegment(id);
 	}
 
 	@RequestMapping(value = "/removeRestaurantTable", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> removeRestaurantTable(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<RestaurantTable> removeRestaurantTable(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeRestaurantTable(id);
 	}
 
@@ -106,7 +106,7 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/removeWorker", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> removeWorker(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<Worker> removeWorker(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeWorker(id);
 	}
 
@@ -142,7 +142,7 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/removeWorkSchedule", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String removeWorkSchedule(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<WorkSchedule> removeWorkSchedule(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeWorkSchedule(id);
 	}
 
@@ -156,7 +156,7 @@ public class RestaurantManagerController {
 	public ResponseEntity<RequestOffer> updateRequestOffer(@RequestBody @Valid RequestOffer ro) {
 		return restaurantManagerService.updateRequestOffer(ro);
 	}
-	
+
 	@RequestMapping(value = "/removeProductFromRequestOffer", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> removeProductFromRequestOffer(@RequestParam(value = "product_id") Long ids,
 			@RequestParam(value = "ro_id") Long rest_id) {
@@ -170,7 +170,7 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/removeRequestOffer", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String removeRequestOffer(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<RequestOffer> removeRequestOffer(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.removeRequestOffer(id);
 	}
 
@@ -185,8 +185,7 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/getAllWorkSchedulesForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(
-			@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllWorkSchedulesForRestaurant(id);
 	}
 
@@ -201,14 +200,12 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/getAllBidderOffersForManagerOffers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(
-			@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllBidderOffersForManagerOffers(id);
 	}
 
 	@RequestMapping(value = "/getAllBidderOffersForRequestOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForRequestOffer(
-			@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForRequestOffer(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllBidderOffersForRequestOffer(id);
 	}
 
@@ -230,6 +227,11 @@ public class RestaurantManagerController {
 	@RequestMapping(value = "/getAllProductsForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Product>> getAllProductsForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllProductsForRestaurant(id);
+	}
+
+	@RequestMapping(value = "/getAllProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Product>> getAllProducts() {
+		return restaurantManagerService.getAllProducts();
 	}
 
 	@RequestMapping(value = "/getAllProductsForRequestOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -268,7 +270,7 @@ public class RestaurantManagerController {
 	public double getWaiterEarnings(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.waiterEarinings(id);
 	}
-	
+
 	@RequestMapping(value = "/getRestaurantForManager", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Restaurant> getRestaurantForManager(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getRestaurantForManager(id);

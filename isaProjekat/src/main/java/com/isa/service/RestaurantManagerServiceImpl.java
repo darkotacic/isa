@@ -95,16 +95,16 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		Restaurant temp = this.restaurantRepository.findOne(r.getId());
 		temp.setDescription(r.getDescription());
 		temp.setRestaurantName(r.getRestaurantName());
-		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(temp), HttpStatus.CREATED);
+		return new ResponseEntity<Restaurant>(this.restaurantRepository.save(temp), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Product> removeProductFromMenu(Long products, Long rest_id) {
 		Restaurant t = this.restaurantRepository.findOne(rest_id);
-			Product p = this.productRepository.findOne(products);
-			p.getRestaurants().remove(t);
-			t.getMenu().remove(p);
-		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
+		Product p = this.productRepository.findOne(products);
+		p.getRestaurants().remove(t);
+		t.getMenu().remove(p);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
@@ -112,90 +112,90 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		Restaurant t = this.restaurantRepository.findOne(r_id);
 		t.getMenu().add(p);
 		p.getRestaurants().add(t);
-		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
+		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.OK);
 	}
-	
+
 	@Override
 	public ResponseEntity<Product> addExistingProductToMenu(Long p_id, Long r_id) {
 		Restaurant t = this.restaurantRepository.findOne(r_id);
 		Product p = this.productRepository.findOne(p_id);
 		t.getMenu().add(p);
 		p.getRestaurants().add(t);
-		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
+		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Segment> addSegmentToRestaurnat(Segment s, Long r_id) {
 		Restaurant r = this.restaurantRepository.findOne(r_id);
 		s.setRestaurant(r);
-		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.CREATED);
+		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<RestaurantTable> addRestaurantTableToSegment(RestaurantTable t, Long segment_id) {
 		Segment s = this.segmentRepository.findOne(segment_id);
 		t.setSegment(s);
-		return new ResponseEntity<RestaurantTable>(this.restaurantTableRepository.save(t), HttpStatus.CREATED);
+		return new ResponseEntity<RestaurantTable>(this.restaurantTableRepository.save(t), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<String> removeSegment(Long id) {
+	public ResponseEntity<Segment> removeSegment(Long id) {
 		this.segmentRepository.delete(id);
-		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<String> removeRestaurantTable(Long id) {
+	public ResponseEntity<RestaurantTable> removeRestaurantTable(Long id) {
 		if (this.restaurantTableRepository.findOne(id).isFree())
 			this.restaurantTableRepository.delete(id);
-		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<RestaurantTable> updateRestaurantTable(RestaurantTable t) {
-		return new ResponseEntity<RestaurantTable>(this.restaurantTableRepository.save(t), HttpStatus.ACCEPTED);
+		return new ResponseEntity<RestaurantTable>(this.restaurantTableRepository.save(t), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Segment> updateSegment(Segment s) {
-		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.ACCEPTED);
+		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Cook> registerCook(Cook c, Long id) {
-		c.setUserRole(UserRole.COOK);
-		if (this.userRepository.findByEmail(c.getEmail()) != null || this.restaurantRepository.findOne(id) == null)
+		if (this.userRepository.findByEmail(c.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		c.setUserRole(UserRole.COOK);
 		c.setRestaurant(this.restaurantRepository.findOne(id));
-		return new ResponseEntity<Cook>(this.cookRepository.save(c), HttpStatus.CREATED);
+		return new ResponseEntity<Cook>(this.cookRepository.save(c), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Bartender> registerBartender(Bartender w, Long id) {
-		if (this.userRepository.findByEmail(w.getEmail()) != null || this.restaurantRepository.findOne(id) == null)
+		if (this.userRepository.findByEmail(w.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		w.setRestaurant(this.restaurantRepository.findOne(id));
-		return new ResponseEntity<Bartender>(this.bartenderRepository.save(w), HttpStatus.CREATED);
+		return new ResponseEntity<Bartender>(this.bartenderRepository.save(w), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Waiter> registerWaiter(Waiter w, Long id) {
-		if (this.userRepository.findByEmail(w.getEmail()) != null || this.restaurantRepository.findOne(id) == null)
+		if (this.userRepository.findByEmail(w.getEmail()) != null )
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		w.setRestaurant(this.restaurantRepository.findOne(id));
-		return new ResponseEntity<Waiter>(this.waiterRepository.save(w), HttpStatus.CREATED);
+		return new ResponseEntity<Waiter>(this.waiterRepository.save(w), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<String> removeWorker(Long id) {
+	public ResponseEntity<Worker> removeWorker(Long id) {
 		this.workerRepository.delete(id);
-		return new ResponseEntity<String>("Vidi bazu", HttpStatus.MOVED_PERMANENTLY);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id,
 			Long replacement_id) {
-		if(w.getDate().before(new Date()))
+		if (w.getDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		if (w.isTwoDays()) {
 			Calendar cal = Calendar.getInstance();
@@ -207,29 +207,29 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		Worker u = this.workerRepository.findOne(worker_id);
 		if (u.getUserRole().equals(UserRole.WAITER)) {
-			if (segment_id == 0 || this.segmentRepository.findByRestaurantAndId(u.getRestaurant(), segment_id) == null)
+			if (segment_id == 0)
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			Segment s = this.segmentRepository.findOne(segment_id);
 			if (replacement_id != 0) {
 				Worker r = this.workerRepository.findOne(replacement_id);
 				if (w.isTwoDays())
 					if (this.workScheduleRepository.findByWorkerAndDateAndStartTime(r, w.getSecondDate(),
-							w.getEndTime()) == null || !u.getRestaurant().equals(r.getRestaurant()))
+							w.getEndTime()) == null)
 						return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 					else if (this.workScheduleRepository.findByWorkerAndDateAndStartTime(r, w.getDate(),
-							w.getEndTime()) == null || !u.getRestaurant().equals(r.getRestaurant()))
+							w.getEndTime()) == null)
 						return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				w.setReplacement(r);
 			}
 			w.setSegment(s);
 		}
 		w.setWorker(u);
-		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(w), HttpStatus.CREATED);
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(w), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<WorkSchedule> updateWorkSchedule(WorkSchedule w) {
-		if(w.getDate().before(new Date()))
+		if (w.getDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		WorkSchedule temp = this.workScheduleRepository.findOne(w.getId());
 		temp.setDate(w.getDate());
@@ -240,71 +240,75 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			Date nextDay = cal.getTime();
 			temp.setSecondDate(nextDay);
 			temp.setTwoDays(true);
+		} else if(!w.isTwoDays() && temp.isTwoDays()){
+			temp.setTwoDays(false);
+			temp.setSecondDate(null);
 		}
 		temp.setEndTime(w.getEndTime());
 		temp.setStartTime(w.getStartTime());
-		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(temp), HttpStatus.CREATED);
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(temp), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<WorkSchedule> updateWorkScheduleSetReplacement(Long s, Long w) {
 		WorkSchedule ws = this.workScheduleRepository.findOne(w);
 		ws.setReplacement(this.waiterRepository.findOne(s));
-		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.ACCEPTED);
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<WorkSchedule> updateWorkScheduleSetSegment(Long s, Long w) {
 		WorkSchedule ws = this.workScheduleRepository.findOne(w);
 		ws.setSegment(this.segmentRepository.findOne(s));
-		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.ACCEPTED);
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<WorkSchedule> updateWorkScheduleSetWorker(Long s, Long w) {
 		WorkSchedule ws = this.workScheduleRepository.findOne(w);
 		ws.setWorker(this.workerRepository.findOne(s));
-		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.ACCEPTED);
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.OK);
 	}
 
 	@Override
-	public String removeWorkSchedule(Long id) {
+	public ResponseEntity<WorkSchedule> removeWorkSchedule(Long id) {
 		this.workScheduleRepository.delete(id);
-		return "Izbrisan";
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Bidder> registerBidder(Bidder b) {
 		if (this.userRepository.findByEmail(b.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		return new ResponseEntity<Bidder>(this.bidderRepository.save(b), HttpStatus.CREATED);
+		return new ResponseEntity<Bidder>(this.bidderRepository.save(b), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<RequestOffer> registerRequestOffer(RequestOffer ro, Long r_id) {
-		if (this.restaurantManagerRepository.findOne(r_id) == null || ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		if (ro.getExpirationDate().before(ro.getStartDate())
+				|| ro.getStartDate().before(new Date()))
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		RestaurantManager rm = this.restaurantManagerRepository.findOne(r_id);
 		ro.setRestaurantManager(rm);
-		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(ro), HttpStatus.CREATED);
+		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(ro), HttpStatus.OK);
 	}
-	
+
 	@Override
 	public ResponseEntity<Product> addProductToRequestOffer(Long p_id, Long r_id) {
 		RequestOffer t = this.requestOfferRepository.findOne(r_id);
 		Product p = this.productRepository.findOne(p_id);
 		t.getProducts().add(p);
 		p.getRequestOffers().add(t);
-		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
+		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.OK);
 	}
-	
+
 	@Override
 	public ResponseEntity<Product> removeProductFromRequestOffer(Long p_id, Long r_id) {
 		RequestOffer t = this.requestOfferRepository.findOne(r_id);
 		Product p = this.productRepository.findOne(p_id);
 		t.getProducts().remove(p);
 		p.getRequestOffers().remove(t);
-		return new ResponseEntity<Product>(this.productRepository.save(p), HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
@@ -314,14 +318,14 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		temp.setStartDate(ro.getStartDate());
 		temp.setExpirationDate(ro.getExpirationDate());
-		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(temp), HttpStatus.ACCEPTED);
+		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(temp), HttpStatus.OK);
 
 	}
 
 	@Override
-	public String removeRequestOffer(Long ro) {
+	public ResponseEntity<RequestOffer> removeRequestOffer(Long ro) {
 		this.requestOfferRepository.delete(ro);
-		return "nes";
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
@@ -393,14 +397,14 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		RequestOffer ro = this.requestOfferRepository.findOne(q_id);
 		ro.setStatus(false);
 		List<BidderOffer> ibo = this.bidderOfferRepository.findByRequestOffer(ro);
-		for(int i = 0; i < ibo.size() ; i++) {
+		for (int i = 0; i < ibo.size(); i++) {
 			if (!ibo.get(i).getId().equals(r_id))
 				ibo.get(i).setOfferStatus(BidderOfferStatus.DECLINED);
 			else
 				ibo.get(i).setOfferStatus(BidderOfferStatus.ACCEPTED);
 		}
 		this.bidderOfferRepository.save(ibo);
-		return new ResponseEntity<String>("Buh", HttpStatus.ACCEPTED);
+		return new ResponseEntity<String>("Buh", HttpStatus.OK);
 	}
 
 	@Override
@@ -460,7 +464,14 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<Restaurant> getRestaurantForManager(Long id) {
-		return new ResponseEntity<Restaurant>(this.restaurantRepository.getByManager(this.restaurantManagerRepository.findOne(id)), HttpStatus.OK);
+		return new ResponseEntity<Restaurant>(
+				this.restaurantRepository.getByManager(this.restaurantManagerRepository.findOne(id)), HttpStatus.OK);
 	}
+
+	@Override
+	public ResponseEntity<List<Product>> getAllProducts() {
+		return new ResponseEntity<List<Product>>((List<Product>) this.productRepository.findAll(), HttpStatus.OK);
+	}
+
 
 }
