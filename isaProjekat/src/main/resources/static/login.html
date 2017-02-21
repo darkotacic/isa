@@ -1,11 +1,8 @@
 <div role="form" class="form-inline" ng-controller="loginController">
 	<h1 class="page-header">Login</h1>
-	<div class="alert alert-danger" ng-show="error">
-		<p>Bad credentials, try again</p>
-	</div>
 	<form name="myForm" novalidate>
 		<div class="form-group">
-			<label>Username:</label> <input type="text" ng-Model="user.username" class="form-control"
+			<label>Email:</label> <input type="text" ng-Model="user.email" class="form-control"
 			placeholder = "Enter username" required/>
 		</div>
 		<div class="form-group">

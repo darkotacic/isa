@@ -8,7 +8,7 @@ app.controller('appController',['$rootScope','$scope','$location','SessionServic
 		if (!$rootScope.loggedUser) {
 			$location.path('/login');
 		} else {
-			$location.path('/shoppingCart');
+			$location.path('/home');
 		}
 	});
 	
@@ -29,22 +29,27 @@ app.controller('loginController',['$rootScope','$scope','$location','SessionServ
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
 	} else {
-		$location.path('/shoppingCart');
+		$location.path('/home');
 	}
 	
-	$scope.error = false;
 	
 	$scope.login = function(){
 		var user = $scope.user;
-	    sessionService.login(user).then(function(response){
-	    	if(response.data){
-	    		$scope.error = false;
-    			$rootScope.logged = true;
-    			$rootScope.loggedUser = response.data;
-	    		$location.path('/shoppingCart');
-	    	} else {
-	    		$scope.error = true;
-	    	}
+	    sessionService.login(user)
+	    .then(function(response){
+    		$rootScope.logged = true;
+    		$rootScope.loggedUser = response.data;
+    		swal({
+    			  title: "Success!",
+    			  text: "Welcome " + response.data.userName,
+    			  type: "success",
+    			  timer: 2000
+ 
+    			});
+	    	$location.path('/home');
+	    })
+	    .catch(function(response) {
+	    	swal("ERROR", "BAD CREDENTIALS", "error");
 	    });
 	
 	}
@@ -79,401 +84,34 @@ app.controller('registerController',['$rootScope','$scope','$location','$http','
 	}
 }]);
 
-app.controller('shopController',['$rootScope','$scope','$location','$http','ShopService','ProductService',function($rootScope,$scope,$location,$http,shopService,productService) {
+app.controller('homeController',['$rootScope','$scope','$location','$http',function($rootScope,$scope,$location,$http) {
 	
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
 	} 
 	
-	$scope.shopProducts = [];
-	
-	$scope.defaultItem = {
-			"name": '',
-			"country": '',
-			"grade": undefined,
-		};
-	
-	$scope.searchTypes = ["Name","Country","Grade"];
-	
-	productService.getProducts().then(function(response){
-		$scope.products = response.data;
-	});
-	
-	shopService.getShops().then(function(response){
-		$scope.shops = response.data;
-	});
-	
-	$scope.refreshSearch = function(){
-		$scope.shopSearch = angular.copy($scope.defaultItem);
+	switch($rootScope.loggedUser.userRole) {
+    case 'GUEST':
+    	$scope.show = 1;
+        break;
+    case 'WAITER':
+    	$scope.show = 4;
+        break;
 	}
 	
-	$scope.search = function(){
-		var shopSearch = angular.copy($scope.shopSearch);
-		var searchParameter = angular.copy($scope.searchShop);
-		var searchType = angular.copy($scope.showSearch);
-		
-		shopService.searchProducts(shopSearch,searchType,searchParameter).then(function(response){
-			$scope.shops = response.data;
-		});
-	}
-	
-	$scope.setSearchType = function(searchType){
-		if(searchType=='undo'){
-			shopService.getShops().then(function(response){
-				$scope.shops = response.data;
-			})
-		}
-		$scope.shopSearch = angular.copy($scope.defaultItem);
-		
-		$scope.showSearch = searchType;
-	}
-	
-	$scope.getShopProducts = function(){
-		var shop = $scope.selected;
-		productService.getProductsForShop(shop.code).then(function(response){
-			$scope.shopProducts = response.data;
-			$scope.show = 3;
-		});
-	}
-	
-	$scope.setSelected = function(selected){
-		$scope.editShop = '';
-		$scope.newShop = '';
-		$scope.selected = selected;
-		$scope.show = '';
-		
-	}	
-	
-	$scope.display = function(tab){
-		$scope.editShop = '';
-		$scope.show = tab;
-	}
-	
-	$scope.addShop = function(){
-		var shop = $scope.newShop;
-		shopService.addShop(shop).then(function(response){
-    		if(response.data){
-    			$scope.error = false;
-    			alert("Uspesno dodat shop: " + response.data.code);
-    			$scope.shops.push(response.data);
-    			$scope.show = null;
-    			$scope.newShop = '';
-    		} else {
-    			$scope.error = true;
-    		}
-    	});
-	}
-	
-	$scope.deleteShop = function(){
-		var shop = $scope.selected;
-		shopService.deleteShop(shop).then(function(response){
-    		if(response.data){
-    			alert("Uspesno obrisan shop: " + response.data.code);
-    			var index = $scope.shops.indexOf($scope.selected);
-    			$scope.shops.splice(index,1);
-    			$scope.selected = null;
-    			$scope.show = '';
-    		} else {
-    		}
-		});	
-	}
-	
-	
-	$scope.updateShop = function(){
-		$scope.editShop.code = $scope.selected.code;
-		$scope.editShop.name = $scope.selected.name;
-		var shop = $scope.editShop;
-		shopService.updateShop(shop).then(function(response){
-    		if(response.data){
-    			alert("Uspesno izmenjen shop: " + response.data.code);
-    			var index = $scope.shops.indexOf($scope.selected);
-    			$scope.shops[index] = response.data;
-    			$scope.selected = null;
-    			$scope.show = '';
-    			$scope.editShop = '';
-    		} else {
-    		}
-		});	
+	$scope.showView = function(number){
+		$scope.show = number;
 	}
 	
 }]);
 
-app.controller('productController',['$rootScope','$scope','$location','$http','SessionService','ProductService','ShoppingCartService','CategoryService','ShopService','ActionService',function($rootScope,$scope,$location,$http,sessionService,productService,shoppingCartService,categoryService,shopService,actionService) {
+app.controller('profileController',['$rootScope','$scope','$location','$http','SessionService',function($rootScope,$scope,$location,$http,sessionService) {
 	
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
 	} 
 	
-	$scope.defaultItem = {
-			"name": '',
-			"range": {
-				"max": 500,
-				"min": 50,
-			},
-			"description": '',
-			"country": '',
-			"category": null,
-			"color": '',
-			"grade": undefined,
-			"reviewCount": undefined,
-			"quantity": undefined
-		};
-	
-	actionService.getActions().then(function(response){
-		$scope.actions = response.data;
-	});
-	
-	productService.getProducts().then(function(response){
-		$scope.products = response.data;
-	});
-	
-	
-	shopService.getShops().then(function(response){
-		$scope.shops = response.data;
-	});
-	
-	$scope.addOrRemoveFromWishlist = function(product){
-		var add = true;
-		if($rootScope.loggedUser.wishlist.wishlist == undefined){
-			$rootScope.loggedUser.wishlist.wishlist = [];
-		} else {
-			var i;
-			var wishlist = $rootScope.loggedUser.wishlist.wishlist;
-			for(i = 0; i < wishlist.length;i++){
-				if(wishlist[i].code === product.code){
-					add = false;
-					break;
-				}
-			}
-		}
-		
-		if(add){
-			sessionService.addProductToWishlist(product).then(function(response){
-				$rootScope.loggedUser.wishlist.wishlist.push($scope.selected);
-				var actions = $scope.actions;
-				var i;
-				for(i = 0; i < actions.length;i++){
-					if(product.code == actions[i].productCode){
-						alert("Product " + product.code + " is on action");
-					}
-				}
-			});
-		} else {
-			sessionService.deleteProductFromWishlist(product).then(function(response){
-				var index = $rootScope.loggedUser.wishlist.wishlist.indexOf($scope.selected);
-				$rootScope.loggedUser.wishlist.wishlist.splice(index,1);
-			});
-		}
-	}
-	
-	
-	$scope.isOnWishlist = function(product){
-		if($rootScope.loggedUser != '' && $rootScope.loggedUser.wishlist.wishlist != undefined){
-			var wishlist = $rootScope.loggedUser.wishlist.wishlist;
-			var i;
-			for(i = 0; i < wishlist.length;i++){
-				if(wishlist[i].code === product.code){
-					return true;
-				}
-			}
-		}
-		return false;
-		
-	}
-	
-	$scope.refreshSearch = function(){
-		$scope.productSearch = angular.copy($scope.defaultItem);
-	}
-	
-	
-	$scope.searchTypes = ["Name","Price range","Description","Category","Country",
-	                      "Color","Grade","Review count","Quantity"
-	                      ];
-	
-	$scope.displayReview = function(showReview){
-		if(showReview == 1){
-			$scope.selectedReview = '';
-		}
-		$scope.showReview = showReview;
-	}
-	
-	$scope.addReview = function(){
-		var reviewNumber = $scope.selected.reviews.length+1;
-		$scope.newReview.code = $scope.selected.code + '#' + reviewNumber;
-		$scope.newReview.username = $rootScope.loggedUser.username;
-		$scope.newReview.date = new Date();
-		$scope.newReview.grade = 0;
-		var newReview = $scope.newReview;
-		productService.addReview(newReview).then(function(response){
-			$scope.selected.reviews.push(response.data);
-			$scope.showReview = '';
-		});
-	}
-	
-	$scope.closeReviews = function(){
-		$scope.showReview = '';
-		$scope.show = '';
-	}
-	
-	$scope.updateReview = function(){
-		$scope.editReview.code = $scope.selectedReview.code;
-		$scope.editReview.username = $rootScope.loggedUser.username;
-		$scope.editReview.date = new Date();
-		$scope.editReview.grade = $scope.selectedReview.grade;
-		var editReview = $scope.editReview;
-		
-		productService.updateReview(editReview).then(function(response){
-			var index = $scope.selected.reviews.indexOf($scope.selectedReview);
-			$scope.selected.reviews[index] = response.data;
-			$scope.showReview = '';
-		});
-	}
-	
-	$scope.deleteReview = function(){
 
-		var review = $scope.selectedReview;
-		
-		productService.deleteReview(review).then(function(response){
-			var index = $scope.selected.reviews.indexOf($scope.selectedReview);
-			$scope.selected.reviews.splice(index,1);
-			$scope.selectedReview = '';
-			$scope.showReview = '';
-		});
-	}
-	
-	
-	$scope.search = function(){
-		var categories = $scope.categories;
-		for (var i = 0; i < categories.length; i++) { 
-		    if(categories[i].name === $scope.productSearch.category){
-		    	$scope.productSearch.category = categories[i];
-		    	break;
-		    }
-		}
-		var productSearch = angular.copy($scope.productSearch);
-		var searchParameter = angular.copy($scope.searchProduct);
-		var searchType = angular.copy($scope.showSearch);
-		if(searchType=='combined'){
-			$scope.ProductSearch.category = anguar.copy(productSearch.category.name);
-		}
-		
-		productService.searchProducts(productSearch,searchType,searchParameter).then(function(response){
-			$scope.products = response.data;
-		});
-	}
-	
-	
-	$scope.setSearchType = function(searchType){
-		if(searchType=='undo'){
-			productService.getProducts().then(function(response){
-				$scope.products = response.data;
-			})
-		}
-		$scope.productSearch = angular.copy($scope.defaultItem);
-		$scope.showSearch = searchType;
-	}
-	
-	$scope.addToCart = function(){
-		var product = $scope.selected;
-		shoppingCartService.addItem(product).then(function(response){
-			if(response.data){
-				alert("Product "+ response.data.code+" prebacen u korpu");
-				$rootScope.loggedUser.shoppingCart.shoppingCart.push(response.data);
-			}
-		});
-	}
-	
-	categoryService.getCategories().then(function(response){
-		$scope.categories = response.data;
-	});
-	
-	
-	productService.getProducts().then(function(response){
-		$scope.products = response.data;
-	});
-	
-	$scope.setSelectedReview = function(selectedReview){
-		$scope.newReview = '';
-		$scope.editReview = '';
-		$scope.selectedReview = selectedReview;
-	}
-	
-	$scope.setSelected = function(selected){
-		$scope.editProduct = '';
-		$scope.newProduct = '';
-		if($scope.show==3){
-			$scope.show = '';
-			$scope.showReview = '';
-			$scope.selectedReview = '';
-		}
-		$scope.selected = selected;
-	}	
-	
-	$scope.display = function(tab){
-		$scope.editProduct = '';
-		$scope.show = tab;
-	}
-	
-	$scope.addProduct = function(){
-		var categories = $scope.categories;
-		for (var i = 0; i < categories.length; i++) { 
-		    if(categories[i].name === $scope.newProduct.category){
-		    	$scope.newProduct.category = categories[i];
-		    	break;
-		    }
-		}
-		var product = $scope.newProduct;
-		productService.addProduct(product).then(function(response){
-    		if(response.data){
-    			$scope.error = false;
-    			alert("Uspesno dodat product: " + response.data.code);
-    			$scope.products.push(response.data);
-    			$scope.show = null;
-    			$scope.newProduct = '';
-    		} else {
-    			$scope.error = true;
-    		}
-    	});
-	}
-	
-	$scope.deleteProduct = function(){
-		var product = $scope.selected;
-		productService.deleteProduct(product).then(function(response){
-    		if(response.data){
-    			alert("Uspesno obrisan product: " + response.data.code);
-    			var index = $scope.products.indexOf($scope.selected);
-    			$scope.products.splice(index,1);
-    			$scope.selected = null;
-    			$scope.show = '';
-    		} else {
-    		}
-		});	
-	}
-	
-	$scope.updateProduct = function(){
-		$scope.editProduct.code = $scope.selected.code;
-		$scope.editProduct.shop = $scope.selected.shop;
-		$scope.editProduct.reviews = $scope.selected.reviews;
-		var categories = $scope.categories;
-		for (var i = 0; i < categories.length; i++) { 
-		    if(categories[i].name === $scope.editProduct.category){
-		    	$scope.editProduct.category = categories[i];
-		    	break;
-		    }
-		}
-		var product = $scope.editProduct;
-		productService.updateProduct(product).then(function(response){
-    		if(response.data){
-    			alert("Uspesno izmenjen product: " + response.data.code);
-    			var index = $scope.products.indexOf($scope.selected);
-    			$scope.products[index] = response.data;
-    			$scope.selected = null;
-    			$scope.show = '';
-    			$scope.editProduct = '';
-    		} else {
-    		}
-		});	
-	}
 }]);
 
 app.controller('delivererController',['$rootScope','$scope','$location','$http','DelivererService',function($rootScope,$scope,$location,$http,delivererService) {

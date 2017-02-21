@@ -40,7 +40,6 @@ public class UserController {
 	
 	@RequestMapping(value="/logout",
 			method=RequestMethod.GET,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> logOut() {
 		User temp = (User) session.getAttribute("user");

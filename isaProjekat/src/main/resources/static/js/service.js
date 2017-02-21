@@ -19,49 +19,7 @@ app.factory('SessionService', function sessionService($http) {
 		});
 	}
 	
-	sessionService.addProductToWishlist = function(product){
-		return $http({
-			method : 'POST',
-			url: '../webProject/webapi/users/addProductToWishlist',
-			data: {
-				"code": product.code,
-				"name": product.name,
-				"color": product.color,
-				"weight": product.weight,
-				"productionCountry": product.country,
-				"productCategory": product.category,
-				"manufacturer": product.manufacturer,
-				"grade": product.grade,
-				"price": product.price,
-				"shop": product.shop,
-				"reviews": product.reviews
-			}
-		});
-	}
 	
-	sessionService.deleteProductFromWishlist = function(product){
-		return $http({
-			method : 'DELETE',
-			url: '../webProject/webapi/users/deleteProductFromWishlist',
-			data: {
-				"code": product.code,
-				"name": product.name,
-				"color": product.color,
-				"weight": product.weight,
-				"productionCountry": product.country,
-				"productCategory": product.category,
-				"manufacturer": product.manufacturer,
-				"grade": product.grade,
-				"price": product.price,
-				"shop": product.shop,
-				"reviews": product.reviews
-			},
-			headers: {
-				   'Content-Type': 'application/json',
-				   'Accept': 'application/json'
-			}
-		});
-	}
 	
 	sessionService.getLoggedUser = function(){
 		return $http({
@@ -82,26 +40,14 @@ app.factory('SessionService', function sessionService($http) {
 	sessionService.login = function(user){
 		return $http({
 			method : 'POST',
-			url: '../webProject/webapi/users/login',
+			url: '../users/login',
 			data: {
-				"username": user.username,
-				"password": user.password,
-				"name": user.name,
-				"lastName": user.lastName,
 				"email": user.email,
-				"phone": user.phone,
-				"country": user.country,
-				"address": user.address
+				"password": user.password,
 			}
 		});
 	}
 	
-	sessionService.getShops = function(){
-		return $http({
-			method : 'GET',
-			url: '../webProject/webapi/shops',
-		});
-	}
 	
 	return sessionService;
 	

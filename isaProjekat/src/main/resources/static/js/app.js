@@ -1,6 +1,5 @@
 var app = angular.module('webApp',['ngRoute']);
 
-//routeProvider
 app.config(function($routeProvider , $locationProvider){
 
 	
@@ -8,6 +7,18 @@ app.config(function($routeProvider , $locationProvider){
 		.when('/login', { 
 			templateUrl: 'login.html',
 			controller: 'loginController'
+		})
+		.when('/home', {
+			templateUrl: 'home.html',
+			controller: 'homeController'
+		})
+		.when('/register', {
+			templateUrl: 'register.html',
+			controller: 'registerController'
+		})
+		.when('/profile', {
+			templateUrl: 'profile.html',
+			controller: 'profileController'
 		})
 		.when('/registerRestaurant', {
 			templateUrl: 'registerRestaurant.html',
@@ -41,7 +52,7 @@ app.config(function($routeProvider , $locationProvider){
 			templateUrl: 'restaurantForManager.html',
 			controller: 'restaurantManagerController'
 		})
-			.when('/showRestaurantWorkers', {
+		.when('/showRestaurantWorkers', {
 			templateUrl: 'workersOfRestaurant.html',
 			controller: 'restaurantManagerController'
 		})

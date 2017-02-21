@@ -5,7 +5,9 @@
 		<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css">
+		<link href="css/sweetalert.css" rel="stylesheet" >
 		<script type="text/javascript" src="js/angular.min.js"></script>
+		<script type="text/javascript" src="js/sweetalert.min.js"></script>
 		<script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/angular-route.min.js"></script>
@@ -30,13 +32,9 @@
 	                    <li><a href="#!/register"><i class="fa fa-comment"></i>Register</a></li>
 	                </ul>
 	               	<ul class="nav navbar-nav navbar-right" ng-show="loggedUser">
-	               		<li><a href="#action"><i class="fa fa-calendar"></i>Actions</a></li>
-	               		<li><a href="#shoppingCart"><i class="fa fa-shopping-cart"></i>Shopping cart</a></li>
-	                    <li><a href="#shop"><i class="fa fa-home"></i> Shops</a></li>
-	                    <li><a href="#deliverer"><i class="fa fa-envelope"></i> Deliverers</a></li>
-	                    <li><a href="#product"><i class="fa fa-money"></i>Products</a></li>
-	                    <li><a href="#category"><i class="fa fa-tags"></i>Categories</a></li>
-	                    <li><a href="#login" ng-click="logout()"><i class="fa fa-sign-out""></i>Logout</a></li>
+	               		<li><a href="#!/home"><i class="fa fa-home"></i>Home</a></li>
+	               		<li><a href="#!/profile"><i class="fa fa-user"></i>Profile</a></li>
+	                    <li><a href="#!/login" ng-click="logout()"><i class="fa fa-sign-out""></i>Logout</a></li>
 	                </ul>
 	            </div>
 	            </nav>
