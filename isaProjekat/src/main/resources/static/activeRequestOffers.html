@@ -1,0 +1,46 @@
+<h1 class="page-header">All active offers</h1>
+<div class="container" ng-controller="bidderController">
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Start date</th>
+						<th>Expiration date</th>
+						<th>Who registrated this </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="requestOffer in requestOffers"
+						ng-click="setSelectedRequestOffer(requestOffer)"
+						ng-class="{'info' : selectedRequestOffer===requestOffer}">
+						<td>{{requestOffer.id}}</td>
+						<td>{{requestOffer.startDate}}</td>
+						<td>{{requestOffer.expirationDate}}</td>
+						<td>{{requestOffer.restaurantManager.id}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary" ng-click="getBidderOfferForBidderAndRequest()"
+						ng-disabled="!selectedRequestOffer">Bid on this</button>
+						<button type="button" class="btn btn-primary" ng-click="showProductsForRequestOffer(selectedRequestOffer.id)"
+						ng-disabled="!selectedRequestOffer">Show requested products</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+
+	<div ng-show="show==1" ng-include src="'pages/registerBidderOffer.html'"></div>
+	<div ng-show="show==2" ng-include src="'pages/productsOfRequestOffer.html'"></div>
+	<div ng-show="show==3" ng-include src="'pages/bidderOfferForBidder.html'"></div>
+</div>
+</div>

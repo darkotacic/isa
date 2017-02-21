@@ -1,0 +1,54 @@
+<h1 class="page-header">All your biddings</h1>
+<div class="container" ng-controller="bidderController">
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Price</th>
+						<th>Garanty</th>
+						<th>Date of delivery </th>
+						<th>Status of offer </th>
+						<th>Request offer id </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="bidderOffer in bidderOffers"
+						ng-click="setSelectedBidderOffer(bidderOffer)"
+						ng-class="{'info' : selectedBidderOffer===bidderOffer}">
+						<td>{{bidderOffer.id}}</td>
+						<td>{{bidderOffer.price}}</td>
+						<td>{{bidderOffer.garanty}}</td>
+						<td>{{bidderOffer.dateOfDelivery}}</td>
+						<td>{{bidderOffer.offerStatus}}</td>
+						<td>{{bidderOffer.requestOffer.id}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary" ng-click="getDetailsOfRequestOffer()"
+						ng-disabled="!selectedBidderOffer">Details of requestOffer</button>
+						<button type="button" class="btn btn-primary" ng-click="showProductsForRequestOffer(selectedBidderOffer.requestOffer.id)"
+						ng-disabled="!selectedBidderOffer">Products of requestOffer</button>
+						<button type="button" class="btn btn-primary" ng-click="editSelectedBidderOffer()"
+						ng-disabled="!selectedBidderOffer" ng-disabled="selectedBidderOffer.offerStatus == 'UN_DECIDED'">Edit this</button>
+						<button type="button" class="btn btn-primary" ng-click="deleteBidderOffer()"
+						ng-disabled="!selectedBidderOffer" ng-disabled="selectedBidderOffer.offerStatus == 'UN_DECIDED'">Delete this</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+
+	<div ng-show="show==1" ng-include src="'pages/showRequestOffer.html'"></div>
+	<div ng-show="show==2" ng-include src="'pages/productsOfRequestOffer.html'"></div>
+	<div ng-show="show==3" ng-include src="'pages/bidderOfferForBidder.html'"></div>
+</div>
+</div>

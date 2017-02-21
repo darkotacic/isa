@@ -1,0 +1,39 @@
+<h1 class="page-header">Shifts of {{$parent.selectedWorker.name}}</h1>
+<div class="container">
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Date</th>
+					<th>Two days shift</th>
+					<th>Second day</th>
+					<th>Start time</th>
+					<th>End time</th>
+					<th>Segment id</th>
+					<th>Replacment id</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="shift in workerShifts">
+					<td>{{shift.id}}</td>
+					<td>{{shift.date}}</td>
+					<td>{{!!shift.twoDays}}</td>
+					<td><div ng-if="twoDays">{{shift.secondDate}}</div>
+						<div ng-if="!twoDays">Non</div></td>
+					<td>{{shift.startTime}}</td>
+					<td>{{shift.endTime}}</td>
+					<td><div ng-if="shift.worker.userRole == 'WAITER'">{{shift.segment.id}}</div>
+						<div ng-if="shift.worker.userRole != 'WAITER'">Only for
+							waiters</div></td>
+					<td><div ng-if="shift.worker.userRole == 'WAITER' ">
+							<div ng-if="shift.replacment != null ">
+								{{shift.replacment.id}}</div>
+							<div ng-if="shift.replacment == null ">No replacment</div>
+							<div ng-if="shift.worker.userRole != 'WAITER'">Only for
+								waiters</div></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

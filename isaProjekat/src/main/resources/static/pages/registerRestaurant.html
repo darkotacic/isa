@@ -1,0 +1,30 @@
+<h1 class="page-header">Register restaurant</h1>
+<div class="alert alert-danger" ng-show="error">
+	<p>Not able</p>
+</div>
+
+<form class="form-horizontal" name="myForm" novalidate
+	style="width: 50%">
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="rn">Name:</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" placeholder="Enter name"
+				required ng-Model="$parent.restaurant.restaurantName" id="rn">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3" for="des">Description:</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="des"
+				placeholder="Enter description" required
+				ng-Model="$parent.restaurant.description">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type="submit" class="btn btn-success"
+				ng-Click="$parent.registerRestaurant()" title="Form invalid!"
+				data-toggle="tooltip" data-placement="top" tooltip>Submit</button>
+		</div>
+	</div>
+</form>

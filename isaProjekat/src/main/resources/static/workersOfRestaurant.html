@@ -1,0 +1,66 @@
+<div class="container" ng-controller="restaurantManagerController">
+	<h1 class="page-header">Workers of {{$scope.restaurant.name}}</h1>
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Surname</th>
+						<th>Email</th>
+						<th>Date of birth</th>
+						<th>Shirt size</th>
+						<th>Shoe number</th>
+						<th>Worker role</th>
+						<th>Cook type</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="worker in restaurantWorkers"
+						ng-click="setSelectedWorker(worker)"
+						ng-class="{'info' : selectedWorker===worker}">
+						<td>{{worker.id}}</td>
+						<td>{{worker.userName}}</td>
+						<td>{{worker.surname}}</td>
+						<td>{{worker.email}}</td>
+						<td>{{worker.dateOfBirth}}</td>
+						<td>{{worker.shirtSize}}</td>
+						<td>{{worker.shoeNumber}}</td>
+						<td>{{worker.userRole}}</td>
+						<td>
+							<div ng-if="worker.userRole == 'COOK' ">{{worker.cookType}}</div>
+							<div ng-if="worker.userRole != 'COOK'">Only for cook</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary"
+						ng-click="displayWorker(1)">Register cook</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="displayWorker(2)">Register bartender</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="displayWorker(3)">Register waiter</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="deleteWorker()" ng-disabled="!selectedWorker">Delete
+						this</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="showWorkerShifts()" ng-disabled="!selectedWorker">Show worker shifts</button>
+				</div>
+			</div>
+		</div>
+		<br />
+	</div>
+	<div ng-show="showW==1" ng-include src="'pages/registerCook.html'"></div>
+	<div ng-show="showW==2" ng-include src="'pages/registerBartender.html'"></div>
+	<div ng-show="showW==3" ng-include src="'pages/registerWaiter.html'"></div>
+	<div ng-show="showW==4" ng-include src="'pages/workerShifts.html'"></div>
+</div>

@@ -1,0 +1,41 @@
+<h1 class="page-header">Managers for {{$parent.selected.name}}</h1>
+<div class="container">
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Surname</th>
+					<th>Email</th>
+					<th>Date of birth</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="restaurantManager in $parent.restaurantManagers"
+					ng-click="$parent.setSelectedRestaurantManager(restaurantManager)"
+					ng-class="{'info' : selectedRestaurantManager===restaurantManager}">
+					<td>{{restaurantManager.id}}</td>
+					<td>{{restaurantManager.userName}}</td>
+					<td>{{restaurantManager.surname}}</td>
+					<td>{{restaurantManager.email}}</td>
+					<td>{{restaurantManager.dateOfBirth}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+<div class="conteinter">
+	<div class="row">
+		<div class="col-xs-12 offset3">
+			<div class="text-left">
+				<button type="button" class="btn btn-primary"
+					ng-click="$parent.deleteRestaurantManager()"
+					ng-disabled="!selectedRestaurantManager">Delete this restaurant manager</button>
+			</div>
+		</div>
+	</div>
+	<br />
+</div>

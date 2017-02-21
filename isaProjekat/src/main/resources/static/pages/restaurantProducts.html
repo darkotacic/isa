@@ -1,0 +1,36 @@
+<h1 class="page-header">Products of {{$parent.restaurant.name}}</h1>
+<div class="container">
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Product type</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="product in restaurantProducts"
+					ng-click="setSelectedRestaurantProduct(product)"
+					ng-class="{'info' : selectedRestaurantProduct===product}">
+					<td>{{product.id}}</td>
+					<td>{{product.productName}}</td>
+					<td>{{product.description}}</td>
+					<td>{{product.productType}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary"
+						ng-click="deleteProduct()"
+						ng-disabled="!selectedRestaurantProduct">Remove this</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

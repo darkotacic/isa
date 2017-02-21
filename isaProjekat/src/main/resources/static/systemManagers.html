@@ -1,0 +1,49 @@
+<h1 class="page-header">All system managers</h1>
+<div class="container" ng-controller="systemManagerController">
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Surname</th>
+						<th>Email</th>
+						<th>Date of birth</th>
+						<th>Predefined</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="systemManager in systemManagers"
+						ng-click="setSelectedSystemManager(systemManager)"
+						ng-class="{'info' : selectedSystemManager===systemManager}">
+						<td>{{systemManager.id}}</td>
+						<td>{{systemManager.userName}}</td>
+						<td>{{systemManager.surname}}</td>
+						<td>{{systemManager.email}}</td>
+						<td>{{systemManager.dateOfBirth}}</td>
+						<td>{{!!systemManager.predefined}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary" ng-click="display(1)">Register
+						new system manager</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="deleteSystemManager()" ng-disabled="!selectedSystemManager">Delete
+						this</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br />
+
+	<div ng-show="show==1" ng-include src="'pages/registerSystemManager.html'"></div>
+</div>
+</div>

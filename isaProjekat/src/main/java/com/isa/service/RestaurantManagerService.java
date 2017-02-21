@@ -32,15 +32,15 @@ public interface RestaurantManagerService {
 
 	ResponseEntity<RestaurantTable> addRestaurantTableToSegment(RestaurantTable t, Long segment_id);
 
-	ResponseEntity<String> removeSegment(Long id);
+	ResponseEntity<Segment> removeSegment(Long id);
 
-	ResponseEntity<String> removeRestaurantTable(Long t);
+	ResponseEntity<RestaurantTable> removeRestaurantTable(Long t);
 
 	ResponseEntity<RestaurantTable> updateRestaurantTable(RestaurantTable t);
 
 	ResponseEntity<Segment> updateSegment(Segment s);
 
-	ResponseEntity<String> removeWorker(Long id);
+	ResponseEntity<Worker> removeWorker(Long id);
 
 	ResponseEntity<Cook> registerCook(Cook c, Long id);
 
@@ -51,7 +51,7 @@ public interface RestaurantManagerService {
 	ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id,
 			Long replacement_id);
 
-	String removeWorkSchedule(Long id);
+	ResponseEntity<WorkSchedule> removeWorkSchedule(Long id);
 
 	ResponseEntity<Bidder> registerBidder(Bidder b);
 
@@ -63,7 +63,7 @@ public interface RestaurantManagerService {
 
 	ResponseEntity<RequestOffer> updateRequestOffer(RequestOffer ro);
 
-	String removeRequestOffer(Long ro);
+	ResponseEntity<RequestOffer> removeRequestOffer(Long ro);
 
 	ResponseEntity<List<Worker>> getAllWorkersForRestaurant(Long id);
 
@@ -110,6 +110,8 @@ public interface RestaurantManagerService {
 	double checkIfRequestOfferExpired();
 
 	ResponseEntity<Restaurant> getRestaurantForManager(Long id);
+
+	ResponseEntity<List<Product>> getAllProducts();
 
 
 }

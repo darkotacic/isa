@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -21,7 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "SEGMENT")
+@Table(name = "SEGMENT", uniqueConstraints = { @UniqueConstraint(columnNames = 
+{ "RESTAURANT_RES_ID", "SGM_POS","SGM_SMOKING"})})
 public class Segment implements Serializable {
 
 	private static final long serialVersionUID = 5329505235746769431L;
