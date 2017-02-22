@@ -38,9 +38,9 @@
 						<button type="button" class="btn btn-primary" ng-click="showProductsForRequestOffer(selectedBidderOffer.requestOffer.id)"
 						ng-disabled="!selectedBidderOffer">Products of requestOffer</button>
 						<button type="button" class="btn btn-primary" ng-click="editSelectedBidderOffer()"
-						ng-disabled="!selectedBidderOffer" ng-disabled="selectedBidderOffer.offerStatus == 'UN_DECIDED'">Edit this</button>
+						ng-disabled="!canEditBidderOffer" >Edit this</button>
 						<button type="button" class="btn btn-primary" ng-click="deleteBidderOffer()"
-						ng-disabled="!selectedBidderOffer" ng-disabled="selectedBidderOffer.offerStatus == 'UN_DECIDED'">Delete this</button>
+						ng-disabled="!canEditBidderOffer">Delete this</button>
 				</div>
 			</div>
 		</div>

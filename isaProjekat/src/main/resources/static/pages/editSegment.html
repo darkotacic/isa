@@ -4,15 +4,15 @@
 </div>
 	<div class="form-group">
 		<label>Position:</label> <input type="text"
-			ng-Model="$parent.editSegment.position" class="form-control"
+			ng-Model="$parent.editSegment.position" ng-value="$parent.selectedSegment.position" class="form-control"
 			placeholder="Enter position" required />
 	</div>
 	<label>Smoking allowed?</label>
 	<div class="form-group">
 		<label class="radio-inline"> <input type="radio" value=true
-			ng-model="$parent.editSegment.smokingAllowed"> Yes
+			ng-model="$parent.editSegmentSM.smokingAllowed"> Yes
 		</label> <label class="radio-inline"> <input type="radio" value=false
-			ng-model="$parent.segment.smokingAllowed"> No
+			ng-model="$parent.editSegmentSM.smokingAllowed"> No
 		</label>
 	</div>
 	<div class="form-group">

@@ -265,13 +265,6 @@ app
 						'BidderService',
 						function($rootScope, $scope, $location, bidderService) {
 
-							$scope.selectedRequestOffer = null;
-							$scope.selectedBidderOffer = null;
-							$scope.show = null;
-							$scope.requestOfferProducts = null;
-							$scope.bidderOffer = null;
-							$scope.requestOffer = null;
-
 							$scope.display = function(tab) {
 								$scope.show = tab;
 							}
@@ -279,9 +272,13 @@ app
 								$scope.selectedRequestOffer = selected;
 								$scope.show = null;
 							}
-
+							$scope.canEditBidderOffer = false;
 							$scope.setSelectedBidderOffer = function(selected) {
 								$scope.selectedBidderOffer = selected;
+								if(selected.offerStatus == 'UN-DECIDED')
+									$scope.canEditBidderOffer = true;
+								else 
+									$scope.canEditBidderOffer = false;
 								$scope.show = null;
 							}
 
@@ -466,24 +463,95 @@ app
 							}
 							$scope.displaySegment = function(tab) {
 								$scope.showS = tab;
+								
+							}
+							$scope.displayShift = function(tab) {
+								$scope.showQ = tab;
+								
+							}
+							$scope.displayRequest = function(tab) {
+								$scope.showR = tab;
+								
 							}
 
 							$scope.setSelectedWorker = function(selected) {
 								$scope.selectedWorker = selected;
 								$scope.showW = null;
 							}
+							
+							$scope.setSelectedRequestOffer = function(selected) {
+								$scope.selectedRequestOffer = selected;
+								$scope.showR = null;
+							}
+							
 							$scope.setSelectedRestaurantProduct = function(selected) {
 								$scope.selectedRestaurantProduct = selected;
+								$scope.show = null;
+							}
+							$scope.setSelectedRequestOfferProduct = function(selected) {
+								$scope.selectedRequestOfferProduct = selected;
 							}
 							$scope.setSelectedProduct = function(selected) {
 								$scope.selectedProduct = selected;
+								$scope.show = null;
 							}
+							$scope.setSelectedShift = function(selected) {
+								$scope.selectedShift = selected;
+								$scope.showQ = null;
+							}
+							$scope.canEditSegment = false;
+							$scope.canEditTable = false;
+				
 							$scope.setSelectedSegment = function(selected) {
+								restaurantManagerService
+								.seeIfCanDeleteSegment(selected.id).then(function(response) {
+									if(response.data == 0) {
+										$scope.canEditSegment = true;
+									}
+									else{
+										$scope.canEditSegment = false;
+									}
+								});
+								if(selected.smokingAllowed)
+									$scope.editSegmentSM = {
+											smokingAllowed : 'true'
+										}
+								else 
+									$scope.editSegmentSM = {
+										smokingAllowed : 'false'
+									}
 								$scope.selectedSegment = selected;
+								$scope.showS = null;
+								$scope.selectedTable = null;
 							}
 							$scope.setSelectedTable = function(selected) {
+								if(selected.free)
+									$scope.canEditTable = true;
+								else 
+									$scope.canEditTable = false;
 								$scope.selectedTable = selected;
 							}
+							
+							restaurantManagerService
+							.checkIfRequestOfferExpired()
+							.then(
+									function(response) {
+										if(response.data == 0)
+											$scope.error = false
+										else
+											$scope.error = true;
+									});
+							restaurantManagerService
+							.checkIfWorkScheduleIsDone()
+							.then(
+									function(response) {
+										if(response.data == 0)
+											$scope.error = false
+										else
+											$scope.error = true;
+									});
+
+
 							restaurantManagerService
 									.getRestaurant($rootScope.loggedUser.id)
 									.then(
@@ -506,8 +574,30 @@ app
 																response) {
 															$scope.restaurantSegments = response.data;
 														});
+												restaurantManagerService
+												.getWorkSchedulesForRestaurant($scope.restaurant.id)
+												.then(
+														function(response) {
+															if (response.data) {
+																$scope.error = false;
+																$scope.restaurantShifts = response.data;
+																$scope.showQ = null;
+															} else {
+																$scope.error = true;
+															}
+														});
 											});
-
+							restaurantManagerService
+							.getRequestOffers($rootScope.loggedUser.id)
+							.then(
+									function(response) {
+										if (response.data) {
+											$scope.error = false;
+											$scope.managerOffers = response.data;
+										} else {
+											$scope.error = true;
+										}
+									});
 							$scope.cook = {
 								cookType : 'SALAT'
 							}
@@ -517,9 +607,9 @@ app
 							$scope.segment = {
 									smokingAllowed : 'true'
 								}
-							$scope.editSegment = {
-									smokingAllowed : 'true'
-								}
+							
+								
+					
 							
 							$scope.getProductsForRestaurant = function() {
 								restaurantManagerService
@@ -530,6 +620,7 @@ app
 														$scope.error = false;
 														$scope.restaurantProducts = response.data;
 														$scope.show = 3;
+														$scope.showR = 5;
 													} else {
 														$scope.error = true;
 													}
@@ -645,6 +736,9 @@ app
 							}
 							
 							$scope.showSegmentTables = function() {
+								$scope.editTable = {
+										segment : $scope.selectedSegment
+									}
 								restaurantManagerService
 										.getTables($scope.selectedSegment.id)
 										.then(
@@ -676,11 +770,12 @@ app
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
-							
+
 							$scope.editTable = function() {
 								$scope.editTable.id = $scope.selectedTable.id;
+								alert($scope.editTable.segment.id + ' ADdsad')
 								restaurantManagerService
-										.editTable($scope.editTable)
+										.editTable($scope.editTable, $scope.editTable.segment.id)
 										.then(
 												function(response) {
 													if (response.data) {
@@ -821,6 +916,7 @@ app
 							$scope.editSegment = function() {
 								if($scope.editSegment.position == null)
 									$scope.editSegment.position = $scope.selectedSegment.position;
+								$scope.editSegment.smokingAllowed = $scope.editSegmentSM.smokingAllowed;
 								$scope.editSegment.id = $scope.selectedSegment.id;
 								restaurantManagerService
 										.editSegment($scope.editSegment)
@@ -862,7 +958,248 @@ app
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
+							$scope.workerIsWaiter = false;
+							$scope.enableReplacments = false;
+							$scope.enableSubmit = true;
+							$scope.changeStatusOfWorkerIsWaiter = function(worker) {
+								if(worker.userRole == 'WAITER') {
+									$scope.workerIsWaiter = true;		
+								}
+								else 
+									$scope.workerIsWaiter = false;
+							}
 							
+							$scope.registerWorkSchedule = function() {
+								var id = 0;
+									if($scope.workSchedule.segment == null && $scope.workerIsWaiter) {
+										alert('must enter segment for waiter')		
+									}
+								else{
+									if($scope.workerIsWaiter)
+										id = $scope.workSchedule.segment.id;	
+									restaurantManagerService
+											.registerWorkSchedule($scope.workSchedule, $scope.workSchedule.worker.id, id)
+											.then(
+													function(response) {
+														if (response.data) {
+															$scope.error = false;
+															if($scope.workerIsWaiter) {
+																restaurantManagerService
+																.getReplacments(response.data.id).then(
+																		function(response) {
+																			if (response.data != 0) {
+																				$scope.possibleReplacments = response.data;
+																				$scope.enableReplacments = true;
+																				$scope.enableSubmit = false;
+																				$scope.workSchedule.replacement = response.data;
+																				
+																			} else {
+																				$scope.enableReplacments = false;
+																			}
+															}).catch(function(response) {
+																$scope.error = true;
+																   console.error('Gists error', response.status, response.data)
+															  });
+															} else {
+																$scope.showQ = null;
+															}
+															$scope.restaurantShifts.push(response.data);
+															$scope.workSchedule = response.data;
+														} else {
+															$scope.error = true;
+														}
+													}).catch(function(response) {
+														$scope.error = true;
+														   console.error('Gists error', response.status, response.data)
+													  });
+								}
+							}
+							$scope.setReplacement  = function() {
+								restaurantManagerService
+										.setReplacment($scope.workSchedule.id, $scope.workSchedule.replacement.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														var index = $scope.restaurantShifts
+														.indexOf($scope.selectedShift);
+												$scope.restaurantShifts[index] = response.data;
+														$scope.showQ = null;
+
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							$scope.deleteShift  = function() {
+								restaurantManagerService
+										.deleteShift($scope.selectedShift.id)
+										.then(
+												function(response) {
+													if (response.status == 200) {
+														$scope.error = false;
+														var index = $scope.restaurantShifts
+														.indexOf($scope.selectedShift);
+												$scope.restaurantShifts.splice(index,
+														1);
+												$scope.showQ = null;
+
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							
+							$scope.editWorkScheduleInfo  = function() {
+								if($scope.editWorkSchedule.date == null)
+									$scope.editWorkSchedule.date = $scope.selectedShift.date;
+								if($scope.editWorkSchedule.startTime == null)
+									$scope.editWorkSchedule.startTime = $scope.selectedShift.startTime;
+								if($scope.editWorkSchedule.endTime == null)
+									$scope.editWorkSchedule.endTime = $scope.selectedShift.endTime;
+								if($scope.editWorkSchedule.twoDays == null)
+									$scope.editWorkSchedule.twoDays = $scope.selectedShift.twoDays;
+								$scope.editWorkSchedule.id = $scope.selectedShift.id;
+								restaurantManagerService
+										.editWorkScheduleInfo($scope.editWorkSchedule)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														$scope.workSchedule = response.data;
+
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							
+							$scope.registerRequestOffer  = function() {
+								restaurantManagerService
+										.registerRequestOffer($scope.requestOffer, $rootScope.loggedUser.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														$scope.managerOffers.push(response.data);
+														$scope.showR = null;
+
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							
+							$scope.editRequestOffer  = function() {
+								if($scope.editRequestOffer.startDate == null)
+									$scope.editRequestOffer.startDate = $scope.selectedRequestOffer.startDate;
+								if($scope.editRequestOffer.expirationDate == null)
+									$scope.editRequestOffer.expirationDate = $scope.selectedRequestOffer.expirationDate;
+								$scope.editRequestOffer.id = $scope.selectedRequestOffer.id;
+								restaurantManagerService
+										.editRequestOffer($scope.editRequestOffer)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														var index = $scope.managerOffers
+														.indexOf($scope.selectedRequestOffer);
+												$scope.managerOffers[index] = response.data;
+														$scope.showR = null;
+
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							
+							$scope.deleteRequestOffer  = function() {
+								restaurantManagerService
+										.deleteRequestOffer($scope.selectedRequestOffer.id)
+										.then(
+												function(response) {
+													if (response.status == 200) {
+														$scope.error = false;
+														var index = $scope.managerOffers
+														.indexOf($scope.selectedRequestOffer);
+												$scope.managerOffers.splice(index, 1);
+														$scope.showR = null;
+
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							$scope.addProdustToRequestOffer  = function() {
+								restaurantManagerService
+										.addProductToRequestOffer($scope.selectedRequestOffer.id, $scope.selectedRequestProduct.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														$scope.showR = null;
+
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							$scope.removeProdustFromRequestOffer  = function() {
+								restaurantManagerService
+										.removeProdustFromRequestOffer($scope.selectedRequestOffer.id, $scope.selectedRequestProduct.id)
+										.then(
+												function(response) {
+													if (response.status == 200) {
+														$scope.error = false;
+														var index = $scope.requestOfferProducts
+														.indexOf($scope.selectedRequestProduct);
+												$scope.requestOfferProducts.splice(index, 1);
+														$scope.showR = null;
+
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							
+							$scope.showProductsForRequestOffer = function() {
+								restaurantManagerService
+										.getProducts($scope.selectedRequestOffer.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														$scope.requestOfferProducts = response.data;
+														$scope.showR = 4;
+													} else {
+														$scope.error = true;
+													}
+												});
+							}
 							
 						} ]);
 

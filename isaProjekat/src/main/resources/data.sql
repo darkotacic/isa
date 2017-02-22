@@ -63,7 +63,7 @@ insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(4,'de
 
 insert into restaurant_products(pr_id, res_id) values (1, 1);
 
-insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (1, '12-12-15', '10-12-15', true, 9);
+insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (1, '12-12-17', '10-12-15', true, 9);
 insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (2, '12-12-15', '10-12-15', true, 9);
 
 
@@ -72,11 +72,11 @@ insert into offered_products(ro_id, pr_id) values (1, 1);
 insert into bidder_offer(id, bo_dod, bo_garanty, bo_price, bidder_user_id, request_offer_id) values (1, '13-12-15', 'Return money', 300.3, 11, 1);
 insert into bidder_offer(id, bo_dod, bo_garanty, bo_price, bidder_user_id, request_offer_id) values (2, '13-12-15', 'Return money', 300.3, 11, 2);
 
-insert into segment(id, sgm_pos, sgm_smoking, restaurant_res_id) values(1,'basta',false,1);
-insert into segment(id, sgm_pos, restaurant_res_id) values(2,'unutra',1);
+insert into segment(id, sgm_pos, restaurant_res_id) values(1,'basta',1);
+insert into segment(id, sgm_pos, sgm_smoking, restaurant_res_id) values(2,'unutra',false,1);
 insert into segment(id, sgm_pos, restaurant_res_id) values(3,'unutra',1);
 
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(1,true,4,1);
+insert into restaurant_table(id, res_free, res_chair, segment_id) values(1,false,4,1);
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(2,true,2,1);
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(3,true,6,1);
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(4,true,4,2);

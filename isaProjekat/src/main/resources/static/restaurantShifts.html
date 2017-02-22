@@ -1,0 +1,68 @@
+<div class="container" ng-controller="restaurantManagerController">
+	<h1 class="page-header">WorkSchedules of
+		{{$parent.restaurant.name}}</h1>
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Date</th>
+						<th>Two days shift</th>
+						<th>Second day</th>
+						<th>Start time</th>
+						<th>End time</th>
+						<th>Segment id</th>
+						<th>Replacement id</th>
+						<th>Done</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="shift in restaurantShifts"
+						ng-click="setSelectedShift(shift)"
+						ng-class="{ 'info' :
+						selectedShift===shift}">
+						<td>{{shift.id}}</td>
+						<td>{{shift.date}}</td>
+						<td>{{!!shift.twoDays}}</td>
+						<td><div ng-if="twoDays">{{shift.secondDate}}</div>
+							<div ng-if="!twoDays">Non</div></td>
+						<td>{{shift.startTime}}</td>
+						<td>{{shift.endTime}}</td>
+						<td><div ng-if="shift.worker.userRole == 'WAITER'">{{shift.segment.id}}</div>
+							<div ng-if="shift.worker.userRole != 'WAITER'">Only for
+								waiters</div></td>
+						<td><div ng-if="shift.worker.userRole == 'WAITER' ">
+								<div ng-if="shift.replacement != null ">
+									{{shift.replacement.id}}</div>
+								<div ng-if="shift.replacement == null ">No replacement</div>
+							</div>
+							<div ng-if="shift.worker.userRole != 'WAITER'">Only for
+								waiters</div></td>
+						<td>{{!!shift.done}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+					<button type="button" class="btn btn-primary"
+						ng-click="displayShift(1)">Register work schedule</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="displayShift(2)"
+						ng-disabled="(selectedShift.replacement != null || selectedShift.done)">Edit
+						work schedule</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="deleteShift()" ng-disabled="selectedShift.done">Delete
+						this</button>
+				</div>
+			</div>
+		</div>
+		<br />
+	</div>
+	<div ng-show="showQ==1" ng-include src="'pages/registerWorkSchedule.html'"></div>
+	<div ng-show="showQ==2" ng-include src="'pages/editWorkScheduleInfo.html'"></div>
+</div>

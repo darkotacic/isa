@@ -17,6 +17,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.isa.entity.users.Worker;
 
 @Entity
@@ -35,6 +37,7 @@ public class WorkSchedule implements Serializable {
 	private Worker worker;
 
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="mm.dd.yyyy") 
 	@NotNull
 	@Column(name = "WORK_SCH_DATE")
 	private Date date;
@@ -42,7 +45,11 @@ public class WorkSchedule implements Serializable {
 	@Column(name = "TWO_DAYS_SHIFT", columnDefinition = "boolean default false", insertable = true)
 	private boolean twoDays;
 	
+	@Column(name = "SHIFT_DONE", columnDefinition = "boolean default false", insertable = true)
+	private boolean done;
+	
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="mm.dd.yyyy") 
 	@Column(name = "WORK_SCH_SECOND_DATE")
 	private Date secondDate;
 	
@@ -135,6 +142,14 @@ public class WorkSchedule implements Serializable {
 
 	public void setSecondDate(Date secondDate) {
 		this.secondDate = secondDate;
+	}
+
+	public boolean isDone() {
+		return done;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
 	}
 	
 

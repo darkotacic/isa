@@ -10,8 +10,12 @@ import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
 
 public interface RestaurantTableRepository extends CrudRepository<RestaurantTable, Long> {
-	
+
 	public Iterable<RestaurantTable> findBySegment(Segment segment);
+
 	@Query("select t from Segment s inner join s.tables as t where s.restaurant = ?1")
 	List<RestaurantTable> getTablesForRestaurant(Restaurant r);
+
+	@Query("select t from Segment s inner join s.tables as t where s.id = ?1 and t.free = 'true'")
+	List<RestaurantTable> seeIfCanDeleteSegment(Long id);
 }

@@ -80,8 +80,8 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/updateRestaurantTable", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RestaurantTable> updateRestaurantTable(@RequestBody @Valid RestaurantTable rt) {
-		return restaurantManagerService.updateRestaurantTable(rt);
+	public ResponseEntity<RestaurantTable> updateRestaurantTable(@RequestBody @Valid RestaurantTable rt,@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.updateRestaurantTable(rt,id);
 	}
 
 	@RequestMapping(value = "/updateSegment", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -279,5 +279,14 @@ public class RestaurantManagerController {
 	@RequestMapping(value = "/checkIfRequestOfferExpired", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public double checkIfRequestOfferExpired() {
 		return restaurantManagerService.checkIfRequestOfferExpired();
+	}
+	
+	@RequestMapping(value = "/checkIfWorkScheduleIsDone", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public double checkIfWorkScheduleIsDone() {
+		return restaurantManagerService.checkIfWorkScheduleIsDone();
+	}
+	@RequestMapping(value = "/checkIfSegmentCanBeDeleted", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public double checkIfSegmentCanBeDeleted(@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.checkIfSegmentCanBeDeleted(id);
 	}
 }

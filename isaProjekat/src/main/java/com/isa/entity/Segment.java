@@ -22,8 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "SEGMENT", uniqueConstraints = { @UniqueConstraint(columnNames = 
-{ "RESTAURANT_RES_ID", "SGM_POS","SGM_SMOKING"})})
+@Table(name = "SEGMENT", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "RESTAURANT_RES_ID", "SGM_POS", "SGM_SMOKING" }) })
 public class Segment implements Serializable {
 
 	private static final long serialVersionUID = 5329505235746769431L;
@@ -55,18 +55,17 @@ public class Segment implements Serializable {
 	public Segment() {
 
 	}
-	 @JsonIgnore
+
+	@JsonIgnore
 	public Set<WorkSchedule> getWorkSchedule() {
 		return schedules;
 	}
+
 	@JsonProperty
 	public void setWorkSchedule(Set<WorkSchedule> segments) {
 		this.schedules = segments;
 	}
 
-	public void setSmokingAllowed(boolean smokingAllowed) {
-		this.smokingAllowed = smokingAllowed;
-	}
 	@JsonProperty
 	public void setTables(Set<RestaurantTable> tables) {
 		this.tables = tables;
@@ -95,6 +94,7 @@ public class Segment implements Serializable {
 	public boolean isSmokingAllowed() {
 		return smokingAllowed;
 	}
+
 	@JsonIgnore
 	public Set<RestaurantTable> getTables() {
 		return tables;

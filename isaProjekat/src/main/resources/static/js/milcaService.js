@@ -218,6 +218,29 @@ app
 				'RestaurantManagerService',
 				function restaurantManagerService($http) {
 
+					restaurantManagerService.checkIfRequestOfferExpired = function() {
+						return $http({
+							method : 'PUT',
+							url : '../restaurantManagers/checkIfRequestOfferExpired'
+						});
+					}
+
+					restaurantManagerService.seeIfCanDeleteSegment = function(
+							id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/checkIfSegmentCanBeDeleted?id='
+									+ id
+						});
+					}
+
+					restaurantManagerService.checkIfWorkScheduleIsDone = function() {
+						return $http({
+							method : 'PUT',
+							url : '../restaurantManagers/checkIfWorkScheduleIsDone'
+						});
+					}
+
 					restaurantManagerService.getRestaurant = function(id) {
 						return $http({
 							method : 'GET',
@@ -242,16 +265,14 @@ app
 									+ id
 						});
 					}
-					
-					restaurantManagerService.getTables = function(
-							id) {
+
+					restaurantManagerService.getTables = function(id) {
 						return $http({
 							method : 'GET',
 							url : '../restaurantManagers/getAllTablesForSegment?id='
 									+ id
 						});
 					}
-
 
 					restaurantManagerService.getProductsForRestaurant = function(
 							id) {
@@ -384,10 +405,11 @@ app
 							}
 						});
 					}
-					restaurantManagerService.editTable = function(table) {
+					restaurantManagerService.editTable = function(table, id) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/updateRestaurantTable',
+							url : '../restaurantManagers/updateRestaurantTable?id='
+									+ id,
 							data : {
 								"id" : table.id,
 								"numberOfChairs" : table.numberOfChairs
@@ -431,7 +453,138 @@ app
 							}
 						});
 					}
+					restaurantManagerService.editSegment = function(segment) {
+						return $http({
+							method : 'PUT',
+							url : '../restaurantManagers/updateSegment',
+							data : {
+								"id" : segment.id,
+								"position" : segment.position,
+								"smokingAllowed" : segment.smokingAllowed
+							}
+						});
+					}
 
+					restaurantManagerService.registerWorkSchedule = function(
+							workSchedule, w_id, s_id) {
+						return $http({
+							method : 'POST',
+							url : '../restaurantManagers/registerWorkSchedule?segment_id='
+									+ s_id + '&worker_id=' + w_id,
+							data : {
+								"date" : workSchedule.date,
+								"startTime" : workSchedule.startTime,
+								"endTime" : workSchedule.endTime,
+								"twoDays" : workSchedule.twoDays
+							}
+						});
+					}
+					restaurantManagerService.deleteShift = function(id) {
+						return $http({
+							method : 'DELETE',
+							url : '../restaurantManagers/removeWorkSchedule?id='
+									+ id
+						});
+					}
+					restaurantManagerService.editWorkScheduleInfo = function(
+							workSchedule) {
+						return $http({
+							method : 'POST',
+							url : '../restaurantManagers/updateWorkSchedule',
+							data : {
+								"id" : workSchedule.id,
+								"date" : workSchedule.date,
+								"startTime" : workSchedule.startTime,
+								"endTime" : workSchedule.endTime,
+								"twoDays" : workSchedule.twoDays
+							}
+						});
+					}
+					restaurantManagerService.getReplacments = function(id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getPossableReplacements?id='
+									+ id
+						});
+					}
+					restaurantManagerService.getRequestOffers = function(id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers//getAllRequestOffersForManager?id='
+									+ id
+						});
+					}
+					restaurantManagerService.setReplacment = function(id, r_id) {
+						return $http({
+							method : 'POST',
+							url : '../restaurantManagers/gupdateWorkScheduleSetReplacement?repl_id='
+									+ r_id + '&ws_id=' + id
+						});
+					}
+					
+					restaurantManagerService.getWorkSchedulesForRestaurant = function(id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getAllWorkSchedulesForRestaurant?id='
+									+ id
+						});
+					}
+					
+					restaurantManagerService.registerRequestOffer = function(
+							rq, id) {
+						return $http({
+							method : 'POST',
+							url : '../restaurantManagers/registerRequestOffer?rm_id=' + id,
+							data : {
+								"startDate" : rq.startDate,
+								"expirationDate" : rq.expirationDate
+							}
+						});
+					}
+					
+					restaurantManagerService.editRequestOffer = function(
+							rq) {
+						return $http({
+							method : 'PUT',
+							url : '../restaurantManagers/updateRequestOffer',
+							data : {
+								"id" : rq.id,
+								"startDate" : rq.startDate,
+								"expirationDate" : rq.expirationDate
+							}
+						});
+					}
+					restaurantManagerService.addProdusttoRequestOffer = function(
+							ro_id, p_id) {
+						return $http({
+							method : 'POST',
+							url : '../restaurantManagers//addProductToRequestOffer?product_id=' + p_id + '&rest_id=' + ro_id
+						});
+					}
+					restaurantManagerService.removeProdustFromRequestOffer = function(
+							ro_id, p_id) {
+						return $http({
+							method : 'POST',
+							url : '../restaurantManagers/removeProductFromRequestOffer?product_id=' + p_id + '&ro_id=' + ro_id
+						});
+					}
+					restaurantManagerService.deleteRequestOffer = function(id) {
+						return $http({
+							method : 'DELETE',
+							url : '../restaurantManagers/removeRequestOffer?id='
+									+ id
+						});
+					}
+					
+					restaurantManagerService.getProducts = function(request_id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getAllProductsForRequestOffer?id='
+									+ request_id
+						});
+					}
+
+					
 					return restaurantManagerService;
 
 				});

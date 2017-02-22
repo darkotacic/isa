@@ -37,4 +37,12 @@ app.config(function($routeProvider, $locationProvider) {
 		templateUrl : 'segmentsOfRestaurant.html',
 		controller : 'restaurantManagerController'
 	})
+	.when('/showRestaurantWorkSchedules', {
+		templateUrl : 'restaurantShifts.html',
+		controller : 'restaurantManagerController'
+	})
+	.when('/showManagerOffers', {
+		templateUrl : 'managersRequestOffers.html',
+		controller : 'restaurantManagerController'
+	})
 });

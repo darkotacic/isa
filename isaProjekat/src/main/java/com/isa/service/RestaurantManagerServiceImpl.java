@@ -152,12 +152,15 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<RestaurantTable> updateRestaurantTable(RestaurantTable t) {
+	public ResponseEntity<RestaurantTable> updateRestaurantTable(RestaurantTable t, Long id) {
+		t.setSegment(this.segmentRepository.findOne(id));
 		return new ResponseEntity<RestaurantTable>(this.restaurantTableRepository.save(t), HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Segment> updateSegment(Segment s) {
+		Segment temp = this.segmentRepository.findOne(s.getId());
+		s.setRestaurant(temp.getRestaurant());
 		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.OK);
 	}
 
@@ -180,7 +183,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<Waiter> registerWaiter(Waiter w, Long id) {
-		if (this.userRepository.findByEmail(w.getEmail()) != null )
+		if (this.userRepository.findByEmail(w.getEmail()) != null)
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		w.setRestaurant(this.restaurantRepository.findOne(id));
 		return new ResponseEntity<Waiter>(this.waiterRepository.save(w), HttpStatus.OK);
@@ -240,7 +243,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			Date nextDay = cal.getTime();
 			temp.setSecondDate(nextDay);
 			temp.setTwoDays(true);
-		} else if(!w.isTwoDays() && temp.isTwoDays()){
+		} else if (!w.isTwoDays() && temp.isTwoDays()) {
 			temp.setTwoDays(false);
 			temp.setSecondDate(null);
 		}
@@ -285,8 +288,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<RequestOffer> registerRequestOffer(RequestOffer ro, Long r_id) {
-		if (ro.getExpirationDate().before(ro.getStartDate())
-				|| ro.getStartDate().before(new Date()))
+		if (ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		RestaurantManager rm = this.restaurantManagerRepository.findOne(r_id);
 		ro.setRestaurantManager(rm);
@@ -463,6 +465,18 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
+	public double checkIfWorkScheduleIsDone() {
+		List<WorkSchedule> of = (List<WorkSchedule>) this.workScheduleRepository.findAll();
+		for (int i = 0; i < of.size(); i++) {
+			if (of.get(i).getDate().before(new Date())) {
+				of.get(i).setDone(true);
+				this.workScheduleRepository.save(of.iterator().next());
+			}
+		}
+		return 0;
+	}
+
+	@Override
 	public ResponseEntity<Restaurant> getRestaurantForManager(Long id) {
 		return new ResponseEntity<Restaurant>(
 				this.restaurantRepository.getByManager(this.restaurantManagerRepository.findOne(id)), HttpStatus.OK);
@@ -473,5 +487,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		return new ResponseEntity<List<Product>>((List<Product>) this.productRepository.findAll(), HttpStatus.OK);
 	}
 
+	@Override
+	public double checkIfSegmentCanBeDeleted(Long id) {
+		return this.restaurantTableRepository.seeIfCanDeleteSegment(id).size();
+	}
 
 }

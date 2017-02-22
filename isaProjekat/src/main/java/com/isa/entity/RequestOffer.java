@@ -47,7 +47,7 @@ public class RequestOffer implements Serializable {
 	private Set<Product> products = new HashSet<Product>();
 
 	@Column(name = "STATUS", columnDefinition = "boolean default true", insertable = true)
-	private boolean status;
+	private boolean status = true;
 
 	@NotNull
 	@Temporal(TemporalType.DATE)

@@ -1,0 +1,41 @@
+<h1 class="page-header">Products for
+	{{$parent.selectedRequestOffer.id}}</h1>
+<div class="container">
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Price</th>
+					<th>Food or drink</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="product in requestOfferProducts"
+					ng-click="setSelectedRequestOfferProduct(product)"
+					ng-class="{'info' : selectedRequestOfferProduct===product}">
+					<td>{{product.id}}</td>
+					<td>{{product.productName}}</td>
+					<td>{{product.description}}</td>
+					<td>{{product.price}}</td>
+					<td>{{product.productType}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+
+					<button type="button" class="btn btn-primary"
+						ng-click="removeProdustFromRequestOffers()"
+						ng-disabled="!selectedRequestOfferProduct || !$parent.selectedRequestOffer.status">Remove this</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,56 @@
+
+<h2 class="page-header">Register work schedule for
+	{{$parent.restaurant.restaurantName}}</h2>
+<div class="alert alert-danger" ng-show="error">
+	<p>Code or name already exists!</p>
+</div>
+<form name="myForm" novalidate>
+	<div class="form-group">
+		<label>Date:</label> <input type="date"
+			ng-Model="$parent.workSchedule.date" class="form-control"
+			placeholder="Enter date" required />
+	</div>
+	<label>Two days shift?</label>
+	<div class="form-group">
+		<label class="radio-inline"> <input type="radio" value=true
+			ng-model="$parent.workSchedule.twoDays"> Yes
+		</label> <label class="radio-inline"> <input type="radio" value=false
+			ng-model="$parent.workSchedule.twoDays"> No
+		</label>
+	</div>
+	<div class="form-group">
+		<label>Start time:</label> <input type="text"
+			ng-Model="$parent.workSchedule.startTime" class="form-control"
+			placeholder="Enter start time" required />
+	</div>
+	<div class="form-group">
+		<label>End time:</label> <input type="text"
+			ng-Model="$parent.workSchedule.endTime" class="form-control"
+			placeholder="Enter end time , format 11.12" required />
+	</div>
+	<label>Worker :</label> <select ng-model="$parent.workSchedule.worker"
+		ng-options="x.id for x in $parent.restaurantWorkers"
+		ng-change="$parent.changeStatusOfWorkerIsWaiter(workSchedule.worker)">
+	</select> <label>Segment :</label> <select
+		ng-model="$parent.workSchedule.segment"
+		ng-options="x.id for x in $parent.restaurantSegments"
+		ng-disabled="!$parent.workerIsWaiter">
+	</select>
+	<div class="form-group">
+		<button type="submit" class="btn btn-success"
+			ng-disabled="(myForm.$invalid || !$parent.enableSubmit)"
+			ng-Click="registerWorkSchedule()">Submit</button>
+	</div>
+</form>
+<form name="myForm" novalidate>
+	<label>Replacement :</label> <select
+		ng-model="$parent.workSchedule.replacment"
+		ng-options="x.id for x in $parent.possibleReplacments"
+		ng-disabled="!$parent.enableReplacments">
+	</select>
+	<div class="form-group">
+		<button type="submit" class="btn btn-success"
+			ng-disabled="!$parent.enableReplacments"
+			ng-Click="$parent.setReplacement()">Submit</button>
+	</div>
+</form>

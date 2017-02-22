@@ -11,4 +11,6 @@ public interface SegmentRepository extends CrudRepository<Segment, Long>{
 
 	Segment findByRestaurantAndId(Restaurant t, Long id);
 	List<Segment> findByRestaurant(Restaurant r);
+	
+	
 }

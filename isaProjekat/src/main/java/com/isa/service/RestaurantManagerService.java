@@ -36,7 +36,7 @@ public interface RestaurantManagerService {
 
 	ResponseEntity<RestaurantTable> removeRestaurantTable(Long t);
 
-	ResponseEntity<RestaurantTable> updateRestaurantTable(RestaurantTable t);
+	ResponseEntity<RestaurantTable> updateRestaurantTable(RestaurantTable t, Long id);
 
 	ResponseEntity<Segment> updateSegment(Segment s);
 
@@ -112,6 +112,10 @@ public interface RestaurantManagerService {
 	ResponseEntity<Restaurant> getRestaurantForManager(Long id);
 
 	ResponseEntity<List<Product>> getAllProducts();
+
+	double checkIfWorkScheduleIsDone();
+
+	double checkIfSegmentCanBeDeleted(Long id);
 
 
 }
