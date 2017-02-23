@@ -395,7 +395,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<String> acceptBidderOffer(Long r_id, Long q_id) {
+	public ResponseEntity<RequestOffer> acceptBidderOffer(Long r_id, Long q_id) {
 		RequestOffer ro = this.requestOfferRepository.findOne(q_id);
 		ro.setStatus(false);
 		List<BidderOffer> ibo = this.bidderOfferRepository.findByRequestOffer(ro);
@@ -406,7 +406,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 				ibo.get(i).setOfferStatus(BidderOfferStatus.ACCEPTED);
 		}
 		this.bidderOfferRepository.save(ibo);
-		return new ResponseEntity<String>("Buh", HttpStatus.OK);
+		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(ro), HttpStatus.OK);
 	}
 
 	@Override

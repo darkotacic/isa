@@ -1,33 +1,73 @@
 <div role="form" class="form-inline" ng-controller="homeController">
 	<h1 class="page-header">HOME</h1>
 	<div class="btn-group">
-		<div id ="guestButtons" ng-if="loggedUser.userRole=='GUEST'">
-		  <button type="button" class="btn btn-primary" ng-click=showView(1)>History</button>
-		  <button type="button" class="btn btn-primary" ng-click=showView(2)>Restaurants</button>
-		  <button type="button" class="btn btn-primary" ng-click=showView(3)>Friends</button>
+		<div id="guestButtons" ng-if="loggedUser.userRole=='GUEST'">
+			<button type="button" class="btn btn-primary" ng-click=showView(1)>History</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(2)>Restaurants</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(3)>Friends</button>
 		</div>
-		<div id ="waiterButtons" ng-if="loggedUser.userRole=='WAITER'">
-		  <button type="button" class="btn btn-primary" ng-click=showView(4)>Segments</button>
-		  <button type="button" class="btn btn-primary" ng-click=showView(5)>Work schedules</button>
-		  <button type="button" class="btn btn-primary"  ng-click=showView(6)>Orders</button>
+		<div id="waiterButtons" ng-if="loggedUser.userRole=='WAITER'">
+			<button type="button" class="btn btn-primary" ng-click=showView(4)>Segments</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(5)>Work
+				schedules</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(6)>Orders</button>
+		</div>
+		<div id="systemButtons" ng-if="loggedUser.userRole=='SYSTEM_MANAGER'">
+			<button type="button" class="btn btn-primary" ng-click=showView(7)>Restaurants</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(8)>System
+				managers</button>
+		</div>
+		<div id="bidderButtons" ng-if="loggedUser.userRole=='BIDDER'">
+			<button type="button" class="btn btn-primary" ng-click=showView(9)>Active
+				request offers</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(10)>Your
+				bidder offer</button>
+		</div>
+		<div id="restaurantManagerButtons"
+			ng-if="loggedUser.userRole=='RESTAURANT_MANAGER'">
+			<button type="button" class="btn btn-primary" ng-click=showView(11)>Managed
+				restaurant</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(12)>All
+				restaurant shifts</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(13)>All
+				restaurant workers</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(14)>All
+				restaurant segments</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(15)>All
+				your request offers</button>
 		</div>
 	</div>
-	
-	<div ng-if="show==1" ng-include src="'pages/history.html'">
+
+	<div ng-if="show==1" ng-include src="'pages/history.html'"></div>
+	<div ng-if="show==2" ng-include src="'pages/restaurants.html'"></div>
+
+	<div ng-if="show==3" ng-include src="'pages/friends.html'"></div>
+
+	<div ng-if="show==4" ng-include src="'pages/tables.html'"></div>
+	<div ng-if="show==5" ng-include src="'pages/schedules.html'"></div>
+
+	<div ng-if="show==6" ng-include src="'pages/order.html'"></div>
+
+	<div ng-if="show==7" ng-include src="'restaurants.html'"></div>
+
+	<div ng-if="show==8" ng-include src="'systemManagers.html'"></div>
+
+	<div ng-if="show==9" ng-include src="'activeRequestOffers.html'">
 	</div>
-	<div ng-if="show==2" ng-include src="'pages/restaurants.html'">
+
+	<div ng-if="show==10" ng-include src="'bidderOffersForBidder.html'">
 	</div>
-	
-	<div ng-if="show==3" ng-include src="'pages/friends.html'">
+
+	<div ng-if="show==11" ng-include src="'restaurantForManager.html'">
 	</div>
-	
-	<div ng-if="show==4" ng-include src="'pages/tables.html'">
+
+	<div ng-if="show==12" ng-include src="'restaurantShifts.html'"></div>
+	<div ng-if="show==13" ng-include src="'workersOfRestaurant.html'">
 	</div>
-	<div ng-if="show==5" ng-include src="'pages/schedules.html'">
+	<div ng-if="show==14" ng-include src="'segmentsOfRestaurant.html'">
 	</div>
-	
-	<div ng-if="show==6" ng-include src="'pages/order.html'">
+	<div ng-if="show==15" ng-include src="'managersRequestOffers.html'">
 	</div>
-	
-	
+
+
 </div>

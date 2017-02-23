@@ -28,7 +28,11 @@
 			</table>
 		</div>
 	</div>
-
+	{{!selectedBidderOffer || selectedBidderOffer.offerStatus != 'UN-DECIDED' }}
+	{{!selectedBidderOffer}}
+	{{selectedBidderOffer.offerStatus === 'UN-DECIDED'}} 
+	{{!canEditBidderOffer}}
+	{{canEditBidderOffer}}
 	<div class="conteinter">
 		<div class="row">
 			<div class="col-xs-12 offset3">

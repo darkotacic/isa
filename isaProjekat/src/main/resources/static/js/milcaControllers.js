@@ -27,6 +27,7 @@ app
 							$scope.setSelected = function(selected) {
 								$scope.selected = selected;
 								$rootScope.restaurant = $scope.selected;
+								$scope.selectedRestaurantManager = null;
 								$scope.show = null;
 
 							}
@@ -275,7 +276,7 @@ app
 							$scope.canEditBidderOffer = false;
 							$scope.setSelectedBidderOffer = function(selected) {
 								$scope.selectedBidderOffer = selected;
-								if(selected.offerStatus == 'UN-DECIDED')
+								if(selected.offerStatus.length == 'UN-DECIDED'.length)
 									$scope.canEditBidderOffer = true;
 								else 
 									$scope.canEditBidderOffer = false;
@@ -377,6 +378,8 @@ app
 										function(response) {
 											if (response.data) {
 												$scope.error = false;
+												var index = $scope.bidderOffers.indexOf($scope.selectedBidderOffer);
+												$scope.bidderOffers[index] = response.data;
 												$scope.show = null;
 											} else {
 												$scope.error = true;
@@ -484,16 +487,18 @@ app
 								$scope.showR = null;
 							}
 							
+							$scope.setSelectedBid = function(selected) {
+								$scope.selectedBid = selected;
+							}
+							
 							$scope.setSelectedRestaurantProduct = function(selected) {
 								$scope.selectedRestaurantProduct = selected;
-								$scope.show = null;
 							}
 							$scope.setSelectedRequestOfferProduct = function(selected) {
 								$scope.selectedRequestOfferProduct = selected;
 							}
 							$scope.setSelectedProduct = function(selected) {
 								$scope.selectedProduct = selected;
-								$scope.show = null;
 							}
 							$scope.setSelectedShift = function(selected) {
 								$scope.selectedShift = selected;
@@ -521,6 +526,7 @@ app
 										smokingAllowed : 'false'
 									}
 								$scope.selectedSegment = selected;
+								$scope.selectedTable = null;
 								$scope.showS = null;
 								$scope.selectedTable = null;
 							}
@@ -736,9 +742,9 @@ app
 							}
 							
 							$scope.showSegmentTables = function() {
-								$scope.editTable = {
+								/*$scope.editTable = {
 										segment : $scope.selectedSegment
-									}
+									}*/
 								restaurantManagerService
 										.getTables($scope.selectedSegment.id)
 										.then(
@@ -773,7 +779,8 @@ app
 
 							$scope.editTable = function() {
 								$scope.editTable.id = $scope.selectedTable.id;
-								alert($scope.editTable.segment.id + ' ADdsad')
+								if($scope.editTable.segment == null)
+									$scope.editTable.segment = $scope.selectedTable.segment;
 								restaurantManagerService
 										.editTable($scope.editTable, $scope.editTable.segment.id)
 										.then(
@@ -782,7 +789,10 @@ app
 														$scope.error = false;
 														var index = $scope.segmentTables
 														.indexOf($scope.selectedTable);
-												$scope.segmentTables[index] = response.data;
+														if($scope.editTable.segment.id == $scope.selectedSegment.id)
+															$scope.segmentTables[index] = response.data;
+														else 
+															$scope.segmentTables.splice(index, 1);
 													} else {
 														$scope.error = true;
 													}
@@ -1072,7 +1082,10 @@ app
 												function(response) {
 													if (response.data) {
 														$scope.error = false;
-														$scope.workSchedule = response.data;
+														var index = $scope.restaurantShifts
+														.indexOf($scope.selectedShift);
+												$scope.restaurantShifts[index] = response.data;
+												showQ = null;
 
 													} else {
 														$scope.error = true;
@@ -1150,7 +1163,7 @@ app
 							}
 							$scope.addProdustToRequestOffer  = function() {
 								restaurantManagerService
-										.addProductToRequestOffer($scope.selectedRequestOffer.id, $scope.selectedRequestProduct.id)
+										.addProductToRequestOffer($scope.selectedRequestOffer.id, $scope.selectedRestaurantProduct.id)
 										.then(
 												function(response) {
 													if (response.data) {
@@ -1186,6 +1199,21 @@ app
 												  });
 							}
 							
+							$scope.getBidderOffersForRequest = function() {
+								restaurantManagerService
+										.getBidderOffersForRequest($scope.selectedRequestOffer.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														$scope.biddings = response.data;
+														$scope.showR = 3;
+													} else {
+														$scope.error = true;
+													}
+												});
+							}
+							
 							$scope.showProductsForRequestOffer = function() {
 								restaurantManagerService
 										.getProducts($scope.selectedRequestOffer.id)
@@ -1200,6 +1228,22 @@ app
 													}
 												});
 							}
+							
+							$scope.acceptBid = function() {
+								restaurantManagerService
+										.acceptBid($scope.selectedRequestOffer.id, $scope.selectedBid.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														$scope.showR = null;
+													} else {
+														$scope.error = true;
+													}
+												});
+							}
+							
+							
 							
 						} ]);
 

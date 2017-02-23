@@ -1,0 +1,22 @@
+<div class="container">
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="restaurant in restaurants"
+					ng-click="setSelected(restaurant)"
+					ng-class="{'info' : selected===restaurant}">
+					<td>{{restaurant.id}}</td>
+					<td>{{restaurant.restaurantName}}</td>
+					<td>{{restaurant.description}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

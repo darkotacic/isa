@@ -85,7 +85,7 @@ public interface RestaurantManagerService {
 
 	ResponseEntity<List<Product>> getAllProductsForRestaurant(Long id);
 
-	ResponseEntity<String> acceptBidderOffer(Long r_id, Long q_id);
+	ResponseEntity<RequestOffer> acceptBidderOffer(Long r_id, Long q_id);
 
 	ResponseEntity<List<WorkSchedule>> getPossableReplacements(Long id);
 

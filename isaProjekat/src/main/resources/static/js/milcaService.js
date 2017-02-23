@@ -377,7 +377,7 @@ app
 							product, id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/addProduct?id=' + id,
+							url : '../restaurantManagers/addProduct?rest_id=' + id,
 							data : {
 								"productName" : product.productName,
 								"description" : product.description,
@@ -554,11 +554,19 @@ app
 							}
 						});
 					}
-					restaurantManagerService.addProdusttoRequestOffer = function(
+					restaurantManagerService.addProductToRequestOffer = function(
 							ro_id, p_id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers//addProductToRequestOffer?product_id=' + p_id + '&rest_id=' + ro_id
+							url : '../restaurantManagers/addProductToRequestOffer?product_id=' + p_id + '&rest_id=' + ro_id
+						});
+					}
+					
+					restaurantManagerService.acceptBid = function(
+							ro_id, bid_id) {
+						return $http({
+							method : 'PUT',
+							url : '../restaurantManagers/acceptBidderOffer?bid_id=' + bid_id + '&req_id=' + ro_id
 						});
 					}
 					restaurantManagerService.removeProdustFromRequestOffer = function(
@@ -580,6 +588,14 @@ app
 						return $http({
 							method : 'GET',
 							url : '../restaurantManagers/getAllProductsForRequestOffer?id='
+									+ request_id
+						});
+					}
+					
+					restaurantManagerService.getBidderOffersForRequest = function(request_id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getAllBidderOffersForRequestOffer?id='
 									+ request_id
 						});
 					}

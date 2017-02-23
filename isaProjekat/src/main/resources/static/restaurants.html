@@ -1,28 +1,6 @@
 <h1 class="page-header">All restaurants</h1>
 <div class="container" ng-controller="systemManagerController">
-	<div class="container">
-		<div class="table-responsive">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Name</th>
-						<th>Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="restaurant in restaurants"
-						ng-click="setSelected(restaurant)"
-						ng-class="{'info' : selected===restaurant}">
-						<td>{{restaurant.id}}</td>
-						<td>{{restaurant.restaurantName}}</td>
-						<td>{{restaurant.description}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-
+<div ng-include src="'pages/tableRestaurant.html'>
 	<div class="conteinter">
 		<div class="row">
 			<div class="col-xs-12 offset3">

@@ -25,12 +25,10 @@
 		<div class="row">
 			<div class="col-xs-12 offset3">
 				<div class="text-left">
-					<button type="button" class="btn btn-primary" ng-click="display(3)">Edit
+					<button type="button" class="btn btn-primary" ng-click="display(2)">Edit
 						this</button>
 					<button type="button" class="btn btn-primary" ng-click="display(1)">Register
 						product</button>
-					<button type="button" class="btn btn-primary" ng-click="display(2)">Register
-						segment</button>
 					<button type="button" class="btn btn-primary"
 						ng-click="getProductsForRestaurant()">Show restaurant
 						products</button>
@@ -44,7 +42,7 @@
 	<div ng-show="show==1" ng-include src="'pages/registerProduct.html'"></div>
 	<div ng-show="show==2" ng-include
 		src="'pages/editRestaurantByRestaurantManager.html'"></div>
-	<div ng-show="show==3" ng-include src="'pages/restaurantProducts.html'"></div>
+	<div ng-show="show==3" ng-include src="'pages/restaurantProductsDelete.html'"></div>
 	<div ng-show="show==4" ng-include src="'pages/allProducts.html'"></div>
 </div>
 </div>

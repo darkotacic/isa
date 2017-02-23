@@ -163,7 +163,7 @@ public class RestaurantManagerController {
 		return restaurantManagerService.removeProductFromRequestOffer(ids, rest_id);
 	}
 
-	@RequestMapping(value = "/addProductToRequestOffer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/addProductToRequestOffer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> addProductToRequestOffer(@RequestParam(value = "product_id") Long id,
 			@RequestParam(value = "rest_id") Long rest_id) {
 		return restaurantManagerService.addProductToRequestOffer(id, rest_id);
@@ -245,7 +245,7 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/acceptBidderOffer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> acceptBidderOffer(@RequestParam(value = "bid_id") Long r_id,
+	public ResponseEntity<RequestOffer> acceptBidderOffer(@RequestParam(value = "bid_id") Long r_id,
 			@RequestParam(value = "req_id") Long q_id) {
 		return restaurantManagerService.acceptBidderOffer(r_id, q_id);
 	}

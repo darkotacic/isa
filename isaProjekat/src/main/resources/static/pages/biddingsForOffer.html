@@ -1,0 +1,41 @@
+<h1 class="page-header">Products for
+	{{$parent.selectedRequestOffer.id}}</h1>
+<div class="container">
+	<div class="table-responsive">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Date of delivery</th>
+					<th>Price</th>
+					<th>Garanty</th>
+					<th>Status </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="bid in biddings"
+					ng-click="setSelectedBid(bid)"
+					ng-class="{'info' : selectedBid===bid}">
+					<td>{{bid.id}}</td>
+					<td>{{bid.dateOfDelivery}}</td>
+					<td>{{bid.price}}</td>
+					<td>{{bid.garanty}}</td>
+					<td>{{bid.offerStatus}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="conteinter">
+		<div class="row">
+			<div class="col-xs-12 offset3">
+				<div class="text-left">
+
+					<button type="button" class="btn btn-primary"
+						ng-click="acceptBid()"
+						ng-disabled="!selectedBid || $parent.requestOffer.active">Accept this</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
