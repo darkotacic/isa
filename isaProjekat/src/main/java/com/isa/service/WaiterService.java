@@ -27,5 +27,6 @@ public interface WaiterService {
 	public void deleteOrderItem(Long oi);
 	public Iterable<OrderItem> getOrderItemsForOrder(Order order);
 	public WorkSchedule getWorkSchedule(Worker worker,Date date);
+	public List<WorkSchedule> getWorkScheduleBetween(Date startDate,Date endDate);
 	
 }

@@ -1,6 +1,7 @@
 package com.isa.controller;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.User;
 import com.isa.entity.users.Waiter;
 import com.isa.entity.users.Worker;
+import com.isa.service.RestaurantManagerService;
 import com.isa.service.WaiterService;
 import com.isa.service.WorkerService;
 
@@ -41,6 +43,9 @@ public class WaiterController {
 	
 	@Autowired
 	private WorkerService workerService;
+	
+	@Autowired
+	private RestaurantManagerService restaurantManagerService;
 	
 	@Autowired
 	private HttpSession session;
@@ -118,8 +123,10 @@ public class WaiterController {
 			method = RequestMethod.DELETE)
 	@ResponseBody
 	@Transactional
-	public void deleteOrder(@RequestBody Order order){
-		waiterService.deleteOrder(order);
+	public ResponseEntity<?> deleteOrder(@RequestBody Order order){
+		Order temp=workerService.getOrder(order.getId());
+		waiterService.deleteOrder(temp);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -148,10 +155,20 @@ public class WaiterController {
 	@Transactional
 	public ResponseEntity<OrderItem> editOrderItem(@RequestBody OrderItem orderItem){
 		OrderItem temp=workerService.getOrderItem(orderItem.getId());
-		orderItem.setOrder(temp.getOrder());
-		orderItem.setProduct(temp.getProduct());
-		OrderItem oi=workerService.addOrderItem(orderItem);
+		temp.setQuantity(orderItem.getQuantity());
+		OrderItem oi=workerService.addOrderItem(temp);
 		return new ResponseEntity<OrderItem>(oi, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value="/getOrderItems/{orderId}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Iterable<OrderItem>> getOrderItems(@PathVariable("orderId")Long orderId){
+		Iterable<OrderItem> items=waiterService.getOrderItemsForOrder(workerService.getOrder(orderId));
+		return new ResponseEntity<Iterable<OrderItem>>(items, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -245,6 +262,32 @@ public class WaiterController {
 	public ResponseEntity<WorkSchedule> getWorkSchedule(){
 		WorkSchedule ws=waiterService.getWorkSchedule((Worker) session.getAttribute("user"), new Date());
 		return new ResponseEntity<WorkSchedule>(ws, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value="/getWorkSchedules/{startDate}/{endDate}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Iterable<WorkSchedule>> getWorkScheduleBetween(@PathVariable("startDate")Date startDate,@PathVariable("endDate")Date endDate){
+		List<WorkSchedule> ws=null;
+		ws = waiterService.getWorkScheduleBetween(startDate, endDate);
+		Collections.sort(ws);
+		return new ResponseEntity<Iterable<WorkSchedule>>(ws, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value="/getProducts",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Product>> getProducts(){
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("WAITER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		return restaurantManagerService.getAllProductsForRequestOffer(((Waiter)user).getRestaurant().getId());
 	}
 	
 }

@@ -1,10 +1,17 @@
-<div ng-controller="waiterController">
+<div class="container" ng-controller="waiterController">
 	<h1>Tables in segments</h1>
-	<input type="checkbox" ng-model='allSegments' checked="checked"/>Display all segments
-	<div ng-repeat="seg in segments" ng-if='checkSegment(seg)'>
+	<div class="checkbox">
+  		<label><input type="checkbox" ng-model='allSegments' checked="checked">Display all segments</label>
+	</div>
+	<div class="row" ng-repeat="seg in segments" ng-if='checkSegment(seg)'>
 		<h2 ng-init="getTablesForSegment(seg.id,$index)">Segment {{seg.id}}</h2>
-		<div ng-repeat="tab in seg.tables">
-			<p>Table {{tab.id}} </p>
+		<div class="thumbnail col-sm-4" ng-repeat="tab in seg.tables">
+			<div class="caption">
+				<h3><i>Table</i></h3>
+				<p class="bg-primary">Table: {{tab.id}} </p>
+				<p class="bg-info">Number of chairs: {{tab.numberOfChairs}} </p>
+				<p class="bg-primary">Free: {{tab.free}} </p>
+			</div>
 		</div>
 	</div>
 </div>

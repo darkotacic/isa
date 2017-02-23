@@ -1,62 +1,89 @@
 <div ng-controller="waiterController">
 <div class="container">
-	<div>
-		<div ng-repeat="tab in tables">
-			<table>
-				<tr><th>ID</th><th>Number of chairs</th><th>Segment</th><th>Smoking allowed</th></tr>
-			</table>
-		</div>
+
+	<div ng-if="workSchedule!=undefined"ng-init="getTodayTables()">
+		<h2>Tables</h2>
+	    <div class="thumbnail col-sm-4" ng-repeat="table in resTables">
+	      	<div class="caption">
+	        	<h3>Table</h3>
+	        	<p class="bg-primary">Table id: {{table.id}}</p>
+	        	<p class="bg-info">Number of chairs: {{table.numberOfChairs}}</p>
+	        	<p><input class="btn btn-primary" type="button" value="Add order" ng-click="createOrder(table.id)"></p>
+	      	</div>
+	    </div>
 	</div>
 
-	<div class="table-responsive"> 
-		<table id="orderTable" class ="table">
+	<div>
+		<h3>Created orders</h3>
+		<table class ="table">
 			<tr>
 				<th>ID</th>
 				<th>Date</th>
 				<th>Time</th>
 				<th>Table</th>
 				<th>Waiter</th>
+				<th>Price</th>
+				<th>Status</th>
 			</tr>
-			<tr ng-repeat="ord in orders" ng-click="setSelected(ord)" 
-		      ng-class="{'bg-danger' : selected===ord}">
+			<tr ng-repeat="ord in orders" ng-click="setSelected(ord)" ng-class="{'bg-info' : selected===ord}">
 				<td >{{ord.id}}</td>
 				<td>{{ord.date}}</td>
 				<td>{{ord.time}}</td>
 				<td>{{ord.table.id}}</td>
 				<td>{{ord.waiter.userName}}</td>
+				<td>{{ord.price}}</td>
+				<td>{{ord.orderStatus}}</td>
 			</tr>
 		</table>
 	</div>
+	
 	<div ng-if='selected!=""'>
-		<input type="button" value="Edit"/ ng-click=showEditOrder()>
-		<input type="button" value="Make check"/>
+		<input class="btn btn-primary" type="button" value="Edit" ng-click="showEditOrder()"/>
+		<input class="btn btn-primary" type="button" value="Delete" ng-click="deleteOrder()"/>
+		<input class="btn btn-primary" type="button" value="Add order items" ng-click="addItemsTo()"/>
+		<input class="btn btn-primary" type="button" value="Edit order items" ng-click="editOrderItems()"/>
+		<input class="btn btn-primary" type="button" value="Make check" ng-click="makeCheck()"/>
 	</div>
 	
 	<div ng-if='selected!="" && edit==true'>
 		<h3>Edit order</h3>
 		<form>
-			<table class="table">
+			<table class="table table-striped">
+				<tr><td>Order id:</td><td>{{selected.id}}</td></tr>
 				<tr>
 				 	<td>Table:</td><td><input type="text" ng-model="selected.table.id" ng-value="{{selected.table.id}}"/></td>
 				<tr>
 				<tr>
-					<td></td><td><input type="button" value="Confirm" ng-click=editOrder()></td>
+					<td></td><td><button type="button" class="btn btn-primary" ng-click=editOrder()>Confirm</button></td>
 				</tr>
 			</table>
 		</form>
 	</div>
 	
-	<div ng-if='selected!="" && add==true'>
-		<h3>Add items</h3>
-		<form>
-			<table class="table">
-				<tr>
-				 	<td>Table:</td><td><input type="text" ng-model="selected.table.id" ng-value="{{selected.table.id}}"/></td>
-					<td></td><td><input type="button" value="Confirm" ng-click=editOrder()></td>
-				<tr>
-			</table>
-		</form>
+	<div id="addorderitems" ng-if='lastAddedOrder!=null'>
+		<h3>Add order items</h3>
+		<p><i>Adding order items to order {{lastAddedOrder.id}}</i></p>
+		<table class="table table-stiped">
+			<tr><th>Product name</th><th>Price</th><th>Quantity</th></tr>
+			<tr ng-repeat="product in products">
+				 <td>{{product.productName}}</td><td>{{product.price}}</td><td><input id="product{{product.id}}" type="text" value="0"/></td>
+			</tr>
+		</table>
+		<input class="btn btn-primary" type="button" value="Confirm" ng-click=addOrderItems()>
 	</div>
+	
+	<div ng-if='editOrdersItems!=null'>
+		<h3>Edit order items</h3>
+		<p><i>Edit order items for order {{editOrdersItems.id}}</i></p>
+		<table class="table table-stiped">
+			<tr><th>Product name</th><th>Price</th><th>Quantity</th></tr>
+			<tr ng-repeat="item in orderItems">
+				 <td>{{item.product.productName}}</td><td>{{item.product.price}}</td><td><input id="item{{item.product.id}}" type="text" value="{{item.quantity}}"/></td>
+			</tr>
+		</table>
+		<input class="btn btn-primary" type="button" value="Confirm" ng-click=editItems()>
+	</div>
+	
 </div>
 	
 </div>

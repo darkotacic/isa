@@ -62,6 +62,7 @@ insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(3,'de
 insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(4,'description3','Kineska supa',350.0,'BOILED');
 
 insert into restaurant_products(pr_id, res_id) values (1, 1);
+insert into restaurant_products(pr_id, res_id) values (2, 1);
 
 insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (1, '12-12-17', '10-12-15', true, 9);
 insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (2, '12-12-15', '10-12-15', true, 9);
@@ -84,8 +85,11 @@ insert into restaurant_table(id, res_free, res_chair, segment_id) values(5,true,
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(6,true,4,2);
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(7,true,4,3);
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(8,true,8,3);
+insert into restaurant_table(id, res_free, res_chair, segment_id) values(9,true,4,1);
+insert into restaurant_table(id, res_free, res_chair, segment_id) values(10,true,3,1);
+insert into restaurant_table(id, res_free, res_chair, segment_id) values(11,true,2,1);
 
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(1,'16-10-15','16-10-15',8.0,15.0,1,4,3);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(1,'17-02-23','17-02-23',8.0,15.0,1,4,3);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(2,'16-10-15','16-10-15',15.0,22.0,2,null,4);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(3,'16-10-16','16-10-16',7.0,14.0,2,4,3);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(4,'16-10-16','16-10-16',14.0,21.0,3,null,4);

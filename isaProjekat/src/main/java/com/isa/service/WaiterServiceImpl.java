@@ -117,4 +117,9 @@ public class WaiterServiceImpl implements WaiterService {
 		return workScheduleRepository.getWorkSchedule(worker,date);
 	}
 
+	@Override
+	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate) {
+		return workScheduleRepository.getWorkScheduleForWaitersBetween(startDate,endDate);
+	}
+
 }
