@@ -1,0 +1,10 @@
+<div ng-controller="waiterController">
+	<h1>Tables in segments</h1>
+	<input type="checkbox" ng-model='allSegments' checked="checked"/>Display all segments
+	<div ng-repeat="seg in segments" ng-if='checkSegment(seg)'>
+		<h2 ng-init="getTablesForSegment(seg.id,$index)">Segment {{seg.id}}</h2>
+		<div ng-repeat="tab in seg.tables">
+			<p>Table {{tab.id}} </p>
+		</div>
+	</div>
+</div>

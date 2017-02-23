@@ -1,6 +1,7 @@
 package com.isa.service;
 
 import java.util.Date;
+import java.util.List;
 
 import com.isa.entity.Order;
 import com.isa.entity.OrderItem;
@@ -13,7 +14,7 @@ import com.isa.entity.users.Worker;
 
 public interface WaiterService {
 
-	public Iterable<WorkSchedule> getWorkScheduleForWaiters();
+	public List<WorkSchedule> getWorkScheduleForWaiters();
 	public Order addOrder(Order order);
 	public Iterable<Order> findAllOrders();
 	public Order updateOrder(Order order);

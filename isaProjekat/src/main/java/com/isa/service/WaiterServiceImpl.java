@@ -1,6 +1,8 @@
 package com.isa.service;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,8 +50,10 @@ public class WaiterServiceImpl implements WaiterService {
 	private OrderItemRepository orderItemRepository;
 	
 	@Override
-	public Iterable<WorkSchedule> getWorkScheduleForWaiters(){
-		return workScheduleRepository.getWorkScheduleForWaiters();
+	public List<WorkSchedule> getWorkScheduleForWaiters(){
+		List<WorkSchedule> schedules=workScheduleRepository.getWorkScheduleForWaiters();
+		Collections.sort(schedules);
+		return schedules;
 	}
 	
 	@Override

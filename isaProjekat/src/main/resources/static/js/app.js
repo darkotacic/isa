@@ -6,6 +6,15 @@ app.config(function($routeProvider, $locationProvider) {
 	$routeProvider.when('/login', {
 		templateUrl : 'login.html',
 		controller : 'loginController'
+	}).when('/home', {
+		templateUrl: 'home.html',
+		controller: 'homeController'
+	}).when('/register', {
+		templateUrl: 'register.html',
+		controller: 'registerController'
+	}).when('/profile', {
+		templateUrl: 'profile.html',
+		controller: 'profileController'
 	}).when('/registerRestaurant', {
 		templateUrl : 'registerRestaurant.html',
 		controller : 'systemManagerController'
@@ -36,12 +45,10 @@ app.config(function($routeProvider, $locationProvider) {
 	}).when('/showRestaurantSegments', {
 		templateUrl : 'segmentsOfRestaurant.html',
 		controller : 'restaurantManagerController'
-	})
-	.when('/showRestaurantWorkSchedules', {
+	}).when('/showRestaurantWorkSchedules', {
 		templateUrl : 'restaurantShifts.html',
 		controller : 'restaurantManagerController'
-	})
-	.when('/showManagerOffers', {
+	}).when('/showManagerOffers', {
 		templateUrl : 'managersRequestOffers.html',
 		controller : 'restaurantManagerController'
 	})

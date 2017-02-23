@@ -1,0 +1,62 @@
+<div ng-controller="waiterController">
+<div class="container">
+	<div>
+		<div ng-repeat="tab in tables">
+			<table>
+				<tr><th>ID</th><th>Number of chairs</th><th>Segment</th><th>Smoking allowed</th></tr>
+			</table>
+		</div>
+	</div>
+
+	<div class="table-responsive"> 
+		<table id="orderTable" class ="table">
+			<tr>
+				<th>ID</th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Table</th>
+				<th>Waiter</th>
+			</tr>
+			<tr ng-repeat="ord in orders" ng-click="setSelected(ord)" 
+		      ng-class="{'bg-danger' : selected===ord}">
+				<td >{{ord.id}}</td>
+				<td>{{ord.date}}</td>
+				<td>{{ord.time}}</td>
+				<td>{{ord.table.id}}</td>
+				<td>{{ord.waiter.userName}}</td>
+			</tr>
+		</table>
+	</div>
+	<div ng-if='selected!=""'>
+		<input type="button" value="Edit"/ ng-click=showEditOrder()>
+		<input type="button" value="Make check"/>
+	</div>
+	
+	<div ng-if='selected!="" && edit==true'>
+		<h3>Edit order</h3>
+		<form>
+			<table class="table">
+				<tr>
+				 	<td>Table:</td><td><input type="text" ng-model="selected.table.id" ng-value="{{selected.table.id}}"/></td>
+				<tr>
+				<tr>
+					<td></td><td><input type="button" value="Confirm" ng-click=editOrder()></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	<div ng-if='selected!="" && add==true'>
+		<h3>Add items</h3>
+		<form>
+			<table class="table">
+				<tr>
+				 	<td>Table:</td><td><input type="text" ng-model="selected.table.id" ng-value="{{selected.table.id}}"/></td>
+					<td></td><td><input type="button" value="Confirm" ng-click=editOrder()></td>
+				<tr>
+			</table>
+		</form>
+	</div>
+</div>
+	
+</div>

@@ -2,6 +2,7 @@ package com.isa.controller;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,6 +28,7 @@ import com.isa.entity.Segment;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.User;
 import com.isa.entity.users.Waiter;
+import com.isa.entity.users.Worker;
 import com.isa.service.WaiterService;
 import com.isa.service.WorkerService;
 
@@ -50,7 +52,7 @@ public class WaiterController {
 	@ResponseBody
 	@Transactional(readOnly=true)
 	public ResponseEntity<Iterable<WorkSchedule>> getWorkspaceScheduleForWaiters(){
-		Iterable<WorkSchedule> schedules=waiterService.getWorkScheduleForWaiters();
+		List<WorkSchedule> schedules=waiterService.getWorkScheduleForWaiters();
 		return new ResponseEntity<Iterable<WorkSchedule>>(schedules, HttpStatus.OK);	
 	}
 	
@@ -92,9 +94,10 @@ public class WaiterController {
 		if(user==null || !user.getUserRole().toString().equals("WAITER"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 		RestaurantTable rt=waiterService.getTable(tableId);
-		order.setTable(rt);
-		order.setWaiter((Waiter)user);
-		Order o=waiterService.updateOrder(order);
+		Order temp=workerService.getOrder(order.getId());
+		temp.setTable(rt);
+		temp.setWaiter((Waiter)user);
+		Order o=waiterService.updateOrder(temp);
 		return new ResponseEntity<Order>(o, HttpStatus.OK);
 	}
 	
@@ -231,6 +234,17 @@ public class WaiterController {
 	public ResponseEntity<Iterable<RestaurantTable>> getTablesForSegment(@PathVariable("id")Long segmentId){
 		Iterable<RestaurantTable> tables=waiterService.getAllTablesForSegment(segmentId);
 		return new ResponseEntity<Iterable<RestaurantTable>>(tables, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value="/getWorkSchedule",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<WorkSchedule> getWorkSchedule(){
+		WorkSchedule ws=waiterService.getWorkSchedule((Worker) session.getAttribute("user"), new Date());
+		return new ResponseEntity<WorkSchedule>(ws, HttpStatus.OK);
 	}
 	
 }

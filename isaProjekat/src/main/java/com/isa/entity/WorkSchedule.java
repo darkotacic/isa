@@ -24,7 +24,7 @@ import com.isa.entity.users.Worker;
 @Entity
 @Table(name = "WORK_SCHEDULE", uniqueConstraints = { @UniqueConstraint(columnNames = 
 { "WORKER_USER_ID", "WORK_SCH_DATE"})})
-public class WorkSchedule implements Serializable {
+public class WorkSchedule implements Serializable,Comparable<WorkSchedule> {
 
 	private static final long serialVersionUID = -5309553359477225086L;
 
@@ -152,5 +152,13 @@ public class WorkSchedule implements Serializable {
 		this.done = done;
 	}
 	
+	@Override
+	public int compareTo(WorkSchedule o) {
+		if(this.getDate().before(o.getDate()))
+			return -1;
+		else if(this.getDate().after(o.getDate()))
+			return 1;
+		return 0;
+	}
 
 }
