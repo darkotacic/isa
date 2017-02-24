@@ -99,7 +99,8 @@ public interface RestaurantManagerService {
 
 	ResponseEntity<WorkSchedule> updateWorkScheduleSetWorker(Long s, Long w);
 
-	double gradeForOrder(Long id);
+	double gradeForOrder(Long id, Long res_id);
+	double gradeForWorker(Long id);
 
 	double gradeForRestaurant(Long id);
 

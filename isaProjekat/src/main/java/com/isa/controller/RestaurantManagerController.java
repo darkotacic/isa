@@ -1,5 +1,7 @@
 package com.isa.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -118,24 +120,24 @@ public class RestaurantManagerController {
 		return restaurantManagerService.registerWorkSchedule(s, w_id, s_id, r_id);
 	}
 
-	@RequestMapping(value = "/updateWorkSchedule", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateWorkSchedule", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> updateWorkSchedule(@RequestBody @Valid WorkSchedule s) {
 		return restaurantManagerService.updateWorkSchedule(s);
 	}
 
-	@RequestMapping(value = "/updateWorkScheduleSetReplacement", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateWorkScheduleSetReplacement", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> updateWorkScheduleSetReplacement(@RequestParam(value = "repl_id") Long s,
 			@RequestParam(value = "ws_id") Long w) {
 		return restaurantManagerService.updateWorkScheduleSetReplacement(s, w);
 	}
 
-	@RequestMapping(value = "/updateWorkScheduleSetSegment", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateWorkScheduleSetSegment", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> updateWorkScheduleSetSegment(@RequestParam(value = "segment_id") Long s,
 			@RequestParam(value = "ws_id") Long w) {
 		return restaurantManagerService.updateWorkScheduleSetSegment(s, w);
 	}
 
-	@RequestMapping(value = "/updateWorkScheduleSetWorker", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updateWorkScheduleSetWorker", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<WorkSchedule> updateWorkScheduleSetWorker(@RequestParam(value = "worker_id") Long s,
 			@RequestParam(value = "ws_id") Long w) {
 		return restaurantManagerService.updateWorkScheduleSetWorker(s, w);
@@ -163,7 +165,7 @@ public class RestaurantManagerController {
 		return restaurantManagerService.removeProductFromRequestOffer(ids, rest_id);
 	}
 
-	@RequestMapping(value = "/addProductToRequestOffer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/addProductToRequestOffer", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> addProductToRequestOffer(@RequestParam(value = "product_id") Long id,
 			@RequestParam(value = "rest_id") Long rest_id) {
 		return restaurantManagerService.addProductToRequestOffer(id, rest_id);
@@ -244,7 +246,7 @@ public class RestaurantManagerController {
 		return restaurantManagerService.getPossableReplacements(id);
 	}
 
-	@RequestMapping(value = "/acceptBidderOffer", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/acceptBidderOffer", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RequestOffer> acceptBidderOffer(@RequestParam(value = "bid_id") Long r_id,
 			@RequestParam(value = "req_id") Long q_id) {
 		return restaurantManagerService.acceptBidderOffer(r_id, q_id);
@@ -256,14 +258,22 @@ public class RestaurantManagerController {
 	}
 
 	@RequestMapping(value = "/getGradeForOrder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public double getGradeForOrder(@RequestParam(value = "id") Long id) {
-		return restaurantManagerService.gradeForOrder(id);
+	public double getGradeForOrder(@RequestParam(value = "id") Long id,@RequestParam(value = "res_id") Long res_id) {
+		return restaurantManagerService.gradeForOrder(id, res_id);
+	}
+	
+	@RequestMapping(value = "/getGradeForWaiter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public double getGradeForWaiter(@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.gradeForWorker(id);
 	}
 
 	@RequestMapping(value = "/getRestaurantEarnings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public double getRestaurantEarnings(@RequestParam(value = "id") Long id,
-			@RequestParam(value = "start") Date startDate, @RequestParam(value = "end") Date endDate) {
-		return restaurantManagerService.restaurantEarnings(id, startDate, endDate);
+			@RequestParam(value = "start") String startDate, @RequestParam(value = "end") String endDate) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("mm-dd-yyyy");
+		Date start = formatter.parse(startDate);
+		Date end = formatter.parse(endDate);
+		return restaurantManagerService.restaurantEarnings(id, start, end);
 	}
 
 	@RequestMapping(value = "/getWaiterEarnings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

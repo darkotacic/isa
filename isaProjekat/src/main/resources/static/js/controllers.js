@@ -8,7 +8,10 @@ app.controller('appController',['$rootScope','$scope','$location','SessionServic
 		if (!$rootScope.loggedUser) {
 			$location.path('/login');
 		} else {
-			$location.path('/home');
+			if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
+				$location.path('/changePassword');
+			else
+				$location.path('/home');
 		}
 	});
 	
@@ -29,7 +32,10 @@ app.controller('loginController',['$rootScope','$scope','$location','SessionServ
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
 	} else {
-		$location.path('/home');
+		if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
+			$location.path('/changePassword');
+		else
+			$location.path('/home');
 	}
 	
 	
@@ -46,7 +52,10 @@ app.controller('loginController',['$rootScope','$scope','$location','SessionServ
     			  timer: 2000
  
     			});
-	    	$location.path('/home');
+    		if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
+				$location.path('/changePassword');
+			else
+				$location.path('/home');
 	    })
 	    .catch(function(response) {
 	    	swal("ERROR", "BAD CREDENTIALS", "error");
@@ -88,7 +97,9 @@ app.controller('homeController',['$rootScope','$scope','$location','$http',funct
 	
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
-	} 
+	}  else if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
+		$location.path('/changePassword');
+	
 	
 	switch($rootScope.loggedUser.userRole) {
     case 'GUEST':
@@ -109,7 +120,9 @@ app.controller('profileController',['$rootScope','$scope','$location','$http','S
 	
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
-	} 
+	} else if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
+		$location.path('/changePassword');
+	
 	
 	sessionService.getLoggedUser().then(function(response){
 		$scope.user = response.data;

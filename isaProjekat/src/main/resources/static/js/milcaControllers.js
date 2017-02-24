@@ -265,7 +265,7 @@ app
 						'$location',
 						'BidderService',
 						function($rootScope, $scope, $location, bidderService) {
-
+							
 							$scope.display = function(tab) {
 								$scope.show = tab;
 							}
@@ -415,7 +415,7 @@ app
 
 							}
 
-							$scope.editBidder = function() {
+							$scope.editBidder = function(firstLog) {
 								if ($scope.editBidder.userName == null)
 									$scope.editBidder.userName = $rootScope.loggedUser.userName;
 								if ($scope.editBidder.surname == null)
@@ -428,6 +428,7 @@ app
 								if ($scope.editBidder.email == null)
 									$scope.editBidder.email = $rootScope.loggedUser.email;
 								$scope.editBidder.id = $rootScope.loggedUser.id;
+								$scope.editBidder.firstLogIn = firstLog;
 								var bidder = $scope.editBidder;
 								bidderService
 										.editBidder(bidder)
@@ -435,9 +436,9 @@ app
 												function(response) {
 													if (response.data) {
 														$scope.error = false;
-														alert("Uspesno izmjenje:"
-																+ response.data.id);
 														$rootScope.loggedUser = response.data;
+														if(!firstLog)
+															$location.path('/home');
 													} else {
 														$scope.error = true;
 													}
@@ -474,12 +475,17 @@ app
 							}
 							$scope.displayRequest = function(tab) {
 								$scope.showR = tab;
+								$scope.selectedBid = null;
+								$scope.selectedRestaurantProduct = null;
+								$scope.selectedRequestOfferProduct = null;
 								
 							}
 
 							$scope.setSelectedWorker = function(selected) {
 								$scope.selectedWorker = selected;
 								$scope.showW = null;
+								$scope.waiterGrade = null;
+								$scope.waiterEarnings = null;
 							}
 							
 							$scope.setSelectedRequestOffer = function(selected) {
@@ -547,6 +553,7 @@ app
 										else
 											$scope.error = true;
 									});
+							
 							restaurantManagerService
 							.checkIfWorkScheduleIsDone()
 							.then(
@@ -564,6 +571,20 @@ app
 											function(response) {
 												$scope.restaurant = response.data;
 												$rootScope.restaurant = $scope.restaurant;
+												restaurantManagerService
+												.restaurantGrade($scope.restaurant.id)
+												.then(
+														function(response) {
+															if(response.data) {
+																$scope.error = false
+																if(response.data != -1)
+																	$scope.grade = response.data;
+																else 
+																	$scope.grade = 'No grades yet'
+															}
+															else
+																$scope.error = true;
+														});
 												restaurantManagerService
 														.getRestaurantWorkers(
 																$scope.restaurant.id)
@@ -616,7 +637,7 @@ app
 							
 								
 					
-							
+							$scope.showProducts = false;
 							$scope.getProductsForRestaurant = function() {
 								restaurantManagerService
 										.getProductsForRestaurant($scope.restaurant.id)
@@ -624,7 +645,11 @@ app
 												function(response) {
 													if (response.data) {
 														$scope.error = false;
+														$scope.showProducts = true;
 														$scope.restaurantProducts = response.data;
+														$scope.selectedBid = null;
+														$scope.selectedRestaurantProduct = null;
+														$scope.selectedRequestOfferProduct = null;
 														$scope.show = 3;
 														$scope.showR = 5;
 													} else {
@@ -696,6 +721,23 @@ app
 														$scope.restaurantWorkers
 																.push(response.data);
 														$scope.show = null;
+													} else {
+														$scope.error = true;
+													}
+												}).catch(function(response) {
+													$scope.error = true;
+													   console.error('Gists error', response.status, response.data)
+												  });;
+							}
+							$scope.registerBidder = function() {
+								restaurantManagerService
+										.registerBidder($scope.newBidder)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.error = false;
+														$scope.showR = null;
+														$scope.newBidder = null;
 													} else {
 														$scope.error = true;
 													}
@@ -1152,6 +1194,9 @@ app
 														.indexOf($scope.selectedRequestOffer);
 												$scope.managerOffers.splice(index, 1);
 														$scope.showR = null;
+														$scope.selectedBid = null;
+														$scope.selectedRestaurantProduct = null;
+														$scope.selectedRequestOfferProduct = null;
 
 													} else {
 														$scope.error = true;
@@ -1208,6 +1253,9 @@ app
 														$scope.error = false;
 														$scope.biddings = response.data;
 														$scope.showR = 3;
+														$scope.selectedBid = null;
+														$scope.selectedRestaurantProduct = null;
+														$scope.selectedRequestOfferProduct = null;
 													} else {
 														$scope.error = true;
 													}
@@ -1223,6 +1271,9 @@ app
 														$scope.error = false;
 														$scope.requestOfferProducts = response.data;
 														$scope.showR = 4;
+														$scope.selectedBid = null;
+														$scope.selectedRestaurantProduct = null;
+														$scope.selectedRequestOfferProduct = null;
 													} else {
 														$scope.error = true;
 													}
@@ -1236,14 +1287,85 @@ app
 												function(response) {
 													if (response.data) {
 														$scope.error = false;
+														$scope.selectedBid = null;
+														$scope.selectedRestaurantProduct = null;
+														$scope.selectedRequestOfferProduct = null;
+														$scope.selectedRequestOffer.status = false;
 														$scope.showR = null;
 													} else {
 														$scope.error = true;
 													}
 												});
 							}
+							$scope.getGradeOfWaiter = function() {
+							restaurantManagerService
+							.getGradeOfWaiter($scope.selectedWorker.id)
+							.then(
+									function(response) {
+										if(response.data) {
+											$scope.error = false
+											if(response.data != -1)
+												$scope.waiterGrade = response.data;
+											else 
+												$scope.waiterGrade = 'No grades yet'
+										}
+										else
+											$scope.error = true;
+									});
+							}
 							
+							$scope.getEarningForWaiter = function() {
+								restaurantManagerService
+								.getEarningForWaiter($scope.selectedWorker.id)
+								.then(
+										function(response) {
+											if(response.data) {
+												$scope.error = false
+												if(response.data != -1)
+													$scope.waiterEarnings = response.data;
+												else 
+													$scope.waiterEarnings = 'No earnings yet'
+											}
+											else
+												$scope.error = true;
+										});
+								}
 							
+							$scope.getRestaurantEarnings = function() {
+								var start =  moment($scope.restaurantStart).format('MM-DD-YYYY');
+								var end = moment($scope.restaurantEnd).format('MM-DD-YYYY');
+								restaurantManagerService
+								.getRestaurantEarnings($scope.restaurant.id, start, end)
+								.then(
+										function(response) {
+											if(response.data) {
+												$scope.error = false
+												if(response.data != -1)
+													$scope.restaurantEarnings = response.data;
+												else 
+													$scope.restaurantEarnings = 'No earnings yet'
+											}
+											else
+												$scope.error = true;
+										});
+								}
+							
+							$scope.getProductGrade = function() {
+								restaurantManagerService
+								.getProductGrade($scope.restaurant.id, $scope.selectedRestaurantProduct.id)
+								.then(
+										function(response) {
+											if(response.data) {
+												$scope.error = false
+												if(response.data != -1)
+													$scope.gradeProduct = response.data;
+												else 
+													$scope.gradeProduct = 'No grades yet'
+											}
+											else
+												$scope.error = true;
+										});
+								}
 							
 						} ]);
 

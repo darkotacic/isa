@@ -205,7 +205,8 @@ app.factory('BidderService', function bidderService($http) {
 				"surname" : bidder.surname,
 				"email" : bidder.email,
 				"password" : bidder.password,
-				"dateOfBirth" : bidder.dateOfBirth
+				"dateOfBirth" : bidder.dateOfBirth,
+				"firstLogIn" : bidder.firstLogIn
 			}
 		});
 	}
@@ -231,6 +232,50 @@ app
 							method : 'GET',
 							url : '../restaurantManagers/checkIfSegmentCanBeDeleted?id='
 									+ id
+						});
+					}
+					restaurantManagerService.restaurantGrade = function(
+							id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getGradeForRestaurant?id='
+									+ id
+						});
+					}
+					
+					restaurantManagerService.getGradeOfWaiter = function(
+							id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getGradeForWaiter?id='
+									+ id
+						});
+					}
+					
+					restaurantManagerService.getProductGrade = function(
+							id, pro_id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getGradeForOrder?id='
+									+ pro_id + '&res_id=' + id
+						});
+					}
+					
+					restaurantManagerService.getEarningForWaiter = function(
+							id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getWaiterEarnings?id='
+									+ id
+						});
+					}
+					
+					restaurantManagerService.getRestaurantEarnings = function(
+							id, start, end) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantManagers/getRestaurantEarnings?id='
+									+ id + '&start=' + start + '&end=' + end
 						});
 					}
 
@@ -343,6 +388,20 @@ app
 								"shoeNumber" : waiter.shoeNumber,
 								"cookType" : waiter.cookType,
 								"userRole" : "WAITER"
+							}
+						});
+					}
+					restaurantManagerService.registerBidder = function(b) {
+						return $http({
+							method : 'POST',
+							url : '../restaurantManagers/registerBidder',
+							data : {
+								"userName" : b.userName,
+								"surname" : b.surname,
+								"email" : b.email,
+								"password" : b.password,
+								"dateOfBirth" : b.dateOfBirth,
+								"userRole" : "BIDDER"
 							}
 						});
 					}
@@ -489,7 +548,7 @@ app
 					restaurantManagerService.editWorkScheduleInfo = function(
 							workSchedule) {
 						return $http({
-							method : 'POST',
+							method : 'PUT',
 							url : '../restaurantManagers/updateWorkSchedule',
 							data : {
 								"id" : workSchedule.id,
@@ -557,7 +616,7 @@ app
 					restaurantManagerService.addProductToRequestOffer = function(
 							ro_id, p_id) {
 						return $http({
-							method : 'POST',
+							method : 'PUT',
 							url : '../restaurantManagers/addProductToRequestOffer?product_id=' + p_id + '&rest_id=' + ro_id
 						});
 					}

@@ -21,5 +21,8 @@ app.config(function($routeProvider, $locationProvider) {
 	}).when('/showBidderProfile', {
 		templateUrl : 'editProfileBidder.html',
 		controller : 'bidderController'
+	}).when('/changePassword', {
+		templateUrl : 'changePassword.html',
+		controller : 'bidderController'
 	})
 });

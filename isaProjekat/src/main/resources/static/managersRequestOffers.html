@@ -40,6 +40,7 @@
 						ng-disabled="!selectedRequestOffer">Show requested products</button>
 						<button type="button" class="btn btn-primary" ng-click="getProductsForRestaurant()"
 						ng-disabled="!selectedRequestOffer">Show restaurant products</button>
+						<button type="button" class="btn btn-primary" ng-click="displayRequest(6)">Register bidder</button>
 							
 				</div>
 			</div>
@@ -52,5 +53,6 @@
 	<div ng-show="showR==3" ng-include src="'pages/biddingsForOffer.html'"></div>
 	<div ng-show="showR==4" ng-include src="'pages/requestedProducts.html'"></div>
 	<div ng-show="showR==5" ng-include src="'pages/restaurantProductsAdd.html'"></div>
+	<div ng-show="showR==6" ng-include src="'pages/registerBidder.html'"></div>
 </div>
 </div>

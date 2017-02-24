@@ -10,8 +10,8 @@ import com.isa.entity.users.Waiter;
 
 public interface WaiterRepository extends CrudRepository<Waiter, Long> {
 
-	@Query("select sum(o.price) from Waiter w inner join w.orders as o where w.restaurant = ?1 and o.orderStatus = PAID and o.date between ?2 and ?3")
-	double getEarningsForRestaurant(Restaurant t, Date startDate, Date endDate);
-	@Query("select sum(o.price) from Waiter w inner join w.orders as o where w.id = ?1 and o.orderStatus = PAID")
-	double getEarningsForWaiter(Long id);
+	@Query("select sum(o.price) from Waiter w inner join w.orders as o where w.restaurant = ?1 and o.orderStatus='PAID' and o.date between ?2 and ?3")
+	Double getEarningsForRestaurant(Restaurant t, Date startDate, Date endDate);
+	@Query("select sum(o.price) from Waiter w inner join w.orders as o where w.id = ?1 and o.orderStatus='PAID'")
+	Double getEarningsForWaiter(Long id);
 }

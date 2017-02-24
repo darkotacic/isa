@@ -1,3 +1,4 @@
+
 package com.isa.service;
 
 import java.util.Calendar;
@@ -290,6 +291,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	public ResponseEntity<RequestOffer> registerRequestOffer(RequestOffer ro, Long r_id) {
 		if (ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (!ro.getStartDate().after(new Date()) && !ro.getStartDate().before(new Date())) {
+			ro.setStatus(false);
+		}
 		RestaurantManager rm = this.restaurantManagerRepository.findOne(r_id);
 		ro.setRestaurantManager(rm);
 		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(ro), HttpStatus.OK);
@@ -318,6 +322,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		RequestOffer temp = this.requestOfferRepository.findOne(ro.getId());
 		if (ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (!ro.getStartDate().after(new Date()) && !ro.getStartDate().before(new Date())) {
+			ro.setStatus(false);
+		}
 		temp.setStartDate(ro.getStartDate());
 		temp.setExpirationDate(ro.getExpirationDate());
 		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.save(temp), HttpStatus.OK);
@@ -427,23 +434,40 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public double gradeForOrder(Long id) {
-		return this.orderRepository.getGradeForOrder(id);
+	public double gradeForOrder(Long id, Long res_id) {
+		if (this.productRepository.seeIfBelongsToRestaurant(id, res_id) == null
+				|| this.orderRepository.getGradeForOrder(id, res_id) == null)
+			return -1;
+		return this.orderRepository.getGradeForOrder(id, res_id);
+	}
+
+	@Override
+	public double gradeForWorker(Long id) {
+		if (this.orderRepository.getGradeForWorker(id) == null)
+			return -1;
+		return this.orderRepository.getGradeForWorker(id);
 	}
 
 	@Override
 	public double gradeForRestaurant(Long id) {
+		if (this.restaurantRepository.getGradeForRestaurant(id) == null)
+			return -1;
 		return this.restaurantRepository.getGradeForRestaurant(id);
 	}
 
 	@Override
 	public double restaurantEarnings(Long id, Date startDate, Date endDate) {
+		if (this.waiterRepository.getEarningsForRestaurant(this.restaurantRepository.findOne(id), startDate,
+				endDate) == null)
+			return -1;
 		return this.waiterRepository.getEarningsForRestaurant(this.restaurantRepository.findOne(id), startDate,
 				endDate);
 	}
 
 	@Override
 	public double waiterEarinings(Long id) {
+		if (this.waiterRepository.getEarningsForWaiter(id) == null)
+			return -1;
 		return this.waiterRepository.getEarningsForWaiter(id);
 	}
 
@@ -454,12 +478,16 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			if (of.get(i).getExpirationDate().before(new Date())) {
 				of.get(i).setStatus(false);
 				List<BidderOffer> it = this.bidderOfferRepository.findByRequestOffer(of.get(i));
-				for (int j = 0; j < it.size(); j++)
+				for (int j = 0; j < it.size(); j++) {
 					it.get(j).setOfferStatus(BidderOfferStatus.DECLINED);
+				}
+
 				this.bidderOfferRepository.save(it);
 				this.requestOfferRepository.save(of.iterator().next());
+			} else if (!of.get(i).getStartDate().after(new Date()) && !of.get(i).getStartDate().before(new Date())) {
+				of.get(i).setStatus(true);
+				this.requestOfferRepository.save(of.get(i));
 			}
-
 		}
 		return 0;
 	}

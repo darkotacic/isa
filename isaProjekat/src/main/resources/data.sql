@@ -13,7 +13,7 @@ insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (9,'16-10-15','tamara.mrskic@gmail.com','sifra','Tamara','Mrksic','RESTAURANT_MANAGER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (10,'16-10-15','stefan.varajic@gmail.com','sifra','Stevan','Varaja','RESTAURANT_MANAGER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (11,'16-10-15','bider.bidic@gmail.com','sifra','Batko','Batkic','BIDDER');
-insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (12,'16-10-15','bider2.bidic@gmail.com','sifra','Batko2','Batkic2','BIDDER');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (12,'16-10-15','bider2.bidic@gmail.com','sifra','Batko','Batkic','BIDDER');
 
 insert into bidder(user_id) values(11);
 insert into bidder(user_id) values(12);
@@ -105,3 +105,7 @@ insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order
 insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(2,1,null,6,1,2,'ONHOLD');
 insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(3,1,null,6,2,2,'ONHOLD');
 insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(4,1,null,5,2,3,'ONHOLD');
+
+insert into grade(grd_id, grd_meal, grd_res, grd_service, guest_user_id, order_res_ord_id, restaurant_res_id) values (1, 3, 5, 2, 1, 1, 1);
+insert into grade(grd_id, grd_meal, grd_res, grd_service, guest_user_id, order_res_ord_id, restaurant_res_id) values (2, 4, 5, 8, 1, 1, 1);
+insert into grade(grd_id, grd_meal, grd_res, grd_service, guest_user_id, order_res_ord_id, restaurant_res_id) values (3, 9, 5, 8, 1, 1, 1);
