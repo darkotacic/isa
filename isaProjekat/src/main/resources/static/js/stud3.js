@@ -158,33 +158,6 @@ app.factory('WaiterService', function waiterService($http) {
 	
 });
 
-app.factory('WorkerService', function workerService($http) {
-	
-	workerService.updateInformationForWaiter = function(waiter){
-		return $http({
-			method : 'PUT',
-			url: '../waiters/updateInformation',
-			data: {
-				"id": waiter.id,
-				"email": waiter.email,
-				"name": waiter.name,
-				"surname": waiter.surname,
-				"password": waiter.password,
-				"dateOfBirth": waiter.dateOfBirth,
-				"shoeNumber": waiter.shoeNumber,
-				"shirtSize": waiter.shirtSize
-			},
-			headers: {
-				   'Content-Type': 'application/json',
-				   'Accept': 'application/json'
-			}
-		});
-	}
-	
-	return workerService;
-	
-});
-
 app.controller('waiterController',['$rootScope','$scope','$location','WaiterService',function($rootScope,$scope,$location,waiterService){
 	
 	$scope.selected= "";
@@ -270,6 +243,7 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 		waiterService.createOrder(tableNum).then(function(response){
 			$scope.lastAddedOrder=response.data;
 			$scope.selected=null;
+			$scope.orders.push(response.data);
 		});
 	}
 	
@@ -320,14 +294,6 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 			var check=response.data;
 			alert('Waiter: '+check.waiter.userName+', price: '+check.price);
 		});
-	}
-	
-}]);
-
-app.controller('workerController',['$rootScope','$scope','$location','WorkerService',function($rootScope,$scope,$location,workerService){
-		
-	workerService.updateInformation=function(){
-		
 	}
 	
 }]);

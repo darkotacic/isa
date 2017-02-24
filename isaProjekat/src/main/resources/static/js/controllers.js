@@ -111,6 +111,16 @@ app.controller('profileController',['$rootScope','$scope','$location','$http','S
 		$location.path('/login');
 	} 
 	
+	sessionService.getLoggedUser().then(function(response){
+		$scope.user = response.data;
+		$scope.user.dateOfBirth = new Date(response.data.dateOfBirth);
+	});
+	
+	$scope.confirmEditProfile=function(){
+		sessionService.update($scope.user).then(function(response){
+			$rootScope.loggedUser = response.data;
+		});
+	}
 
 }]);
 

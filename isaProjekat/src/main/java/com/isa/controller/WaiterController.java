@@ -222,14 +222,22 @@ public class WaiterController {
 	}
 	
 	@RequestMapping(
-			value = "/updateInformation",
+			value = "/update",
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Waiter> updateInformation(@RequestBody Waiter waiter){
-		Waiter w=waiterService.updateWaiterInformation(waiter);
+		Waiter temp=waiterService.getWaiter(waiter.getId());
+		temp.setEmail(waiter.getEmail());
+		temp.setUserName(waiter.getUserName());
+		temp.setSurname(waiter.getSurname());
+		temp.setPassword(waiter.getPassword());
+		temp.setDateOfBirth(waiter.getDateOfBirth());
+		temp.setShoeNumber(waiter.getShoeNumber());
+		temp.setShirtSize(waiter.getShirtSize());
+		Waiter w=waiterService.updateWaiterInformation(temp);
 		return new ResponseEntity<Waiter>(w, HttpStatus.OK);
 	}
 	

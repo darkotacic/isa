@@ -122,4 +122,9 @@ public class WaiterServiceImpl implements WaiterService {
 		return workScheduleRepository.getWorkScheduleForWaitersBetween(startDate,endDate);
 	}
 
+	@Override
+	public Waiter getWaiter(Long id) {
+		return waiterRepository.findOne(id);
+	}
+
 }

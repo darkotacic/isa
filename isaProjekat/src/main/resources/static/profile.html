@@ -1,4 +1,36 @@
 <div role="form" class="form-inline" ng-controller="profileController">
 	<h1 class="page-header">PROFILE</h1>
-
+	
+	<div class="container marketing">
+		<form name="profileForm">
+			<table class="table table-striped">
+				<tr>
+					<td>ID</td><td>{{user.id}}</td>
+				</tr>
+				<tr>
+					<td>Email</td><td><input name="email" type="email" ng-model="user.email" required/><span style="color:red" ng-show="profileForm.email.$dirty && profileForm.email.$invalid">NIJE UNET MAIL!</span></td>
+				</tr>
+				<tr>
+					<td>Name</td><td><input type="text" ng-model="user.userName" required/></td>
+				<tr>
+					<td>Surname</td><td><input type="text" ng-model="user.surname" required/></td>
+				</tr>
+				<tr>
+					<td>Password</td><td><input type="password" ng-model="user.password" required/></td>
+				</tr>
+				<tr>
+					<td>Birthday</td><td><input type="date" ng-model="user.dateOfBirth" required/></td>
+				</tr>
+				<tr ng-if="loggedUser.userRole=='WAITER' || loggedUser.userRole=='COOK' || loggedUser.userRole=='BARTENDER'">
+					<td>Shoe number</td><td><input type="text" ng-model="user.shoeNumber" required/></td>
+				</tr>
+				<tr ng-if="loggedUser.userRole=='WAITER' || loggedUser.userRole=='COOK' || loggedUser.userRole=='BARTENDER'">
+					<td>Shirt size</td><td><input type="text" ng-model="user.shirtSize" required/></td>
+				</tr>
+				<tr>
+					<td></td><td><input ng-disabled="profileForm.$invalid" class="btn btn-primary" type="button" value="Confirm" ng-click="confirmEditProfile()"/></td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </div>

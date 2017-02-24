@@ -33,5 +33,5 @@ public class WorkerServiceImpl implements WorkerService {
 	public OrderItem getOrderItem(Long id) {
 		return orderItemRepository.findOne(id);
 	}
-
+	
 }

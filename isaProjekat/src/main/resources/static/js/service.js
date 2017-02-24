@@ -48,6 +48,24 @@ app.factory('SessionService', function sessionService($http) {
 		});
 	}
 	
+	sessionService.update = function(user){
+		return $http({
+			method : 'PUT',
+			url: '../'+ user.userRole.toLowerCase()+'s/update',
+			data: {
+				"id": user.id,
+				"userName": user.userName,
+				"password": user.password,
+				"surname": user.surname,
+				"userRole": user.userRole,
+				"email": user.email,
+				"dateOfBirth": user.dateOfBirth,
+				"shirtSize": user.shirtSize,
+				"shoeNumber": user.shoeNumber
+			}
+		});
+	}
+	
 	
 	return sessionService;
 	
