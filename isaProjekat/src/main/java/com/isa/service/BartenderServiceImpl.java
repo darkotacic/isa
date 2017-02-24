@@ -1,5 +1,8 @@
 package com.isa.service;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +40,16 @@ public class BartenderServiceImpl implements BartenderService {
 	@Override
 	public Bartender updateBartenderInformation(Bartender bartender) {
 		return bartenderRepository.save(bartender);
+	}
+
+	@Override
+	public Bartender getBartender(Long id) {
+		return bartenderRepository.findOne(id);
+	}
+
+	@Override
+	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate) {
+		return workScheduleRepository.getWorkScheduleForBartendersBetween(startDate, endDate);
 	}
 
 }

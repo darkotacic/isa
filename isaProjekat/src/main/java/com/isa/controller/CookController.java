@@ -1,5 +1,9 @@
 package com.isa.controller;
 
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,14 +110,37 @@ public class CookController {
 	}
 	
 	@RequestMapping(
-			value = "/updateInformation",
+			value = "/update",
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Cook> updateInformation(@RequestBody Cook cook){
-		Cook c=cookService.updateCookInformation(cook);
+		Cook temp=cookService.getCook(cook.getId());
+		temp.setEmail(cook.getEmail());
+		temp.setUserName(cook.getUserName());
+		temp.setSurname(cook.getSurname());
+		temp.setPassword(cook.getPassword());
+		temp.setDateOfBirth(cook.getDateOfBirth());
+		temp.setShoeNumber(cook.getShoeNumber());
+		temp.setShirtSize(cook.getShirtSize());
+		Cook c=cookService.updateCookInformation(temp);
+		session.setAttribute("user", temp);
 		return new ResponseEntity<Cook>(c, HttpStatus.OK);
 	}
+	
+	@RequestMapping(
+			value="/getWorkSchedules/{startDate}/{endDate}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Iterable<WorkSchedule>> getWorkScheduleBetween(@PathVariable("startDate")Date startDate,@PathVariable("endDate")Date endDate){
+		List<WorkSchedule> ws=null;
+		ws = cookService.getWorkScheduleBetween(startDate, endDate);
+		Collections.sort(ws);
+		return new ResponseEntity<Iterable<WorkSchedule>>(ws, HttpStatus.OK);
+	}
+	
 }

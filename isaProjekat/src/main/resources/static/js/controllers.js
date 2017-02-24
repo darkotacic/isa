@@ -102,12 +102,18 @@ app.controller('homeController',['$rootScope','$scope','$location','$http',funct
 	
 	
 	switch($rootScope.loggedUser.userRole) {
-    case 'GUEST':
-    	$scope.show = 1;
-        break;
-    case 'WAITER':
-    	$scope.show = 4;
-        break;
+	    case 'GUEST':
+	    	$scope.show = 1;
+	        break;
+	    case 'WAITER':
+	    	$scope.show = 6;
+	        break;
+	    case 'COOK':
+	    	$scope.show = 17;
+	        break;
+	    case 'BARTENDER':
+	    	$scope.show = 18;
+	        break;
 	}
 	
 	$scope.showView = function(number){

@@ -1,7 +1,7 @@
-<div class="container marketing" ng-controller="waiterController">
+<div class="container marketing" ng-controller="workerController">
 	<h1>Work schedules</h1>
 	<div class="table-responsive">
-		<table class="table table-striped">
+		<table class="table table-striped" ng-init="getWorkSchedules()">
 			<tr>
 				<th>ID</th>
 				<th>Worker</th>

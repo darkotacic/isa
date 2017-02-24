@@ -1,0 +1,37 @@
+<div class="container marketing" ng-controller="cookController">
+	<h1>Food order items</h1>
+	
+	<div ng-if="onHoldOrders!=null">
+		<h3>On hold</h3>
+		<table class="table">
+			<tr><th>ID</th><th>Order</th><th>Product</th><th>Quantity</th><th>Status</th></tr>
+			<tr ng-repeat="ord in onHoldOrders" ng-click="setSelectedOnHold(ord)" ng-class="{'bg-info' : selectedOnHold===ord}">
+				<td>{{ord.id}}</td>
+				<td>{{ord.order.id}}</td>
+				<td>{{ord.product.productName}}</td>
+				<td>{{ord.quantity}}</td>
+				<td>{{ord.orderItemStatus}}</td>
+			</tr>
+		</table>
+	</div>
+	<div ng-if="selectedOnHold!=null">
+		<input class="btn btn-primary" type="button" value="Start preparing" ng-click="startPreparing()"/>
+	</div>
+	
+	<div ng-if="tasks!=null">
+		<h3>On preparing</h3>
+		<table class="table">
+			<tr><th>ID</th><th>Order</th><th>Product</th><th>Quantity</th><th>Status</th></tr>
+			<tr ng-repeat="ord in tasks" ng-click="setSelectedTask(ord)" ng-class="{'bg-info' : selectedTask===ord}">
+				<td>{{ord.id}}</td>
+				<td>{{ord.order.id}}</td>
+				<td>{{ord.product.productName}}</td>
+				<td>{{ord.quantity}}</td>
+				<td>{{ord.orderItemStatus}}</td>
+			</tr>
+		</table>
+	</div>
+	<div ng-if="selectedTask!=null">
+		<input class="btn btn-primary" type="button" value="Notify" ng-click="notify()"/>
+	</div>
+</div>

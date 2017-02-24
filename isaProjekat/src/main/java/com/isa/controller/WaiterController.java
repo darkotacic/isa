@@ -123,10 +123,10 @@ public class WaiterController {
 			method = RequestMethod.DELETE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<?> deleteOrder(@RequestBody Order order){
+	public ResponseEntity<Order> deleteOrder(@RequestBody Order order){
 		Order temp=workerService.getOrder(order.getId());
 		waiterService.deleteOrder(temp);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<Order>(temp,HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -238,6 +238,7 @@ public class WaiterController {
 		temp.setShoeNumber(waiter.getShoeNumber());
 		temp.setShirtSize(waiter.getShirtSize());
 		Waiter w=waiterService.updateWaiterInformation(temp);
+		session.setAttribute("user", temp);
 		return new ResponseEntity<Waiter>(w, HttpStatus.OK);
 	}
 	

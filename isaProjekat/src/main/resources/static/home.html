@@ -8,14 +8,12 @@
 		</div>
 		<div id="waiterButtons" ng-if="loggedUser.userRole=='WAITER'">
 			<button type="button" class="btn btn-primary" ng-click=showView(4)>Segments</button>
-			<button type="button" class="btn btn-primary" ng-click=showView(5)>Work
-				schedules</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(5)>Work schedules</button>
 			<button type="button" class="btn btn-primary" ng-click=showView(6)>Orders</button>
 		</div>
 		<div id="systemButtons" ng-if="loggedUser.userRole=='SYSTEM_MANAGER'">
 			<button type="button" class="btn btn-primary" ng-click=showView(7)>Restaurants</button>
-			<button type="button" class="btn btn-primary" ng-click=showView(8)>System
-				managers</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(8)>System managers</button>
 		</div>
 		<div id="bidderButtons" ng-if="loggedUser.userRole=='BIDDER'">
 			<button type="button" class="btn btn-primary" ng-click=showView(9)>Active
@@ -36,6 +34,14 @@
 			<button type="button" class="btn btn-primary" ng-click=showView(15)>All
 				your request offers</button>
 				<button type="button" class="btn btn-primary" ng-click=showView(16)>Reports</button>
+		</div>
+		<div id="cookButtons" ng-if="loggedUser.userRole=='COOK'">
+			<button type="button" class="btn btn-primary" ng-click=showView(5)>Work schedules</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(17)>Order items</button>
+		</div>
+		<div id="bartenderButtons" ng-if="loggedUser.userRole=='BARTENDER'">
+			<button type="button" class="btn btn-primary" ng-click=showView(5)>Work schedules</button>
+			<button type="button" class="btn btn-primary" ng-click=showView(18)>Order items</button>
 		</div>
 	</div>
 
@@ -70,6 +76,7 @@
 	<div ng-if="show==15" ng-include src="'managersRequestOffers.html'">
 	</div>
 	<div ng-if="show==16" ng-include src="'pages/restaurantReports.html'"></div>
-
+	<div ng-if="show==17" ng-include src="'pages/cookHome.html'"></div>
+	<div ng-if="show==18" ng-include src="'pages/bartenderHome.html'"></div>
 
 </div>

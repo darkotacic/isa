@@ -1,5 +1,8 @@
 package com.isa.service;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +46,16 @@ public class CookServiceImpl implements CookService {
 	@Override
 	public Cook updateCookInformation(Cook cook) {
 		return cookRepository.save(cook);
+	}
+
+	@Override
+	public Cook getCook(Long id) {
+		return cookRepository.findOne(id);
+	}
+
+	@Override
+	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate) {
+		return workScheduleRepository.getWorkScheduleForCooksBetween(startDate, endDate);
 	}
 
 }
