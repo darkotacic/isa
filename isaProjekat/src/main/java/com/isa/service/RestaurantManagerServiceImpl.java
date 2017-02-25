@@ -1,6 +1,7 @@
 
 package com.isa.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,8 @@ import com.isa.repository.WorkerRepository;
 @Service
 @Transactional
 public class RestaurantManagerServiceImpl implements RestaurantManagerService {
+
+	private SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
 
 	@Autowired
 	private UserRepository userRepository;
@@ -199,8 +202,11 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Override
 	public ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id,
 			Long replacement_id) {
-		if (w.getDate().before(new Date()))
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		String now = formatter.format(new Date());
+		String date = formatter.format(w.getDate());
+		if (!now.equals(date))
+			if (w.getDate().before(new Date()))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		if (w.isTwoDays()) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(w.getDate());
@@ -233,8 +239,11 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<WorkSchedule> updateWorkSchedule(WorkSchedule w) {
-		if (w.getDate().before(new Date()))
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		String now = formatter.format(new Date());
+		String date = formatter.format(w.getDate());
+		if (!now.equals(date))
+			if (w.getDate().before(new Date()))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		WorkSchedule temp = this.workScheduleRepository.findOne(w.getId());
 		temp.setDate(w.getDate());
 		if (w.isTwoDays() && !temp.isTwoDays()) {
@@ -289,9 +298,14 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<RequestOffer> registerRequestOffer(RequestOffer ro, Long r_id) {
-		if (ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
+		String now = formatter.format(new Date());
+		String date = formatter.format(ro.getStartDate());
+		if (ro.getExpirationDate().before(ro.getStartDate()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		if (!ro.getStartDate().after(new Date()) && !ro.getStartDate().before(new Date())) {
+		if (!date.equals(now))
+			if (ro.getStartDate().before(new Date()))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (now.equals(date)) {
 			ro.setStatus(false);
 		}
 		RestaurantManager rm = this.restaurantManagerRepository.findOne(r_id);
@@ -319,10 +333,15 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<RequestOffer> updateRequestOffer(RequestOffer ro) {
+		String now = formatter.format(new Date());
+		String date = formatter.format(ro.getStartDate());
 		RequestOffer temp = this.requestOfferRepository.findOne(ro.getId());
-		if (ro.getExpirationDate().before(ro.getStartDate()) || ro.getStartDate().before(new Date()))
+		if (ro.getExpirationDate().before(ro.getStartDate()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		if (!ro.getStartDate().after(new Date()) && !ro.getStartDate().before(new Date())) {
+		if (!date.equals(now))
+			if (ro.getStartDate().before(new Date()))
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		if (now.equals(date)) {
 			ro.setStatus(false);
 		}
 		temp.setStartDate(ro.getStartDate());
@@ -473,18 +492,20 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public double checkIfRequestOfferExpired() {
+
 		List<RequestOffer> of = (List<RequestOffer>) this.requestOfferRepository.findAll();
 		for (int i = 0; i < of.size(); i++) {
+			String now = formatter.format(new Date());
+			String date = formatter.format(of.get(i).getStartDate());
 			if (of.get(i).getExpirationDate().before(new Date())) {
 				of.get(i).setStatus(false);
 				List<BidderOffer> it = this.bidderOfferRepository.findByRequestOffer(of.get(i));
 				for (int j = 0; j < it.size(); j++) {
 					it.get(j).setOfferStatus(BidderOfferStatus.DECLINED);
 				}
-
 				this.bidderOfferRepository.save(it);
 				this.requestOfferRepository.save(of.iterator().next());
-			} else if (!of.get(i).getStartDate().after(new Date()) && !of.get(i).getStartDate().before(new Date())) {
+			} else if (now.equals(date)) {
 				of.get(i).setStatus(true);
 				this.requestOfferRepository.save(of.get(i));
 			}
@@ -496,10 +517,13 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	public double checkIfWorkScheduleIsDone() {
 		List<WorkSchedule> of = (List<WorkSchedule>) this.workScheduleRepository.findAll();
 		for (int i = 0; i < of.size(); i++) {
-			if (of.get(i).getDate().before(new Date())) {
-				of.get(i).setDone(true);
-				this.workScheduleRepository.save(of.iterator().next());
-			}
+			String now = formatter.format(new Date());
+			String date = formatter.format(of.get(i).getDate());
+			if (!date.equals(now))
+				if (of.get(i).getDate().before(new Date())) {
+					of.get(i).setDone(true);
+					this.workScheduleRepository.save(of.iterator().next());
+				}
 		}
 		return 0;
 	}

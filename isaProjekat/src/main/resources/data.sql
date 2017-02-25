@@ -40,7 +40,7 @@ insert into waiter (user_id) values (3);
 insert into waiter (user_id) values (4);
 insert into cook (user_id,cook_type) values (5,'SALAT');
 insert into cook (user_id,cook_type) values (6,'FRIED');
-insert into system_manager (user_id) values (7);
+insert into system_manager (user_id, predefined) values (7, true);
 insert into bartender (user_id) values (8);
 
 insert into friend(sender_id,reciever_id,status) values(1,2,false);
@@ -89,7 +89,7 @@ insert into restaurant_table(id, res_free, res_chair, segment_id) values(9,true,
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(10,true,3,1);
 insert into restaurant_table(id, res_free, res_chair, segment_id) values(11,true,2,1);
 
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(1,'17-02-23','17-02-23',8.0,15.0,1,4,3);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(1,'17-02-25','17-02-25',8.0,15.0,1,4,3);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(2,'16-10-15','16-10-15',15.0,22.0,2,null,4);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(3,'16-10-16','16-10-16',7.0,14.0,2,4,3);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(4,'16-10-16','16-10-16',14.0,21.0,3,null,4);
@@ -97,6 +97,7 @@ insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(6,'16-10-16','16-10-16',7.0,14.0,2,null,8);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(7,'17-02-16','17-02-16',8.0,13.0,2,4,3);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(8,'17-02-16','17-02-16',13.0,22.0,1,null,4);
+
 
 insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status) values(1,'17-02-16',12.0,1,3,0,'NOTPAID');
 insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status) values(2,'16-10-16',17.47,3,4,0,'NOTPAID');

@@ -270,7 +270,7 @@ public class RestaurantManagerController {
 	@RequestMapping(value = "/getRestaurantEarnings", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public double getRestaurantEarnings(@RequestParam(value = "id") Long id,
 			@RequestParam(value = "start") String startDate, @RequestParam(value = "end") String endDate) throws ParseException {
-		SimpleDateFormat formatter = new SimpleDateFormat("mm-dd-yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
 		Date start = formatter.parse(startDate);
 		Date end = formatter.parse(endDate);
 		return restaurantManagerService.restaurantEarnings(id, start, end);

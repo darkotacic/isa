@@ -2,6 +2,28 @@ var app = angular.module('webApp');
 
 app.factory('SystemManagerService', function systemManagerService($http) {
 
+	systemManagerService.getRestaurantManagers = function(id) {
+		return $http({
+			method : 'GET',
+			url : '../systemManager/getRestaurantManagersForRestaurant?id='
+					+ id
+		});
+	}
+
+	systemManagerService.getRestaurants = function() {
+		return $http({
+			method : 'GET',
+			url : '../systemManager/getAllRestaurants'
+		});
+	}
+
+	systemManagerService.getSystemManagers = function() {
+		return $http({
+			method : 'GET',
+			url : '../systemManager/getAllSystemManager'
+		});
+	}
+	
 	systemManagerService.registerRestaurant = function(restaurant) {
 		return $http({
 			method : 'POST',
@@ -56,6 +78,20 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 			}
 		});
 	}
+	
+	systemManagerService.editSystemManager = function(manager) {
+		return $http({
+			method : 'PUT',
+			url : '../systemManager/updateSystem',
+			data : {
+				"id" : manager.id,
+				"userName" : manager.userName,
+				"surname" : manager.surname,
+				"email" : manager.email,
+				"password" : manager.password,
+				"dateOfBirth" : manager.dateOfBirth
+			}
+		});
 
 	systemManagerService.deleteRestaurant = function(restaurant_id) {
 		return $http({
@@ -81,40 +117,6 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 		});
 	}
 
-	systemManagerService.getRestaurantManagers = function(id) {
-		return $http({
-			method : 'GET',
-			url : '../systemManager/getRestaurantManagersForRestaurant?id='
-					+ id
-		});
-	}
-
-	systemManagerService.getRestaurants = function() {
-		return $http({
-			method : 'GET',
-			url : '../systemManager/getAllRestaurants'
-		});
-	}
-
-	systemManagerService.getSystemManagers = function() {
-		return $http({
-			method : 'GET',
-			url : '../systemManager/getAllSystemManager'
-		});
-	}
-	systemManagerService.editSystemManager = function(manager) {
-		return $http({
-			method : 'PUT',
-			url : '../systemManager/updateSystem',
-			data : {
-				"id" : manager.id,
-				"userName" : manager.userName,
-				"surname" : manager.surname,
-				"email" : manager.email,
-				"password" : manager.password,
-				"dateOfBirth" : manager.dateOfBirth
-			}
-		});
 	}
 
 	return systemManagerService;

@@ -1,17 +1,74 @@
 var app = angular.module('webApp');
+
+app.run([
+         'ngNotify',
+         function(ngNotify) {
+
+             ngNotify.config({
+            	 theme: 'pure',
+            	    position: 'bottom',
+            	    duration: 1000,
+            	    type: 'info',
+            	    sticky: false,
+             });
+         }
+     ]);
+
+app.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+}]);
+
+app.directive('ngConfirmClick', [
+        function(){
+            return {
+                link: function (scope, element, attr) {
+                    var msg = attr.ngConfirmClick || "Are you sure?";
+                    var clickAction = attr.confirmedClick;
+                    element.bind('click',function (event) {
+                        if ( window.confirm(msg) ) {
+                            scope.$eval(clickAction)
+                        }
+                    });
+                }
+            };
+    }]);
+    
 app
 		.controller(
 				'systemManagerController',
 				[
 						'$rootScope',
 						'$scope',
-						'$location',
+						'$location','ngNotify',
 						'SystemManagerService',
 						function($rootScope, $scope, $location,
-								systemManagerService) {
+								ngNotify, systemManagerService) {
 
 							$scope.display = function(tab) {
 								$scope.show = tab;
+								$scope.selectedRestaurantManager = null;
+								$scope.restaurant = null;
+								$scope.newRestaurantManager = null;
+							}
+							
+							$scope.setSelected = function(selected) {
+								$scope.selected = selected;
+								$rootScope.restaurant = $scope.selected;
+								$scope.selectedRestaurantManager = null;
+								$scope.show = null;
+								$scope.restaurant = null;
+								$scope.newRestaurantManager = null;
+
+							}
+
+							$scope.setSelectedRestaurantManager = function(
+									selected) {
+								$scope.selectedRestaurantManager = selected;
+							}
+
+							$scope.setSelectedSystemManager = function(selected) {
+								$scope.show = null;
+								$scope.selectedSystemManager = selected;
 							}
 
 							systemManagerService.getSystemManagers().then(
@@ -24,47 +81,37 @@ app
 										$scope.restaurants = response.data;
 									});
 
-							$scope.setSelected = function(selected) {
-								$scope.selected = selected;
-								$rootScope.restaurant = $scope.selected;
-								$scope.selectedRestaurantManager = null;
-								$scope.show = null;
-
-							}
-
-							$scope.setSelectedRestaurantManager = function(
-									selected) {
-								$scope.selectedRestaurantManager = selected;
-							}
-
-							$scope.setSelectedSystemManager = function(selected) {
-								if (!selected.predefined)
-									$scope.selectedSystemManager = selected;
-							}
 
 							$scope.registerRestaurant = function() {
 								var restaurant = $scope.restaurant;
+								$scope.selectedRestaurant = null;
 								systemManagerService.registerRestaurant(
 										restaurant).then(
 										function(response) {
 											if (response.data) {
-												$scope.error = false;
-												alert("Uspesno registrovan:"
-														+ response.data.id);
+												swal({
+									    			  title: "Successful registration",
+									    			  text: "Registrated " + response.data.restaurantName,
+									    			  type: "success",
+									    			  timer: 1000
+									    			});
 												$scope.restaurants
 														.push(response.data);
 												$scope.show = null;
 												$scope.restaurant = null;
-											} else {
-												$scope.error = true;
 											}
 										}).catch(function(response) {
-											$scope.error = true;
-											   console.error('Gists error', response.status, response.data)
+											ngNotify.set('There is error in your input. Name and description must start with capital letter and must not contain special signs' , {
+												type : 'error',
+											    sticky: true
+											});
+											console.error('Gists error', response.status, response.data)
 										  });
 							}
 
 							$scope.editRestaurant = function() {
+								$scope.restaurant = null;
+								$scope.newRestaurantManager = null;
 								if ($scope.editRestaurant.description == null)
 									$scope.editRestaurant.description = $scope.selected.description;
 								if ($scope.editRestaurant.restaurantName == null)
@@ -76,32 +123,30 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
-														alert("Uspesno izmjenje:"
-																+ response.data.id);
-														$scope.show = null;
 														var index = $scope.restaurants
 																.indexOf($scope.selected);
 														$scope.restaurants[index] = response.data;
 														$scope.restaurant = null;
-													} else {
-														$scope.error = true;
-													}
+														$scope.show = null;
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
+													ngNotify.set('There is error in your input. Name and description must start with capital letter and must not contain special signs' , {
+														type : 'error',
+													    sticky: true
+													});
+													console.error('Gists error', response.status, response.data)
 												  });
 							}
 
 							$scope.deleteRestaurant = function() {
+								$scope.restaurant = null;
+								$scope.newRestaurantManager = null;
 								var selected_id = $scope.selected.id;
 								systemManagerService
 										.deleteRestaurant(selected_id)
 										.then(
 												function(response) {
 													if (response.status == 200) {
-														$scope.error = false;
-														alert("Uspesno izbrisan");
 														var index = $scope.restaurants
 																.indexOf($scope.selected);
 														$scope.restaurants
@@ -109,12 +154,13 @@ app
 																		1);
 														$scope.selected = null;
 														$scope.show = null;
-													} else {
-														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
+													ngNotify.set('Delete error' , {
+														type : 'error',
+													    sticky: true
+													});
+													console.error('Gists error', response.status, response.data)
 												  });
 
 							}
@@ -135,18 +181,20 @@ app
 										newRestaurantManager).then(
 										function(response) {
 											if (response.data) {
-												$scope.error = false;
-												alert("Uspesno registrovan:");
-												$scope.getRestaurantManagers();
-												$scope.restaurantManagers
-														.push(response.data);
-												$scope.show = 2;
-											} else {
-												$scope.error = true;
-											}
+												$scope.show = null;
+												swal({
+									    			  title: "Successful registration",
+									    			  text: "Registrated " + response.data.userName,
+									    			  type: "success",
+									    			  timer: 1000
+									    			});
+											} 
 										}).catch(function(response) {
-											$scope.error = true;
-											   console.error('Gists error', response.status, response.data)
+											ngNotify.set('Name, Surname must start with capital letter, also must not contain special signs. If you did everything as written, your email address is not unique' , {
+												type : 'error',
+											    sticky: true
+											});
+											console.error('Gists error', response.status, response.data)
 										  });
 							}
 
@@ -157,44 +205,42 @@ app
 										.then(
 												function(response) {
 													if (response.status == 200) {
-														$scope.error = false;
-														alert("Uspesno izbrisan");
-														var index = $scope.restaurantManagers
-																.indexOf($scope.selectedRestaurantManager);
-														alert(" " + index);
-														$scope.restaurantManagers
-																.splice(index,
-																		1);
-														$scope
-																.getRestaurantManagers();
-														$scope.show = 2;
-													} else {
-														$scope.error = true;
-													}
+														$scope.show = null;
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
+													ngNotify.set('Delete error' , {
+														type : 'error',
+													    sticky: true
+													});
+													console.error('Gists error', response.status, response.data)
 												  });
 
 							}
 
 							$scope.registerSystemManager = function() {
+								$scope.selectedSystemManager = null;
 								var newSystemManager = $scope.newSystemManager;
 								systemManagerService.registerSystemManager(
 										newSystemManager).then(
 										function(response) {
 											if (response.data) {
-												$scope.error = false;
-												alert("Uspesno registrovan:");
+												swal({
+									    			  title: "Successful registration",
+									    			  text: "Registrated " + response.data.restaurantName,
+									    			  type: "success",
+									    			  timer: 1000
+									    			});
+												response.data.dateOfBirth =  moment(response.data.dateOfBirth).format('YYYY-MM-DD');
 												$scope.systemManagers
 														.push(response.data);
 												$scope.show = null;
-											} else {
-												$scope.error = true;
-											}
+											} 
 										}).catch(function(response) {
-											$scope.error = true;
-											   console.error('Gists error', response.status, response.data)
+											ngNotify.set('Name, Surname must start with capital letter, also must not contain special signs. If you did everything as written, your email address is not unique' , {
+												type : 'error',
+											    sticky: true
+											});
+											console.error('Gists error', response.status, response.data)
 										  });
 							}
 
@@ -205,20 +251,18 @@ app
 										.then(
 												function(response) {
 													if (response.status == 200) {
-														$scope.error = false;
-														alert("Uspesno izbrisan");
 														var index = $scope.systemManagers
 																.indexOf($scope.selectedSystemManager);
-														alert(" " + index);
 														$scope.systemManagers
 																.splice(index,
 																		1);
 														$scope.show = null;
-													} else {
-														$scope.error = true;
-													}
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Delete error' , {
+														type : 'error',
+													    sticky: true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 
@@ -242,15 +286,13 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
-														alert("Uspesno izmjenje:"
-																+ response.data.id);
 														$rootScope.loggedUser = response.data;
-													} else {
-														$scope.error = true;
-													}
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Name, Surname must start with capital letter, also must not contain special signs. If you did everything as written, your email address is not unique' , {
+														type : 'error',
+													    sticky: true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -784,9 +826,10 @@ app
 							}
 							
 							$scope.showSegmentTables = function() {
-								/*$scope.editTable = {
-										segment : $scope.selectedSegment
-									}*/
+								/*
+								 * $scope.editTable = { segment :
+								 * $scope.selectedSegment }
+								 */
 								restaurantManagerService
 										.getTables($scope.selectedSegment.id)
 										.then(

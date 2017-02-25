@@ -1,6 +1,6 @@
 <h1 class="page-header">All restaurants</h1>
 <div class="container" ng-controller="systemManagerController">
-<div ng-include src="'pages/tableRestaurant.html'>
+	<div ng-include src="'pages/tableRestaurant.html'"></div>
 	<div class="conteinter">
 		<div class="row">
 			<div class="col-xs-12 offset3">
@@ -10,8 +10,9 @@
 					<button type="button" class="btn btn-primary" ng-click="display(4)"
 						ng-disabled="!selected">Edit this restaurant</button>
 					<button type="button" class="btn btn-primary"
-						ng-click="deleteRestaurant()" ng-disabled="!selected">Delete
-						this</button>
+						confirmed-click="deleteRestaurant()"
+						ng-confirm-click="Do you want to delete this restaurant? If yes , it will delete all content that is dependent on this."
+						ng-disabled="!selected">Delete this</button>
 					<button type="button" class="btn btn-primary"
 						ng-click="getRestaurantManagers()" ng-disabled="!selected">View
 						restaurant managers</button>
