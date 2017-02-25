@@ -1,7 +1,7 @@
 <div ng-controller="waiterController">
 <div class="container">
 
-	<div ng-if="workSchedule!=undefined"ng-init="getTodayTables()">
+	<div ng-if="workSchedule!=''" ng-init="getTodayTables()">
 		<h2>Tables</h2>
 	    <div class="thumbnail col-sm-4" ng-repeat="table in resTables">
 	      	<div class="caption">
@@ -38,11 +38,11 @@
 	</div>
 	
 	<div ng-if='selected!=""'>
-		<input class="btn btn-primary" type="button" value="Edit" ng-click="showEditOrder()"/>
-		<input class="btn btn-primary" type="button" value="Delete" ng-click="deleteOrder()"/>
-		<input class="btn btn-primary" type="button" value="Add order items" ng-click="addItemsTo()"/>
-		<input class="btn btn-primary" type="button" value="Edit order items" ng-click="editOrderItems()"/>
-		<input class="btn btn-primary" type="button" value="Make check" ng-click="makeCheck()"/>
+		<input class="btn btn-primary" type="button" value="Edit" ng-click="showEditOrder()" ng-disabled="selected.orderStatus=='PAID'"/>
+		<input class="btn btn-primary" type="button" value="Delete" ng-click="deleteOrder()" ng-disabled="selected.orderStatus=='PAID'"/>
+		<input class="btn btn-primary" type="button" value="Add order items" ng-click="addItemsTo()" ng-disabled="selected.orderStatus=='PAID'"/>
+		<input class="btn btn-primary" type="button" value="Edit order items" ng-click="editOrderItems()" ng-disabled="selected.orderStatus=='PAID'"/>
+		<input class="btn btn-primary" type="button" value="Make check" ng-click="makeCheck()" ng-disabled="selected.orderStatus=='PAID'"/>
 	</div>
 	
 	<div ng-if='selected!="" && edit==true'>
@@ -76,9 +76,16 @@
 		<h3>Edit order items</h3>
 		<p><i>Edit order items for order {{editOrdersItems.id}}</i></p>
 		<table class="table table-stiped">
-			<tr><th>Product name</th><th>Price</th><th>Quantity</th></tr>
+			<tr><th>Product name</th><th>Price</th><th>Quantity</th><th>Status</th><th>Delete</th></tr>
 			<tr ng-repeat="item in orderItems">
-				 <td>{{item.product.productName}}</td><td>{{item.product.price}}</td><td><input id="item{{item.product.id}}" type="text" value="{{item.quantity}}"/></td>
+				 <td>{{item.product.productName}}</td>
+				 <td>{{item.product.price}}</td>
+				 <td>
+				 	<input id="item{{item.id}}" type="text" value="{{item.quantity}}" ng-if="item.orderItemStatus=='ONHOLD'"/>
+				 	<span ng-if="item.orderItemStatus!='ONHOLD'">{{item.quantity}}</span>
+				 </td>
+				 <td>{{item.orderItemStatus}}</td>
+				 <td><input class="btn btn-primary" type="button" value="Delete" ng-if="item.orderItemStatus=='ONHOLD'"/ ng-click="deleteOrderItem(item)"><td>
 			</tr>
 		</table>
 		<input class="btn btn-primary" type="button" value="Confirm" ng-click=editItems()>

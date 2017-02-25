@@ -75,7 +75,7 @@ app.factory('WaiterService', function waiterService($http) {
 	waiterService.deleteOrderItem = function(order){
 		return $http({
 			method : 'DELETE',
-			url: '../waiters/deleteOrder',
+			url: '../waiters/deleteOrderItem',
 			data: {
 				"id": order.id
 			},
@@ -147,7 +147,7 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	$scope.selected= "";
 	$scope.allSegments=true;
 	$scope.lastAddedOrder=null;
-	$scope.workSchedule=null;
+	$scope.workSchedule='';
 	$scope.orders=null;
 	$scope.products=null;
 	$scope.editOrdersItems=null;
@@ -159,6 +159,7 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 			$scope.edit=false;
 			return;
 		}
+		$scope.editOrdersItems=null;
 		$scope.selected = ord;
 	}
 	
@@ -172,6 +173,15 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	
 	waiterService.getWorkSchedule().then(function(response){
 		$scope.workSchedule=response.data;
+		if($scope.workSchedule==''){
+			swal({
+	  			  title: "Schedule",
+	  			  text: "There is no work schedule for today.",
+	  			  type: "success",
+	  			  timer: 3000
+	  		});
+			return;
+		}
 	});
 	
 	$scope.getTablesForSegment=function(id,index){
@@ -201,15 +211,6 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	}
 	
 	$scope.getTodayTables=function(){
-		if($scope.workSchedule==undefined){
-			swal({
-	  			  title: "Schedule",
-	  			  text: "There is no work schedule for today.",
-	  			  type: "success",
-	  			  timer: 3000
-	  		});
-			return;
-		}
 		waiterService.getTablesForSegment($scope.workSchedule.segment.id).then(function(response){
 			$scope.resTables=response.data;
 		});
@@ -240,6 +241,8 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 		for(var i=0;i<$scope.products.length;i++){
 			var productId=$scope.products[i].id;
 			var quantity=document.getElementById('product'+productId).value;
+			if(quantity==0)
+				continue;
 			waiterService.addOrderItem($scope.lastAddedOrder.id,productId,quantity).then(function(response){
 			});
 		}
@@ -248,6 +251,7 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	
 	$scope.addItemsTo=function(){
 		$scope.lastAddedOrder=$scope.selected;
+		$scope.editOrdersItems=null;
 	}
 	
 	$scope.editOrderItems=function(){
@@ -269,11 +273,31 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 		$scope.editOrdersItems=null;
 	}
 	
+	$scope.deleteOrderItem=function(orderItem){
+		waiterService.deleteOrderItem(orderItem).then(function(response){
+			var index=$scope.orderItems.indexOf(orderItem);
+			$scope.orderItems.splice(index,1);
+			var item=response.data;
+			swal({
+	  			  title: "Deleted order item",
+	  			  text: 'You deleted '+item.quantity+' '+ item.product.productName+'\n from order '+item.order.id,
+	  			  type: "success",
+	  			  timer: 2000
+	  		});
+		})
+		
+	}
+	
 	$scope.makeCheck=function(){
 		waiterService.makeCheck($scope.selected).then(function(response){
 			var check=response.data;
+			var index=$scope.orders.indexOf($scope.selected);
+			$scope.orders.splice(index,1);
+			$scope.orders.push(check);
 			swal("Check created!", 'Waiter: '+check.waiter.userName+', price: '+check.price, "success")
 		});
+		$scope.lastAddedOrder=null;
+		$scope.editOrdersItems=null;
 	}
 	
 }]);
@@ -379,6 +403,8 @@ app.controller('workerController',['$rootScope','$scope','$location','WaiterServ
 	
 	$scope.user= $rootScope.loggedUser;
 	$scope.schedules=null;
+	$scope.onlyForMe=false;
+	$scope.forMe=false;
 	
 	$scope.initDate=function(){
 		var now=new Date();
@@ -403,6 +429,7 @@ app.controller('workerController',['$rootScope','$scope','$location','WaiterServ
 	}
 
 	$scope.searchSchedules=function(){
+		$scope.forMe=$scope.onlyForMe;
 		if($scope.user.userRole=="WAITER"){
 			waiterService.getWorkSchedulesBetween($scope.startDate,$scope.endDate).then(function(response){
 				$scope.schedules=response.data;

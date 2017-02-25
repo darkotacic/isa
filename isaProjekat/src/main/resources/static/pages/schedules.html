@@ -12,7 +12,7 @@
 				<th>End time</th>
 				<th>Replacement</th>
 			</tr>
-			<tr ng-repeat="sch in schedules">
+			<tr ng-repeat="sch in schedules" ng-if="forMe==false || (forMe==true && sch.worker.id==user.id)">
 				<td>{{sch.id}}</td>
 				<td>{{sch.worker.userName}}</td>
 				<td>{{sch.segment.id}}</td>
@@ -25,11 +25,13 @@
 			</tr>
 		</table>
 		<div>
-			<p>Search schedules between: 
-				<input class="form-control" type="date" ng-init=initDate() ng-model="startDate" value="{{startDate}}"/>
-				<input class="form-control" type="date" ng-model="endDate" value="{{endDate}}"/>
-				<input class="btn btn-primary" type="button" value="Search" ng-click="searchSchedules()">
-			</p>
+			Search schedules between: 
+			<input class="form-control" type="date" ng-init=initDate() ng-model="startDate" value="{{startDate}}"/>
+			<input class="form-control" type="date" ng-model="endDate" value="{{endDate}}"/>
+			<div class="checkbox">
+  				<label><input type="checkbox" ng-model='onlyForMe'>Search only for me</label>
+			</div>
+			<input class="btn btn-primary" type="button" value="Search" ng-click="searchSchedules()" ng-disabled="startDate==null || endDate==null">
 			<p class="small"><i>*Search by start dates</i></p>
 		</div>
 	</div>

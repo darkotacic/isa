@@ -1,7 +1,7 @@
 <div class="container" ng-controller="waiterController">
 	<h1>Tables in segments</h1>
 	<div class="checkbox">
-  		<label><input type="checkbox" ng-model='allSegments' checked="checked">Display all segments</label>
+  		<label><input type="checkbox" ng-model='allSegments' checked="checked" ng-disabled="workSchedule == ''">Display all segments</label>
 	</div>
 	<div class="row" ng-repeat="seg in segments" ng-if='checkSegment(seg)'>
 		<h2 ng-init="getTablesForSegment(seg.id,$index)">Segment {{seg.id}}</h2>

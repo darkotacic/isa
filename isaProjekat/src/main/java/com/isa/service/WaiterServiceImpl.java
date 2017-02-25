@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.isa.entity.Order;
 import com.isa.entity.OrderItem;
 import com.isa.entity.Product;
+import com.isa.entity.Restaurant;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
 import com.isa.entity.WorkSchedule;
@@ -67,8 +68,8 @@ public class WaiterServiceImpl implements WaiterService {
 	}
 	
 	@Override
-	public Iterable<Order> findAllOrders(){
-		return orderRepository.findAll();
+	public Iterable<Order> findAllOrders(Restaurant restaurant){
+		return orderRepository.getOrders(restaurant);
 	}
 	
 	@Override

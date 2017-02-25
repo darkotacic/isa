@@ -113,7 +113,10 @@ public class WaiterController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<Order>> findAllOrders(){
-		Iterable<Order> orders=waiterService.findAllOrders();
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("WAITER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Iterable<Order> orders=waiterService.findAllOrders(((Waiter)user).getRestaurant());
 		return new ResponseEntity<Iterable<Order>>(orders, HttpStatus.OK);
 	}
 	
@@ -270,6 +273,8 @@ public class WaiterController {
 	@Transactional
 	public ResponseEntity<WorkSchedule> getWorkSchedule(){
 		WorkSchedule ws=waiterService.getWorkSchedule((Worker) session.getAttribute("user"), new Date());
+		if(ws==null)
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<WorkSchedule>(ws, HttpStatus.OK);
 	}
 	
@@ -296,7 +301,7 @@ public class WaiterController {
 		User user=(User) session.getAttribute("user");
 		if(user==null || !user.getUserRole().toString().equals("WAITER"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-		return restaurantManagerService.getAllProductsForRequestOffer(((Waiter)user).getRestaurant().getId());
+		return restaurantManagerService.getAllProductsForRestaurant(((Waiter)user).getRestaurant().getId());
 	}
 	
 }
