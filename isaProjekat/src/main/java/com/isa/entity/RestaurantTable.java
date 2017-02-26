@@ -41,7 +41,7 @@ public class RestaurantTable {
 
 	@NotNull
 	@Column(name = "RES_FREE", columnDefinition = "boolean default true", insertable = true)
-	private boolean free;
+	private boolean free = true;
 
 	public RestaurantTable() {
 

@@ -11,7 +11,7 @@
 			<button type="button" class="btn btn-primary" ng-click=showView(5)>Work schedules</button>
 			<button type="button" class="btn btn-primary" ng-click=showView(6)>Orders</button>
 		</div>
-		<div id="systemButtons" ng-if="loggedUser.userRole=='SYSTEM_MANAGER'">
+		<div id="systemButtons" ng-if="loggedUser.userRole=='SYSTEMMANAGER'">
 			<button type="button" class="btn btn-primary" ng-click=showView(7)>Restaurants</button>
 			<button type="button" class="btn btn-primary" ng-click=showView(8)>System managers</button>
 		</div>
@@ -22,7 +22,7 @@
 				bidder offer</button>
 		</div>
 		<div id="restaurantManagerButtons"
-			ng-if="loggedUser.userRole=='RESTAURANT_MANAGER'">
+			ng-if="loggedUser.userRole=='RESTAURANTMANAGER'">
 			<button type="button" class="btn btn-primary" ng-click=showView(11)>Managed
 				restaurant</button>
 			<button type="button" class="btn btn-primary" ng-click=showView(12)>All

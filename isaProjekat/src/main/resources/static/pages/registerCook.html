@@ -48,20 +48,20 @@
 	<div class="form-group">
 		<label>Shoe number:</label> <input type="number"
 			ng-Model="$parent.cook.shoeNumber" class="form-control"
-			placeholder="Enter shoe number" required />
+			placeholder="Enter shoe number" required min="0"/>
 	</div>
 	 <label>Cook type?</label>
     <div class="form-group">
             <label class="radio-inline">
-                <input type="radio" value="SALAT" ng-model="$parent.cook.cookType">
+                <input type="radio" value="SALAT" ng-model="$parent.cook.cookType" required/>
                 Salat
             </label>
             <label class="radio-inline">
-                <input type="radio" value="FRIED" ng-model="$parent.cook.cookType">
+                <input type="radio" value="FRIED" ng-model="$parent.cook.cookType" required/>
                 Fried
             </label >
             <label class="radio-inline">
-                <input type="radio"  value="BOILED" ng-model="$parent.cook.cookType">
+                <input type="radio"  value="BOILED" ng-model="$parent.cook.cookType" required/>
                 Boiled
             </label>
     </div>

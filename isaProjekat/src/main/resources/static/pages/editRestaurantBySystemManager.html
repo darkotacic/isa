@@ -5,7 +5,7 @@
 		<label class="control-label col-sm-3" for="rn">Name:</label>
 		<div class="col-sm-9">
 			<input type="text" class="form-control" placeholder="Enter name"
-				name="name" required
+				name="name"
 				ng-Model="$parent.editRestaurant.restaurantName" id="rn"
 				ng-value="$parent.selected.restaurantName"
 				pattern="^[A-Z][a-z_ A-Z]*" ng-minlength="3" ng-maxlength="30">
@@ -21,7 +21,7 @@
 		<label class="control-label col-sm-3" for="des">Description:</label>
 		<div class="col-sm-9">
 			<input type="text" class="form-control" id="des" name="des"
-				placeholder="Enter description" required
+				placeholder="Enter description"
 				ng-Model="$parent.editRestaurant.description" id="rn"
 				ng-value="$parent.selected.description"
 				pattern="^[A-Z][a-z_ A-Z0-9]*" ng-maxlength="50">

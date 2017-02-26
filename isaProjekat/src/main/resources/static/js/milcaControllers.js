@@ -5,10 +5,9 @@ app.run([
          function(ngNotify) {
 
              ngNotify.config({
-            	 theme: 'pure',
             	    position: 'bottom',
             	    duration: 1000,
-            	    type: 'info',
+					theme : 'pitchy',
             	    sticky: false,
              });
          }
@@ -90,12 +89,9 @@ app
 										restaurant).then(
 										function(response) {
 											if (response.data) {
-												swal({
-									    			  title: "Successful registration",
-									    			  text: "Registrated " + response.data.restaurantName,
-									    			  type: "success",
-									    			  timer: 1000
-									    			});
+												ngNotify.set('Successfuly registrated restaurant' , {
+													type : 'success'
+												});
 												$scope.restaurants
 														.push(response.data);
 												$scope.show = null;
@@ -142,9 +138,8 @@ app
 							$scope.deleteRestaurant = function() {
 								$scope.restaurant = null;
 								$scope.newRestaurantManager = null;
-								var selected_id = $scope.selected.id;
 								systemManagerService
-										.deleteRestaurant(selected_id)
+										.deleteRestaurant($scope.selected.id)
 										.then(
 												function(response) {
 													if (response.status == 200) {
@@ -159,6 +154,7 @@ app
 															type : 'success',
 															theme : 'pitchy'
 														});
+														$scope.selected = null;
 													}
 												}).catch(function(response) {
 													ngNotify.set('Delete error' , {
@@ -187,12 +183,9 @@ app
 										function(response) {
 											if (response.data) {
 												$scope.show = null;
-												swal({
-									    			  title: "Successful registration",
-									    			  text: "Registrated " + response.data.userName,
-									    			  type: "success",
-									    			  timer: 1000
-									    			});
+												ngNotify.set('Successfuly registrated restaurant manager' , {
+													type : 'success'
+												});
 											} 
 										}).catch(function(response) {
 											ngNotify.set('Name, Surname must start with capital letter, also must not contain special signs. If you did everything as written, your email address is not unique' , {
@@ -212,9 +205,9 @@ app
 													if (response.status == 200) {
 														$scope.show = null;
 														ngNotify.set('Successfuly deleted' , {
-															type : 'success',
-															theme : 'pitchy'
+															type : 'success'
 														});
+														$scope.selectedRestaurantManager = null;
 													} 
 												}).catch(function(response) {
 													ngNotify.set('Delete error' , {
@@ -232,12 +225,9 @@ app
 										$scope.newSystemManager).then(
 										function(response) {
 											if (response.data) {
-												swal({
-									    			  title: "Successful registration",
-									    			  text: "Registrated " + response.data.restaurantName,
-									    			  type: "success",
-									    			  timer: 1000
-									    			});
+												ngNotify.set('Successfuly registrated system manager' , {
+													type : 'success'
+												});
 												response.data.dateOfBirth =  moment(response.data.dateOfBirth).format('YYYY-MM-DD');
 												$scope.systemManagers
 														.push(response.data);
@@ -269,6 +259,7 @@ app
 															type : 'success',
 															theme : 'pitchy'
 														});
+														$selectedSystemManager = null;
 													} 
 												}).catch(function(response) {
 													ngNotify.set('Delete error' , {
@@ -279,35 +270,7 @@ app
 												  });
 
 							}
-							$scope.editSystemManager = function() {
-								if ($scope.editSystemManager.userName == null)
-									$scope.editSystemManager.userName = $rootScope.loggedUser.userName;
-								if ($scope.editSystemManager.surname == null)
-									$scope.editSystemManager.surname = $rootScope.loggedUser.surname;
-								if ($scope.editSystemManager.password == null)
-									$scope.editSystemManager.password = $rootScope.loggedUser.password;
-								if ($scope.editSystemManager.dateOfBirth == null)
-									$scope.editSystemManager.dateOfBirth = new Date(
-											$rootScope.loggedUser.dateOfBirth);
-								if ($scope.editSystemManager.email == null)
-									$scope.editSystemManager.email = $rootScope.loggedUser.email;
-								$scope.editSystemManager.id = $rootScope.loggedUser.id;
-								var manager = $scope.editSystemManager;
-								systemManagerService
-										.editSystemManager(manager)
-										.then(
-												function(response) {
-													if (response.data) {
-														$rootScope.loggedUser = response.data;
-													} 
-												}).catch(function(response) {
-													ngNotify.set('Name, Surname must start with capital letter, also must not contain special signs. If you did everything as written, your email address is not unique' , {
-														type : 'error',
-													    sticky: true
-													});
-													   console.error('Gists error', response.status, response.data)
-												  });
-							}
+		
 						} ]);
 
 
@@ -450,10 +413,10 @@ app
 																.splice(index,
 																		1);
 														ngNotify.set('Successfuly deleted' , {
-															type : 'success',
-															theme : 'pitchy'
+															type : 'success'
 														});
 														$scope.show = null;
+														$scope.selectedBidderOffer = null;
 													}
 												}).catch(function(response) {
 													ngNotify.set('Error delete' , {
@@ -510,9 +473,9 @@ app
 				[
 						'$rootScope',
 						'$scope',
-						'$location',
+						'$location','ngNotify',
 						'RestaurantManagerService',
-						function($rootScope, $scope, $location,
+						function($rootScope, $scope, $location,ngNotify,
 								restaurantManagerService) {
 
 							$scope.display = function(tab) {
@@ -522,13 +485,19 @@ app
 								$scope.selectedRestaurantProduct = null;
 							}
 							$scope.displayWorker = function(tab) {
+								if(tab == 1 || tab == 2 || tab == 3)
+									$scope.selectedWorker = null;
 								$scope.showW = tab;
 							}
 							$scope.displaySegment = function(tab) {
+								if(tab == 1)
+									$scope.selectedSegment = null;
 								$scope.showS = tab;
 								
 							}
 							$scope.displayShift = function(tab) {
+								if(tab == 1)
+									$scope.selectedShift = null;
 								$scope.showQ = tab;
 								
 							}
@@ -545,6 +514,9 @@ app
 								$scope.showW = null;
 								$scope.waiterGrade = null;
 								$scope.waiterEarnings = null;
+								$scope.bartender = null;
+								$scope.waiter = null;
+								$scope.cook = null;
 							}
 							
 							$scope.setSelectedRequestOffer = function(selected) {
@@ -570,8 +542,6 @@ app
 								$scope.showQ = null;
 							}
 							$scope.canEditSegment = false;
-							$scope.canEditTable = false;
-				
 							$scope.setSelectedSegment = function(selected) {
 								restaurantManagerService
 								.seeIfCanDeleteSegment(selected.id).then(function(response) {
@@ -582,24 +552,11 @@ app
 										$scope.canEditSegment = false;
 									}
 								});
-								if(selected.smokingAllowed)
-									$scope.editSegmentSM = {
-											smokingAllowed : 'true'
-										}
-								else 
-									$scope.editSegmentSM = {
-										smokingAllowed : 'false'
-									}
 								$scope.selectedSegment = selected;
 								$scope.selectedTable = null;
 								$scope.showS = null;
-								$scope.selectedTable = null;
 							}
 							$scope.setSelectedTable = function(selected) {
-								if(selected.free)
-									$scope.canEditTable = true;
-								else 
-									$scope.canEditTable = false;
 								$scope.selectedTable = selected;
 							}
 							
@@ -644,268 +601,11 @@ app
 												.then(
 														function(response) {
 															if (response.data) {
-																$scope.error = false;
 																$scope.restaurantShifts = response.data;
 																$scope.showQ = null;
-															} else {
-																$scope.error = true;
-															}
+															} 
 														});
 											});
-							restaurantManagerService
-							.getRequestOffers($rootScope.loggedUser.id)
-							.then(
-									function(response) {
-										if (response.data) {
-											$scope.error = false;
-											$scope.managerOffers = response.data;
-										} else {
-											$scope.error = true;
-										}
-									});
-							$scope.cook = {
-								cookType : 'SALAT'
-							}
-							$scope.product = {
-									productType : 'DRINK'
-								}
-							$scope.segment = {
-									smokingAllowed : 'true'
-								}
-							
-								
-					
-							$scope.showProducts = false;
-							$scope.getProductsForRestaurant = function() {
-								$scope.product = null;
-								$scope.selectedProduct = null;
-								restaurantManagerService
-										.getProductsForRestaurant($scope.restaurant.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.showProducts = true;
-														$scope.restaurantProducts = response.data;
-														$scope.selectedBid = null;
-														$scope.selectedRestaurantProduct = null;
-														$scope.selectedRequestOfferProduct = null;
-														$scope.show = 3;
-														$scope.showR = 5;
-													} else {
-														$scope.error = true;
-													}
-												});
-							}
-							$scope.getAllProducts = function() {
-								$scope.product = null;
-								restaurantManagerService
-										.getAllProducts()
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.allProducts = response.data;
-														$scope.show = 4;
-													} else {
-														$scope.error = true;
-													}
-												});
-							}
-							
-							$scope.registerCook = function() {
-								restaurantManagerService
-										.registerCook($scope.cook,
-												$scope.restaurant.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.restaurantWorkers
-																.push(response.data);
-														$scope.show = null;
-													} else {
-														$scope.error = true;
-													}
-												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
-												  });;
-							}
-							$scope.registerBartender = function() {
-								restaurantManagerService
-										.registerBartender($scope.bartender,
-												$scope.restaurant.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.restaurantWorkers
-																.push(response.data);
-														$scope.show = null;
-													} else {
-														$scope.error = true;
-													}
-												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
-												  });;
-							}
-							$scope.registerWaiter = function() {
-								restaurantManagerService
-										.registerWaiter($scope.waiter,
-												$scope.restaurant.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.restaurantWorkers
-																.push(response.data);
-														$scope.show = null;
-													} else {
-														$scope.error = true;
-													}
-												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
-												  });;
-							}
-							$scope.registerBidder = function() {
-								restaurantManagerService
-										.registerBidder($scope.newBidder)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.showR = null;
-														$scope.newBidder = null;
-													} else {
-														$scope.error = true;
-													}
-												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
-												  });;
-							}
-							$scope.deleteWorker = function() {
-								restaurantManagerService
-										.deleteWorker($scope.selectedWorker.id)
-										.then(
-												function(response) {
-													if (response.status == 200) {
-														$scope.error = false;
-														var index = $scope.restaurantWorkers
-																.indexOf($scope.selectedWorker);
-														$scope.restaurantWorkers
-																.splice(index,
-																		1);
-														$scope.show = null;
-													} else {
-														$scope.error = true;
-													}
-												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
-												  });;
-							}
-							
-							$scope.showWorkerShifts = function() {
-								restaurantManagerService
-										.showWorkerShifts($scope.selectedWorker.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.workerShifts = response.data;
-														$scope.showW = 4;
-													} else {
-														$scope.error = true;
-													}
-												});
-							}
-							
-							$scope.showSegmentTables = function() {
-								/*
-								 * $scope.editTable = { segment :
-								 * $scope.selectedSegment }
-								 */
-								restaurantManagerService
-										.getTables($scope.selectedSegment.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.segmentTables = response.data;
-														$scope.showS = 3;
-													} else {
-														$scope.error = true;
-													}
-												});
-							}
-							
-							$scope.registerTable = function() {
-								restaurantManagerService
-										.registerTable($scope.table,
-												$scope.selectedSegment.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														$scope.showS = null;
-													} else {
-														$scope.error = true;
-													}
-												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
-												  });
-							}
-
-							$scope.editTable = function() {
-								$scope.editTable.id = $scope.selectedTable.id;
-								if($scope.editTable.segment == null)
-									$scope.editTable.segment = $scope.selectedTable.segment;
-								restaurantManagerService
-										.editTable($scope.editTable, $scope.editTable.segment.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.error = false;
-														var index = $scope.segmentTables
-														.indexOf($scope.selectedTable);
-														if($scope.editTable.segment.id == $scope.selectedSegment.id)
-															$scope.segmentTables[index] = response.data;
-														else 
-															$scope.segmentTables.splice(index, 1);
-													} else {
-														$scope.error = true;
-													}
-												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
-												  });
-							}
-							
-							$scope.deleteTable = function() {
-								restaurantManagerService
-										.deleteTable($scope.selectedTable.id)
-										.then(
-												function(response) {
-													if (response.status == 200) {
-														$scope.error = false;
-														var index = $scope.segmentTables
-														.indexOf($scope.selectedTable);
-												$scope.segmentTables
-														.splice(index,
-																1);
-													} else {
-														$scope.error = true;
-													}
-												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
-												  });
-							}
 							
 							$scope.editRestaurant = function() {
 								if ($scope.editRestaurant.description == null)
@@ -919,16 +619,57 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
-														$scope.show = 2;
+														$scope.show = null;
 														$scope.restaurant =  response.data;
-													} else {
-														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('This will never happen' , {
+														type : 'error',
+													    sticky: true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
+							}
+							
+							restaurantManagerService
+							.getRequestOffers($rootScope.loggedUser.id)
+							.then(
+									function(response) {
+										if (response.data) {
+											$scope.managerOffers = response.data;
+										} 
+									});
+					
+							$scope.showProducts = false;
+							$scope.getProductsForRestaurant = function() {
+								$scope.product = null;
+								$scope.selectedProduct = null;
+								restaurantManagerService
+										.getProductsForRestaurant($scope.restaurant.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.showProducts = true;
+														$scope.restaurantProducts = response.data;
+														$scope.selectedBid = null;
+														$scope.selectedRestaurantProduct = null;
+														$scope.selectedRequestOfferProduct = null;
+														$scope.show = 3;
+														$scope.showR = 5;
+													} 
+												});
+							}
+							$scope.getAllProducts = function() {
+								$scope.product = null;
+								restaurantManagerService
+										.getAllProducts()
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.allProducts = response.data;
+														$scope.show = 4;
+													}
+												});
 							}
 							
 							$scope.registerProduct = function() {
@@ -938,13 +679,16 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
 														$scope.show = null;
-													} else {
-														$scope.error = true;
-													}
+														ngNotify.set('Successfuly added product' , {
+															type : 'success',
+														});
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('This will never happen' , {
+														type : 'error',
+														sticky : true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -954,18 +698,17 @@ app
 										.then(
 												function(response) {
 													if (response.status == 200) {
-														$scope.error = false;
-														var index = $scope.restaurantProducts
-																.indexOf($scope.selectedRestaurantProduct);
-														$scope.restaurantProducts
-																.splice(index,
-																		1);
+														ngNotify.set('Successfuly removed product' , {
+															type : 'success',
+														});
+														$scope.selectedRestaurantProduct = null;
 														$scope.show = null;
-													} else {
-														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Error delete' , {
+														type : 'error',
+														sticky : true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -977,13 +720,220 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
+														ngNotify.set('Successfuly added product' , {
+															type : 'success'
+														});
 														$scope.show = null;
+													}
+												}).catch(function(response) {
+													ngNotify.set('This will never happen' , {
+														type : 'error',
+														sticky : true
+													});
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							
+							$scope.registerCook = function() {
+								restaurantManagerService
+										.registerCook($scope.cook,
+												$scope.restaurant.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														response.data.dateOfBirth =  moment(response.data.dateOfBirth).format('YYYY-MM-DD');
+														$scope.restaurantWorkers
+																.push(response.data);
+														ngNotify.set('Successfuly registrated cook' , {
+															type : 'success'
+														});
+														$scope.show = null;
+													}
+												}).catch(function(response) {
+													ngNotify.set('Email you have entered is already used' , {
+														type : 'error',
+														sticky : true
+													});
+													   console.error('Gists error', response.status, response.data)
+												  });;
+							}
+							$scope.registerBartender = function() {
+								restaurantManagerService
+										.registerBartender($scope.bartender,
+												$scope.restaurant.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														response.data.dateOfBirth =  moment(response.data.dateOfBirth).format('YYYY-MM-DD');
+														$scope.restaurantWorkers
+																.push(response.data);
+														ngNotify.set('Successfuly registrated bartender' , {
+															type : 'success'
+														});
+														$scope.bartender = null;
+														$scope.show = null;
+													} 
+												}).catch(function(response) {
+													ngNotify.set('Email you have entered is already used' , {
+														type : 'error',
+														sticky : true
+													});
+													   console.error('Gists error', response.status, response.data)
+												  });;
+							}
+							$scope.registerWaiter = function() {
+								restaurantManagerService
+										.registerWaiter($scope.waiter,
+												$scope.restaurant.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														response.data.dateOfBirth =  moment(response.data.dateOfBirth).format('YYYY-MM-DD');
+														$scope.restaurantWorkers
+																.push(response.data);
+														ngNotify.set('Successfuly registrated waiter' , {
+															type : 'success'
+														});
+														$scope.waiter = null;
+														$scope.show = null;
+													} 
+												}).catch(function(response) {
+													ngNotify.set('Email you have entered is already used' , {
+														type : 'error',
+														sticky : true
+													});
+													   console.error('Gists error', response.status, response.data)
+												  });;
+							}
+							$scope.registerBidder = function() {
+								restaurantManagerService
+										.registerBidder($scope.newBidder)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.showR = null;
+														$scope.newBidder = null;
+														$scope.show = null;
+														ngNotify.set('Successfuly registrated bidder' , {
+															type : 'success'
+														});
 													} else {
 														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Email you have entered is already used' , {
+														type : 'error',
+														sticky : true
+													});
+													   console.error('Gists error', response.status, response.data)
+												  });;
+							}
+							$scope.deleteWorker = function() {
+								restaurantManagerService
+										.deleteWorker($scope.selectedWorker.id)
+										.then(
+												function(response) {
+													if (response.status == 200) {
+														ngNotify.set('Successfuly deleted worker' , {
+															type : 'success'
+														});
+														var index = $scope.restaurantWorkers
+																.indexOf($scope.selectedWorker);
+														$scope.restaurantWorkers
+																.splice(index,
+																		1);
+														$scope.show = null;
+														$scope.selectedWorker = null;
+													}
+												}).catch(function(response) {
+													ngNotify.set('Error delete' , {
+														type : 'error',
+														sticky : true
+													});
+													   console.error('Gists error', response.status, response.data)
+												  });;
+							}
+							
+							
+							$scope.showSegmentTables = function() {
+								restaurantManagerService
+										.getTables($scope.selectedSegment.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.segmentTables = response.data;
+														$scope.showS = 3;
+													}
+												});
+							}
+							
+							$scope.registerTable = function() {
+								restaurantManagerService
+										.registerTable($scope.table,
+												$scope.selectedSegment.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														ngNotify.set('Successfuly registrated table' , {
+															type : 'success'
+														});
+														$scope.showS = null;
+													} 
+												}).catch(function(response) {
+													ngNotify.set('Unexpected error' , {
+														type : 'error',
+														sticky : 'true'
+													});
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+
+							$scope.editTable = function() {
+								$scope.editTable.id = $scope.selectedTable.id;
+								if($scope.editTable.segment == null)
+									$scope.editTable.segment = $scope.selectedTable.segment;
+								restaurantManagerService
+										.editTable($scope.editTable, $scope.editTable.segment.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														var index = $scope.segmentTables
+														.indexOf($scope.selectedTable);
+														if($scope.editTable.segment.id == $scope.selectedSegment.id)
+															$scope.segmentTables[index] = response.data;
+														else 
+															$scope.segmentTables.splice(index, 1);
+													} 
+												}).catch(function(response) {
+													ngNotify.set('Unexpected error' , {
+														type : 'error',
+														sticky : 'true'
+													});
+													   console.error('Gists error', response.status, response.data)
+												  });
+							}
+							
+							$scope.deleteTable = function() {
+								restaurantManagerService
+										.deleteTable($scope.selectedTable.id)
+										.then(
+												function(response) {
+													if (response.status == 200) {
+														var index = $scope.segmentTables
+														.indexOf($scope.selectedTable);
+												$scope.segmentTables
+														.splice(index,
+																1);
+												ngNotify.set('Successfuly delete table' , {
+													type : 'success'
+												});
+													}
+													$scope.selectedTable = null;
+												}).catch(function(response) {
+													ngNotify.set('Unexpected error' , {
+														type : 'error',
+														sticky : 'true'
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -995,14 +945,17 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
 														$scope.restaurantSegments.push(response.data);
 														$scope.showS = null;
-													} else {
-														$scope.error = true;
-													}
+														ngNotify.set('Successfuly registrated segment to this restaurant' , {
+															type : 'success'
+														});
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Unexpected error' , {
+														type : 'error',
+														sticky : 'true'
+													});s
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1010,23 +963,24 @@ app
 							$scope.editSegment = function() {
 								if($scope.editSegment.position == null)
 									$scope.editSegment.position = $scope.selectedSegment.position;
-								$scope.editSegment.smokingAllowed = $scope.editSegmentSM.smokingAllowed;
+								if($scope.editSegment.smokingAllowed == null)
+									$scope.editSegment.smokingAllowed = $scope.selectedSegment.smokingAllowed;
 								$scope.editSegment.id = $scope.selectedSegment.id;
 								restaurantManagerService
 										.editSegment($scope.editSegment)
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
 														var index = $scope.restaurantSegments
 														.indexOf($scope.selectedSegment);
 												$scope.restaurantSegments[index] = response.data;
 														$scope.showS = null;
-													} else {
-														$scope.error = true;
-													}
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Unexpected error' , {
+														type : 'error',
+														sticky : 'true'
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1037,18 +991,22 @@ app
 										.then(
 												function(response) {
 													if (response.status == 200) {
-														$scope.error = false;
 														var index = $scope.restaurantSegments
 														.indexOf($scope.selectedSegment);
 												$scope.restaurantSegments
 														.splice(index,
 																1);
 														$scope.showS = null;
-													} else {
-														$scope.error = true;
-													}
+														$scope.selectedSegment = null;
+														ngNotify.set('Successfuly deleted segment' , {
+															type : 'success'
+														});
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Unexpected error' , {
+														type : 'error',
+														sticky : 'true'
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1062,11 +1020,25 @@ app
 								else 
 									$scope.workerIsWaiter = false;
 							}
+							$scope.showWorkerShifts = function() {
+								restaurantManagerService
+										.showWorkerShifts($scope.selectedWorker.id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.workerShifts = response.data;
+														$scope.showW = 4;
+													}
+												});
+							}
 							
 							$scope.registerWorkSchedule = function() {
 								var id = 0;
 									if($scope.workSchedule.segment == null && $scope.workerIsWaiter) {
-										alert('must enter segment for waiter')		
+										ngNotify.set('If worker is waiter, then you must choose segment' , {
+											type : 'info',
+											sticky : 'true'
+										});		
 									}
 								else{
 									if($scope.workerIsWaiter)
@@ -1078,6 +1050,7 @@ app
 														if (response.data) {
 															$scope.error = false;
 															if($scope.workerIsWaiter) {
+																$scope.workSchedule = response.data;
 																restaurantManagerService
 																.getReplacments(response.data.id).then(
 																		function(response) {
@@ -1085,25 +1058,32 @@ app
 																				$scope.possibleReplacments = response.data;
 																				$scope.enableReplacments = true;
 																				$scope.enableSubmit = false;
-																				$scope.workSchedule.replacement = response.data;
-																				
 																			} else {
+																				$scope.showQ = null;
 																				$scope.enableReplacments = false;
 																			}
 															}).catch(function(response) {
-																$scope.error = true;
+																ngNotify.set('Probably never happen' , {
+																	type : 'error',
+																	sticky : 'true'
+																});
 																   console.error('Gists error', response.status, response.data)
 															  });
 															} else {
 																$scope.showQ = null;
 															}
+															ngNotify.set('Successfuly registrated work schedule' , {
+																type : 'success'
+															});
+															response.data.date =  moment(response.data.date).format('YYYY-MM-DD');
+															response.data.secondDate =  moment(response.data.secondDate).format('YYYY-MM-DD');
 															$scope.restaurantShifts.push(response.data);
-															$scope.workSchedule = response.data;
-														} else {
-															$scope.error = true;
-														}
+														} 
 													}).catch(function(response) {
-														$scope.error = true;
+														ngNotify.set('Date must be today, or future, also if not twoDaysShift, than end time must be after start time' , {
+															type : 'error',
+															sticky : 'true'
+														});
 														   console.error('Gists error', response.status, response.data)
 													  });
 								}
@@ -1114,18 +1094,20 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
+														response.data.date =  moment(response.data.date).format('YYYY-MM-DD');
+														response.data.secondDate =  moment(response.data.secondDate).format('YYYY-MM-DD');
+														$scope.workSchedule.replacement = response.data;
 														var index = $scope.restaurantShifts
-														.indexOf($scope.selectedShift);
+														.indexOf($scope.workSchedule);
 												$scope.restaurantShifts[index] = response.data;
 														$scope.showQ = null;
-
-													} else {
-														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
-													   console.error('Gists error', response.status, response.data)
+													ngNotify.set('Never happen' , {
+														type : 'error',
+														sticky : 'true'
+													});		
+													console.error('Gists error', response.status, response.data)
 												  });
 							}
 							$scope.deleteShift  = function() {
@@ -1134,18 +1116,20 @@ app
 										.then(
 												function(response) {
 													if (response.status == 200) {
-														$scope.error = false;
 														var index = $scope.restaurantShifts
 														.indexOf($scope.selectedShift);
-												$scope.restaurantShifts.splice(index,
-														1);
-												$scope.showQ = null;
-
-													} else {
-														$scope.error = true;
-													}
+														$scope.restaurantShifts.splice(index,1);
+														$scope.showQ = null;
+													ngNotify.set('Successfuly deleted workSchedule' , {
+														type : 'success'
+													});		
+													$scope.selectedShift = null;
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Error delete' , {
+														type : 'error',
+														sticky : 'true'
+													});	
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1165,17 +1149,18 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
+														response.data.date =  moment(response.data.date).format('YYYY-MM-DD');
+														response.data.secondDate =  moment(response.data.secondDate).format('YYYY-MM-DD');
 														var index = $scope.restaurantShifts
 														.indexOf($scope.selectedShift);
-												$scope.restaurantShifts[index] = response.data;
-												showQ = null;
-
-													} else {
-														$scope.error = true;
+													$scope.restaurantShifts[index] = response.data;
+													$scope.showQ = null;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Date must be today, or future, also if not twoDaysShift, than end time must be after start time' , {
+														type : 'error',
+														sticky : 'true'
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1186,15 +1171,19 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
+														response.data.startDate =  moment(response.data.startDate).format('YYYY-MM-DD');
+														response.data.expirationDate =  moment(response.data.expirationDate).format('YYYY-MM-DD');
 														$scope.managerOffers.push(response.data);
 														$scope.showR = null;
-
-													} else {
-														$scope.error = true;
-													}
+														ngNotify.set('Successfuly registrated request offer' , {
+															type : 'success'
+														});
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Date must be today, or future, expiration date must be after start date' , {
+														type : 'error',
+														sticky : 'true'
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1210,17 +1199,19 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
+														response.data.startDate =  moment(response.data.startDate).format('YYYY-MM-DD');
+														response.data.expirationDate =  moment(response.data.expirationDate).format('YYYY-MM-DD');
 														var index = $scope.managerOffers
 														.indexOf($scope.selectedRequestOffer);
 												$scope.managerOffers[index] = response.data;
 														$scope.showR = null;
 
-													} else {
-														$scope.error = true;
-													}
+													} 
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Date must be today, or future, expiration date must be after start date' , {
+														type : 'error',
+														sticky : 'true'
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1239,12 +1230,15 @@ app
 														$scope.selectedBid = null;
 														$scope.selectedRestaurantProduct = null;
 														$scope.selectedRequestOfferProduct = null;
-
-													} else {
-														$scope.error = true;
+														ngNotify.set('Successfuly deleted request offer' , {
+															type : 'success'
+														});
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Error delete' , {
+														type : 'error',
+														sticky : 'true'
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1254,14 +1248,17 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
+														ngNotify.set('Successfuly added product to request offer' , {
+															type : 'success'
+														});
 														$scope.showR = null;
 
-													} else {
-														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Error adding product' , {
+														type : 'error',
+														sticky: true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1271,17 +1268,20 @@ app
 										.then(
 												function(response) {
 													if (response.status == 200) {
-														$scope.error = false;
 														var index = $scope.requestOfferProducts
 														.indexOf($scope.selectedRequestProduct);
 												$scope.requestOfferProducts.splice(index, 1);
 														$scope.showR = null;
+														ngNotify.set('Successfuly deleted product from request offer' , {
+															type : 'success'
+														});
 
-													} else {
-														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Error delete' , {
+														type : 'error',
+														sticky: true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
@@ -1292,15 +1292,12 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
 														$scope.biddings = response.data;
 														$scope.showR = 3;
 														$scope.selectedBid = null;
 														$scope.selectedRestaurantProduct = null;
 														$scope.selectedRequestOfferProduct = null;
-													} else {
-														$scope.error = true;
-													}
+													} 
 												});
 							}
 							
@@ -1310,14 +1307,11 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
 														$scope.requestOfferProducts = response.data;
 														$scope.showR = 4;
 														$scope.selectedBid = null;
 														$scope.selectedRestaurantProduct = null;
 														$scope.selectedRequestOfferProduct = null;
-													} else {
-														$scope.error = true;
 													}
 												});
 							}
@@ -1328,14 +1322,14 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
 														$scope.selectedBid = null;
 														$scope.selectedRestaurantProduct = null;
 														$scope.selectedRequestOfferProduct = null;
 														$scope.selectedRequestOffer.status = false;
 														$scope.showR = null;
-													} else {
-														$scope.error = true;
+														ngNotify.set('Successfuly accepted bidder offer' , {
+															type : 'success'
+														});
 													}
 												});
 							}
@@ -1345,15 +1339,11 @@ app
 							.then(
 									function(response) {
 										if(response.data) {
-											$scope.error = false
 											if(response.data != -1)
 												$scope.waiterGrade = response.data;
 											else 
 												$scope.waiterGrade = 'No grades yet'
-										}
-										else
-											$scope.error = true;
-									});
+										}});
 							}
 							
 							$scope.getEarningForWaiter = function() {
@@ -1362,14 +1352,11 @@ app
 								.then(
 										function(response) {
 											if(response.data) {
-												$scope.error = false
 												if(response.data != -1)
 													$scope.waiterEarnings = response.data;
 												else 
 													$scope.waiterEarnings = 'No earnings yet'
 											}
-											else
-												$scope.error = true;
 										});
 								}
 							
@@ -1381,14 +1368,12 @@ app
 								.then(
 										function(response) {
 											if(response.data) {
-												$scope.error = false
 												if(response.data != -1)
 													$scope.restaurantEarnings = response.data;
 												else 
 													$scope.restaurantEarnings = 'No earnings yet'
 											}
-											else
-												$scope.error = true;
+									
 										});
 								}
 							
@@ -1398,14 +1383,11 @@ app
 								.then(
 										function(response) {
 											if(response.data) {
-												$scope.error = false
 												if(response.data != -1)
 													$scope.gradeProduct = response.data;
 												else 
 													$scope.gradeProduct = 'No grades yet'
 											}
-											else
-												$scope.error = true;
 										});
 								}
 							

@@ -5,7 +5,7 @@
 	<div class="form-group">
 		<label>Position:</label> <input type="text" name="des"
 			ng-Model="$parent.editSegment.position" ng-value="$parent.selectedSegment.position" class="form-control"
-			placeholder="Enter position" required pattern = "^[A-Z][a-z_ A-Z0-9]*" ng-maxlength="60"/>
+			placeholder="Enter position" pattern = "^[A-Z][a-z_ A-Z0-9]*" ng-maxlength="60"/>
 	</div>
 	<div role="alert" style="color: red">
 		<span class="error" ng-show="myForm.des.$error.maxlength"> Too
@@ -15,9 +15,9 @@
 	<label>Smoking allowed?</label>
 	<div class="form-group">
 		<label class="radio-inline"> <input type="radio" value=true
-			ng-model="$parent.editSegmentSM.smokingAllowed"> Yes
+			ng-model="$parent.editSegment.smokingAllowed"/> Yes
 		</label> <label class="radio-inline"> <input type="radio" value=false
-			ng-model="$parent.editSegmentSM.smokingAllowed"> No
+			ng-model="$parent.editSegment.smokingAllowed"/> No
 		</label>
 	</div>
 	<div class="form-group">

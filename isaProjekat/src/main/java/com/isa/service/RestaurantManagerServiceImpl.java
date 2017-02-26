@@ -95,6 +95,20 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	private OrderRepository orderRepository;
 
 	@Override
+	public ResponseEntity<RestaurantManager> update(RestaurantManager sm) {
+		RestaurantManager temp = this.restaurantManagerRepository.findOne(sm.getId());
+		if (!temp.getEmail().equals(sm.getEmail()))
+			if (this.userRepository.findByEmail(sm.getEmail()) != null)
+				return new ResponseEntity<>(HttpStatus.CONFLICT);
+		temp.setDateOfBirth(sm.getDateOfBirth());
+		temp.setEmail(sm.getEmail());
+		temp.setPassword(sm.getPassword());
+		temp.setSurname(sm.getSurname());
+		temp.setUserName(sm.getUserName());
+		return new ResponseEntity<RestaurantManager>(this.restaurantManagerRepository.save(temp), HttpStatus.OK);
+	}
+	
+	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
 		Restaurant temp = this.restaurantRepository.findOne(r.getId());
 		temp.setDescription(r.getDescription());
@@ -200,8 +214,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id,
-			Long replacement_id) {
+	public ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id) {
 		String now = formatter.format(new Date());
 		String date = formatter.format(w.getDate());
 		if (!now.equals(date))
@@ -220,17 +233,6 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			if (segment_id == 0)
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			Segment s = this.segmentRepository.findOne(segment_id);
-			if (replacement_id != 0) {
-				Worker r = this.workerRepository.findOne(replacement_id);
-				if (w.isTwoDays())
-					if (this.workScheduleRepository.findByWorkerAndDateAndStartTime(r, w.getSecondDate(),
-							w.getEndTime()) == null)
-						return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-					else if (this.workScheduleRepository.findByWorkerAndDateAndStartTime(r, w.getDate(),
-							w.getEndTime()) == null)
-						return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-				w.setReplacement(r);
-			}
 			w.setSegment(s);
 		}
 		w.setWorker(u);
@@ -265,7 +267,8 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Override
 	public ResponseEntity<WorkSchedule> updateWorkScheduleSetReplacement(Long s, Long w) {
 		WorkSchedule ws = this.workScheduleRepository.findOne(w);
-		ws.setReplacement(this.waiterRepository.findOne(s));
+		WorkSchedule pr = this.workScheduleRepository.findOne(s);
+		ws.setReplacement(this.waiterRepository.findOne(pr.getWorker().getId()));
 		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.OK);
 	}
 
@@ -302,11 +305,10 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		String date = formatter.format(ro.getStartDate());
 		if (ro.getExpirationDate().before(ro.getStartDate()))
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		if (!date.equals(now))
+		if (!date.equals(now)) {
+			ro.setStatus(false);
 			if (ro.getStartDate().before(new Date()))
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		if (now.equals(date)) {
-			ro.setStatus(false);
 		}
 		RestaurantManager rm = this.restaurantManagerRepository.findOne(r_id);
 		ro.setRestaurantManager(rm);

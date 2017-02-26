@@ -1,4 +1,3 @@
-
 <h2 class="page-header">Register work schedule for
 	{{$parent.restaurant.restaurantName}}</h2>
 <div class="alert alert-danger" ng-show="error">
@@ -13,9 +12,9 @@
 	<label>Two days shift?</label>
 	<div class="form-group">
 		<label class="radio-inline"> <input type="radio" value=true
-			ng-model="$parent.workSchedule.twoDays"> Yes
+			ng-model="$parent.workSchedule.twoDays" required/ > Yes
 		</label> <label class="radio-inline"> <input type="radio" value=false
-			ng-model="$parent.workSchedule.twoDays"> No
+			ng-model="$parent.workSchedule.twoDays" required/> No
 		</label>
 	</div>
 	<div class="form-group">
@@ -30,7 +29,7 @@
 	</div>
 	<label>Worker :</label> <select ng-model="$parent.workSchedule.worker"
 		ng-options="x.id for x in $parent.restaurantWorkers"
-		ng-change="$parent.changeStatusOfWorkerIsWaiter(workSchedule.worker)">
+		ng-change="$parent.changeStatusOfWorkerIsWaiter(workSchedule.worker)" required/>
 	</select> <label>Segment :</label> <select
 		ng-model="$parent.workSchedule.segment"
 		ng-options="x.id for x in $parent.restaurantSegments"
@@ -44,7 +43,7 @@
 </form>
 <form name="myForm" novalidate>
 	<label>Replacement :</label> <select
-		ng-model="$parent.workSchedule.replacment"
+		ng-model="$parent.workSchedule.replacement"
 		ng-options="x.id for x in $parent.possibleReplacments"
 		ng-disabled="!$parent.enableReplacments">
 	</select>

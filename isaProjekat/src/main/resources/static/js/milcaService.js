@@ -5,7 +5,7 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 	systemManagerService.getRestaurantManagers = function(id) {
 		return $http({
 			method : 'GET',
-			url : '../systemManager/getRestaurantManagersForRestaurant?id='
+			url : '../systemmanagers/getRestaurantManagersForRestaurant?id='
 					+ id
 		});
 	}
@@ -13,21 +13,21 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 	systemManagerService.getRestaurants = function() {
 		return $http({
 			method : 'GET',
-			url : '../systemManager/getAllRestaurants'
+			url : '../systemmanagers/getAllRestaurants'
 		});
 	}
 
 	systemManagerService.getSystemManagers = function() {
 		return $http({
 			method : 'GET',
-			url : '../systemManager/getAllSystemManager'
+			url : '../systemmanagers/getAllSystemManager'
 		});
 	}
 	
 	systemManagerService.registerRestaurant = function(restaurant) {
 		return $http({
 			method : 'POST',
-			url : '../systemManager/registerRestaurant',
+			url : '../systemmanagers/registerRestaurant',
 			data : {
 				"restaurantName" : restaurant.restaurantName,
 				"description" : restaurant.description
@@ -38,7 +38,7 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 	systemManagerService.editRestaurant = function(restaurant) {
 		return $http({
 			method : 'PUT',
-			url : '../systemManager/updateRestaurant',
+			url : '../systemmanagers/updateRestaurant',
 			data : {
 				"id" : restaurant.id,
 				"restaurantName" : restaurant.restaurantName,
@@ -49,7 +49,7 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 	systemManagerService.deleteRestaurant = function(restaurant_id) {
 		return $http({
 			method : 'DELETE',
-			url : '../systemManager/deleteRestaurant?id=' + restaurant_id
+			url : '../systemmanagers/deleteRestaurant?id=' + restaurant_id
 		});
 	}
 
@@ -57,7 +57,7 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 			restaurantManager) {
 		return $http({
 			method : 'POST',
-			url : '../systemManager/registerRestaurantManager?id='
+			url : '../systemmanagers/registerRestaurantManager?id='
 					+ restaurant_id,
 			data : {
 				"userName" : restaurantManager.userName,
@@ -65,7 +65,7 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 				"email" : restaurantManager.email,
 				"password" : restaurantManager.password,
 				"dateOfBirth" : restaurantManager.dateOfBirth,
-				"userRole" : "RESTAURANT_MANAGER"
+				"userRole" : "RESTAURANTMANAGER"
 			}
 		});
 	}
@@ -74,7 +74,7 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 			restaurant_manager_id) {
 		return $http({
 			method : 'DELETE',
-			url : '../systemManager/deleteRestaurantManager?id='
+			url : '../systemmanagers/deleteRestaurantManager?id='
 					+ restaurant_manager_id
 		});
 	}
@@ -83,40 +83,24 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 	systemManagerService.registerSystemManager = function(systemManager) {
 		return $http({
 			method : 'POST',
-			url : '../systemManager/registerSystem',
+			url : '../systemmanagers/registerSystem',
 			data : {
 				"userName" : systemManager.userName,
 				"surname" : systemManager.surname,
 				"email" : systemManager.email,
 				"password" : systemManager.password,
 				"dateOfBirth" : systemManager.dateOfBirth,
-				"userRole" : "SYSTEM_MANAGER"
+				"userRole" : "SYSTEMMANAGER"
 			}
 		});
 	}
-	
-	systemManagerService.editSystemManager = function(manager) {
-		return $http({
-			method : 'PUT',
-			url : '../systemManager/updateSystem',
-			data : {
-				"id" : manager.id,
-				"userName" : manager.userName,
-				"surname" : manager.surname,
-				"email" : manager.email,
-				"password" : manager.password,
-				"dateOfBirth" : manager.dateOfBirth
-			}
-		});
 
 	systemManagerService.deleteSystemManager = function(system_manager_id) {
 		return $http({
 			method : 'DELETE',
-			url : '../systemManager/deleteSystemManager?id='
+			url : '../systemmanagers/deleteSystemManager?id='
 					+ system_manager_id
 		});
-	}
-
 	}
 
 	return systemManagerService;
@@ -135,7 +119,7 @@ app.factory('BidderService', function bidderService($http) {
 	bidderService.getProducts = function(request_id) {
 		return $http({
 			method : 'GET',
-			url : '../restaurantManagers/getAllProductsForRequestOffer?id='
+			url : '../restaurantmanagers/getAllProductsForRequestOffer?id='
 					+ request_id
 		});
 	}
@@ -200,7 +184,7 @@ app.factory('BidderService', function bidderService($http) {
 	bidderService.editBidder = function(bidder) {
 		return $http({
 			method : 'PUT',
-			url : '../bidders/updateBidder',
+			url : '../bidders/update',
 			data : {
 				"id" : bidder.id,
 				"userName" : bidder.userName,
@@ -224,7 +208,7 @@ app
 					restaurantManagerService.checkIfRequestOfferExpired = function() {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/checkIfRequestOfferExpired'
+							url : '../restaurantmanagers/checkIfRequestOfferExpired'
 						});
 					}
 
@@ -232,7 +216,7 @@ app
 							id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/checkIfSegmentCanBeDeleted?id='
+							url : '../restaurantmanagers/checkIfSegmentCanBeDeleted?id='
 									+ id
 						});
 					}
@@ -240,7 +224,7 @@ app
 							id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getGradeForRestaurant?id='
+							url : '../restaurantmanagers/getGradeForRestaurant?id='
 									+ id
 						});
 					}
@@ -249,7 +233,7 @@ app
 							id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getGradeForWaiter?id='
+							url : '../restaurantmanagers/getGradeForWaiter?id='
 									+ id
 						});
 					}
@@ -258,7 +242,7 @@ app
 							id, pro_id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getGradeForOrder?id='
+							url : '../restaurantmanagers/getGradeForOrder?id='
 									+ pro_id + '&res_id=' + id
 						});
 					}
@@ -267,7 +251,7 @@ app
 							id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getWaiterEarnings?id='
+							url : '../restaurantmanagers/getWaiterEarnings?id='
 									+ id
 						});
 					}
@@ -276,7 +260,7 @@ app
 							id, start, end) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getRestaurantEarnings?id='
+							url : '../restaurantmanagers/getRestaurantEarnings?id='
 									+ id + '&start=' + start + '&end=' + end
 						});
 					}
@@ -284,14 +268,14 @@ app
 					restaurantManagerService.checkIfWorkScheduleIsDone = function() {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/checkIfWorkScheduleIsDone'
+							url : '../restaurantmanagers/checkIfWorkScheduleIsDone'
 						});
 					}
 
 					restaurantManagerService.getRestaurant = function(id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getRestaurantForManager?id='
+							url : '../restaurantmanagers/getRestaurantForManager?id='
 									+ id
 						});
 					}
@@ -299,7 +283,7 @@ app
 					restaurantManagerService.getRestaurantWorkers = function(id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllWorkersForRestaurant?id='
+							url : '../restaurantmanagers/getAllWorkersForRestaurant?id='
 									+ id
 						});
 					}
@@ -308,7 +292,7 @@ app
 							id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllSegmentsForRestaurant?id='
+							url : '../restaurantmanagers/getAllSegmentsForRestaurant?id='
 									+ id
 						});
 					}
@@ -316,7 +300,7 @@ app
 					restaurantManagerService.getTables = function(id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllTablesForSegment?id='
+							url : '../restaurantmanagers/getAllTablesForSegment?id='
 									+ id
 						});
 					}
@@ -325,7 +309,7 @@ app
 							id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllProductsForRestaurant?id='
+							url : '../restaurantmanagers/getAllProductsForRestaurant?id='
 									+ id
 						});
 					}
@@ -333,14 +317,14 @@ app
 					restaurantManagerService.getAllProducts = function() {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllProducts'
+							url : '../restaurantmanagers/getAllProducts'
 						});
 					}
 
 					restaurantManagerService.registerCook = function(cook, id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/registerCook?id=' + id,
+							url : '../restaurantmanagers/registerCook?id=' + id,
 							data : {
 								"userName" : cook.userName,
 								"surname" : cook.surname,
@@ -359,13 +343,13 @@ app
 							bartender, id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/registerBartender?id='
+							url : '../restaurantmanagers/registerBartender?id='
 									+ id,
 							data : {
 								"userName" : bartender.userName,
 								"surname" : bartender.surname,
 								"email" : bartender.email,
-								"password" : cook.password,
+								"password" : bartender.password,
 								"dateOfBirth" : bartender.dateOfBirth,
 								"shirtSize" : bartender.shirtSize,
 								"shoeNumber" : bartender.shoeNumber,
@@ -378,7 +362,7 @@ app
 							id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/registerWaiter?id='
+							url : '../restaurantmanagers/registerWaiter?id='
 									+ id,
 							data : {
 								"userName" : waiter.userName,
@@ -396,7 +380,7 @@ app
 					restaurantManagerService.registerBidder = function(b) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/registerBidder',
+							url : '../restaurantmanagers/registerBidder',
 							data : {
 								"userName" : b.userName,
 								"surname" : b.surname,
@@ -410,14 +394,14 @@ app
 					restaurantManagerService.deleteWorker = function(id) {
 						return $http({
 							method : 'DELETE',
-							url : '../restaurantManagers/removeWorker?id=' + id
+							url : '../restaurantmanagers/removeWorker?id=' + id
 						});
 					}
 
 					restaurantManagerService.showWorkerShifts = function(id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllWorkSchedulesForWorker?id='
+							url : '../restaurantmanagers/getAllWorkSchedulesForWorker?id='
 									+ id
 						});
 					}
@@ -425,7 +409,7 @@ app
 							restaurant) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/updateRestaurant',
+							url : '../restaurantmanagers/updateRestaurant',
 							data : {
 								"id" : restaurant.id,
 								"restaurantName" : restaurant.restaurantName,
@@ -438,7 +422,7 @@ app
 							product, id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/addProduct?rest_id=' + id,
+							url : '../restaurantmanagers/addProduct?rest_id=' + id,
 							data : {
 								"productName" : product.productName,
 								"description" : product.description,
@@ -452,7 +436,7 @@ app
 							id) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/addExistingProduct?product_id='
+							url : '../restaurantmanagers/addExistingProduct?product_id='
 									+ product_id + '&rest_id=' + id
 						});
 					}
@@ -460,7 +444,7 @@ app
 					restaurantManagerService.registerTable = function(table, id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/addRestaurantTable?id='
+							url : '../restaurantmanagers/addRestaurantTable?segment='
 									+ id,
 							data : {
 								"numberOfChairs" : table.numberOfChairs
@@ -470,7 +454,7 @@ app
 					restaurantManagerService.editTable = function(table, id) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/updateRestaurantTable?id='
+							url : '../restaurantmanagers/updateRestaurantTable?id='
 									+ id,
 							data : {
 								"id" : table.id,
@@ -483,7 +467,7 @@ app
 							pro_id) {
 						return $http({
 							method : 'DELETE',
-							url : '../restaurantManagers/removeProduct?product_id='
+							url : '../restaurantmanagers/removeProduct?product_id='
 									+ pro_id + '&rest_id=' + id
 						});
 					}
@@ -491,7 +475,7 @@ app
 					restaurantManagerService.deleteSegment = function(id) {
 						return $http({
 							method : 'DELETE',
-							url : '../restaurantManagers/removeSegment?id='
+							url : '../restaurantmanagers/removeSegment?id='
 									+ id
 						});
 					}
@@ -499,7 +483,7 @@ app
 					restaurantManagerService.deleteTable = function(id) {
 						return $http({
 							method : 'DELETE',
-							url : '../restaurantManagers/removeRestaurantTable?id='
+							url : '../restaurantmanagers/removeRestaurantTable?id='
 									+ id
 						});
 					}
@@ -508,7 +492,7 @@ app
 							segment, id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/addSegment?rest=' + id,
+							url : '../restaurantmanagers/addSegment?rest=' + id,
 							data : {
 								"position" : segment.position,
 								"smokingAllowed" : segment.smokingAllowed
@@ -518,7 +502,7 @@ app
 					restaurantManagerService.editSegment = function(segment) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/updateSegment',
+							url : '../restaurantmanagers/updateSegment',
 							data : {
 								"id" : segment.id,
 								"position" : segment.position,
@@ -531,7 +515,7 @@ app
 							workSchedule, w_id, s_id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/registerWorkSchedule?segment_id='
+							url : '../restaurantmanagers/registerWorkSchedule?segment_id='
 									+ s_id + '&worker_id=' + w_id,
 							data : {
 								"date" : workSchedule.date,
@@ -544,7 +528,7 @@ app
 					restaurantManagerService.deleteShift = function(id) {
 						return $http({
 							method : 'DELETE',
-							url : '../restaurantManagers/removeWorkSchedule?id='
+							url : '../restaurantmanagers/removeWorkSchedule?id='
 									+ id
 						});
 					}
@@ -552,7 +536,7 @@ app
 							workSchedule) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/updateWorkSchedule',
+							url : '../restaurantmanagers/updateWorkSchedule',
 							data : {
 								"id" : workSchedule.id,
 								"date" : workSchedule.date,
@@ -565,21 +549,21 @@ app
 					restaurantManagerService.getReplacments = function(id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getPossableReplacements?id='
+							url : '../restaurantmanagers/getPossableReplacements?id='
 									+ id
 						});
 					}
 					restaurantManagerService.getRequestOffers = function(id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers//getAllRequestOffersForManager?id='
+							url : '../restaurantmanagers//getAllRequestOffersForManager?id='
 									+ id
 						});
 					}
 					restaurantManagerService.setReplacment = function(id, r_id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/gupdateWorkScheduleSetReplacement?repl_id='
+							url : '../restaurantmanagers/gupdateWorkScheduleSetReplacement?repl_id='
 									+ r_id + '&ws_id=' + id
 						});
 					}
@@ -587,7 +571,7 @@ app
 					restaurantManagerService.getWorkSchedulesForRestaurant = function(id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllWorkSchedulesForRestaurant?id='
+							url : '../restaurantmanagers/getAllWorkSchedulesForRestaurant?id='
 									+ id
 						});
 					}
@@ -596,7 +580,7 @@ app
 							rq, id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/registerRequestOffer?rm_id=' + id,
+							url : '../restaurantmanagers/registerRequestOffer?rm_id=' + id,
 							data : {
 								"startDate" : rq.startDate,
 								"expirationDate" : rq.expirationDate
@@ -608,7 +592,7 @@ app
 							rq) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/updateRequestOffer',
+							url : '../restaurantmanagers/updateRequestOffer',
 							data : {
 								"id" : rq.id,
 								"startDate" : rq.startDate,
@@ -620,7 +604,7 @@ app
 							ro_id, p_id) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/addProductToRequestOffer?product_id=' + p_id + '&rest_id=' + ro_id
+							url : '../restaurantmanagers/addProductToRequestOffer?product_id=' + p_id + '&rest_id=' + ro_id
 						});
 					}
 					
@@ -628,20 +612,20 @@ app
 							ro_id, bid_id) {
 						return $http({
 							method : 'PUT',
-							url : '../restaurantManagers/acceptBidderOffer?bid_id=' + bid_id + '&req_id=' + ro_id
+							url : '../restaurantmanagers/acceptBidderOffer?bid_id=' + bid_id + '&req_id=' + ro_id
 						});
 					}
 					restaurantManagerService.removeProdustFromRequestOffer = function(
 							ro_id, p_id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantManagers/removeProductFromRequestOffer?product_id=' + p_id + '&ro_id=' + ro_id
+							url : '../restaurantmanagers/removeProductFromRequestOffer?product_id=' + p_id + '&ro_id=' + ro_id
 						});
 					}
 					restaurantManagerService.deleteRequestOffer = function(id) {
 						return $http({
 							method : 'DELETE',
-							url : '../restaurantManagers/removeRequestOffer?id='
+							url : '../restaurantmanagers/removeRequestOffer?id='
 									+ id
 						});
 					}
@@ -649,7 +633,7 @@ app
 					restaurantManagerService.getProducts = function(request_id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllProductsForRequestOffer?id='
+							url : '../restaurantmanagers/getAllProductsForRequestOffer?id='
 									+ request_id
 						});
 					}
@@ -657,7 +641,7 @@ app
 					restaurantManagerService.getBidderOffersForRequest = function(request_id) {
 						return $http({
 							method : 'GET',
-							url : '../restaurantManagers/getAllBidderOffersForRequestOffer?id='
+							url : '../restaurantmanagers/getAllBidderOffersForRequestOffer?id='
 									+ request_id
 						});
 					}

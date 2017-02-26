@@ -15,6 +15,7 @@ import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Bartender;
 import com.isa.entity.users.Bidder;
 import com.isa.entity.users.Cook;
+import com.isa.entity.users.RestaurantManager;
 import com.isa.entity.users.Waiter;
 import com.isa.entity.users.Worker;
 
@@ -48,8 +49,7 @@ public interface RestaurantManagerService {
 
 	ResponseEntity<Waiter> registerWaiter(Waiter w, Long id);
 
-	ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id,
-			Long replacement_id);
+	ResponseEntity<WorkSchedule> registerWorkSchedule(WorkSchedule w, Long worker_id, Long segment_id);
 
 	ResponseEntity<WorkSchedule> removeWorkSchedule(Long id);
 
@@ -117,6 +117,8 @@ public interface RestaurantManagerService {
 	double checkIfWorkScheduleIsDone();
 
 	double checkIfSegmentCanBeDeleted(Long id);
+
+	ResponseEntity<RestaurantManager> update(RestaurantManager r);
 
 
 }

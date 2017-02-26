@@ -8,10 +8,10 @@ insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (4,'16-10-15','sasa.momcilovic@gmail.com','sifra','Sasa','Momcilovic','WAITER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (5,'16-10-15','mirko.odalovic@gmail.com','sifra','Mirko','Odalovic','COOK');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (6,'16-10-15','bakir.niksic@gmail.com','sifra','Baki','Niksic','COOK');
-insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (7,'16-10-15','aleksandar.petrovic@gmail.com','sifra','Aca','Petrovic','SYSTEM_MANAGER');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (7,'16-10-15','aleksandar.petrovic@gmail.com','sifra','Aca','Petrovic','SYSTEMMANAGER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (8,'16-10-15','nikola.sajic@gmail.com','sifra','Nikola','Sajic','BARTENDER');
-insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (9,'16-10-15','tamara.mrskic@gmail.com','sifra','Tamara','Mrksic','RESTAURANT_MANAGER');
-insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (10,'16-10-15','stefan.varajic@gmail.com','sifra','Stevan','Varaja','RESTAURANT_MANAGER');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (9,'16-10-15','tamara.mrskic@gmail.com','sifra','Tamara','Mrksic','RESTAURANTMANAGER');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (10,'16-10-15','stefan.varajic@gmail.com','sifra','Stevan','Varaja','RESTAURANTMANAGER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (11,'16-10-15','bider.bidic@gmail.com','sifra','Batko','Batkic','BIDDER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (12,'16-10-15','bider2.bidic@gmail.com','sifra','Batko','Batkic','BIDDER');
 
