@@ -10,6 +10,10 @@ public interface GuestService {
 	
 	ResponseEntity<List<Guest>> getFriendsForGuest(Long id);
 	
+	Guest register(Guest guest);
+	
+	ResponseEntity<List<Guest>> getNonFriendsForGuest(Long id);
+	
 	ResponseEntity<List<Guest>> getSentRequestsForGuest(Long id);
 	
 	ResponseEntity<List<Guest>>  getRecievedRequestsForGuest(Long id);

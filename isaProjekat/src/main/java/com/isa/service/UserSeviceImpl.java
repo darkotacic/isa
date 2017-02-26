@@ -20,14 +20,6 @@ public class UserSeviceImpl implements UserService {
 		return this.userRepository.findByEmail(email);
 	}
 
-	@Override
-	public User register(User user) {
-		
-
-		User mrs = userRepository.save(user);
-		//guestR.save(mrs.getID());
-		return mrs;
-	}
 
 	@Override
 	public User updateUser(User user) {

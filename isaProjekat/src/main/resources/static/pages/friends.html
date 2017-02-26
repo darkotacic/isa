@@ -1,1 +1,42 @@
-FRIENDS
+<div ng-controller='guestController'>
+		Friend requests: <img src="../images/arrow.jpg" alt="arrow" class="arrow" ng-class="{rotate90: showRequest}" ng-click="showRequests()">
+	<br/>
+	<div class="w3-card-8 w3-dark-grey item-content" style="display:inline-block" ng-class="{active: showRequest}" ng-repeat="request in requests">
+	
+		<div class="w3-container w3-center" >
+		  <h3>Friend request</h3>
+		  <img src="../images/smiley.jpg" alt="Avatar" >
+		  <h5>{{request.userName +' '+ request.surname}} </h5>
+		
+		  <button class="w3-button w3-green" ng-click="acceptRequest(request)">Accept</button>
+		  <button class="w3-button w3-red" ng-click="declineRequest(request)">Decline</button>
+		</div>
+	</div>
+	<br/>
+		Friends: <img src="../images/arrow.jpg" alt="arrow" class="arrow" ng-class="{rotate90: showFriend}" ng-click="showFriends()">
+	<br/>
+	<div class="w3-card-8 w3-dark-grey item-content" style="display:inline-block" ng-class="{active: showFriend}" ng-repeat="friend in friends">
+	
+		<div class="w3-container w3-center" >
+		  <h3>Friend</h3>
+		  <img src="../images/smiley.jpg" alt="Avatar" >
+		  <h5>{{friend.userName +' '+ friend.surname}} </h5>
+		
+		  <button class="w3-button w3-green">Show</button>
+		  <button class="w3-button w3-red" ng-click="removeFriend(friend)">Remove</button>
+		</div>
+	</div>
+	<br/>
+		Find friends: <img src="../images/arrow.jpg" alt="arrow" class="arrow" ng-class="{rotate90: search}" ng-click="showSearch()">
+	<br/>
+	
+	<div class="w3-card-8 w3-dark-grey item-content" style="display:inline-block" ng-class="{active: search}" ng-repeat="notFriend in notFriends">
+		<div class="w3-container w3-center" >
+		  <h3>Guest</h3>
+		  <img src="../images/smiley.jpg" alt="Avatar" >
+		  <h5>{{notFriend.userName +' '+ notFriend.surname}} </h5>
+		  <button class="w3-button w3-green">Send friend request</button>
+		</div>
+	</div>
+
+</div>

@@ -1,6 +1,29 @@
 var app = angular.module('webApp');
 
-app.controller('appController',['$rootScope','$scope','$location','SessionService','ShoppingCartService',function($rootScope,$scope,$location,sessionService,shoppingCartService){
+
+var compareTo = function() {
+    return {
+        require: "ngModel",
+        scope: {
+            otherModelValue: "=compareTo"
+        },
+        link: function(scope, element, attributes, ngModel) {
+             
+            ngModel.$validators.compareTo = function(modelValue) {
+                return modelValue == scope.otherModelValue;
+            };
+ 
+            scope.$watch("otherModelValue", function() {
+                ngModel.$validate();
+            });
+        }
+    };
+};
+
+app.directive("compareTo", compareTo);
+
+
+app.controller('appController',['$rootScope','$scope','$location','SessionService',function($rootScope,$scope,$location,sessionService){
 	
 	
 	sessionService.getLoggedUser().then(function(response){
@@ -84,7 +107,6 @@ app.controller('registerController',['$rootScope','$scope','$location','$http','
     	sessionService.register(user).then(function(response){
     		if(response.data){
     			$scope.error = false;
-    			alert("Uspesno registrovan:" + response.data.username);
     			$location.path('/login')
     		} else {
     			$scope.error = true;
@@ -143,243 +165,78 @@ app.controller('profileController',['$rootScope','$scope','$location','$http','S
 
 }]);
 
-app.controller('delivererController',['$rootScope','$scope','$location','$http','DelivererService',function($rootScope,$scope,$location,$http,delivererService) {
+app.controller('guestController',['$rootScope','$scope','$location','$http','GuestService',function($rootScope,$scope,$location,$http,guestService) {
 	
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
 	} 
 	
-	delivererService.getDeliverers().then(function(response){
-		$scope.deliverers = response.data;
-	});
+	$scope.forRemoval = null;
 	
-	$scope.setSelected = function(selected){
-		$scope.editDeliverer = '';
-		$scope.newDeliverer = '';
-		$scope.selected = selected;
-	}	
+	$scope.showRequest = true;
+	$scope.showFriend = true;
+	$scope.search = true;
 	
-	$scope.display = function(tab){
-		if(tab==1){
-			$scope.selected = null;
+	$scope.showSearch = function(){
+		if(!$scope.search){
+			$scope.search = true;
+		}else{
+			$scope.search = false;
 		}
-		$scope.editDeliverer = '';
-		$scope.show = tab;
 	}
 	
-	
-	$scope.addDeliverer = function(){
-		var deliverer = $scope.newDeliverer;
-		delivererService.addDeliverer(deliverer).then(function(response){
-    		if(response.data){
-    			$scope.error = false;
-    			alert("Uspesno dodat deliverer: " + response.data.code);
-    			$scope.deliverers.push(response.data);
-    			$scope.show = null;
-    			$scope.newDeliverer = '';
-    		} else {
-    			$scope.error = true;
-    		}
-    	});
-	}
-	
-	$scope.deleteDeliverer = function(){
-		var deliverer = $scope.selected;
-		delivererService.deleteDeliverer(deliverer).then(function(response){
-    		if(response.data){
-    			alert("Uspesno obrisan deliverer: " + response.data.code);
-    			var index = $scope.deliverers.indexOf($scope.selected);
-    			$scope.deliverers.splice(index,1);
-    			$scope.selected = null;
-    			$scope.show = '';
-    		} else {
-    		}
-		});	
-	}
-	
-	$scope.updateDeliverer = function(){
-		$scope.editDeliverer.code = $scope.selected.code;
-		var deliverer = $scope.editDeliverer;
-		delivererService.updateDeliverer(deliverer).then(function(response){
-    		if(response.data){
-    			alert("Uspesno izmenjen deliverer: " + response.data.code);
-    			var index = $scope.deliverers.indexOf($scope.selected);
-    			$scope.deliverers[index] = response.data;
-    			$scope.selected = null;
-    			$scope.show = '';
-    			$scope.editDeliverer = '';
-    		} else {
-    		}
-		});	
-	}
-}]);
-
-app.controller('categoryController',['$rootScope','$scope','$location','$http','CategoryService',function($rootScope,$scope,$location,$http,categoryService) {
-	
-	if (!$rootScope.loggedUser) {
-		$location.path('/login');
-	} 
-	
-	categoryService.getCategories().then(function(response){
-		$scope.categories = response.data;
-	});
-	
-	$scope.setSelected = function(selected){
-		$scope.editCategory = '';
-		$scope.newCategory = '';
-		$scope.selected = selected;
-	}	
-	
-	$scope.display = function(tab){
-		if(tab==1){
-			$scope.selected = null;
+	$scope.showRequests = function(){
+		if(!$scope.showRequest){
+			$scope.showRequest = true;
+		}else{
+			$scope.showRequest = false;
 		}
-		$scope.editCategory = '';
-		$scope.show = tab;
 	}
 	
-	$scope.addCategory = function(){
-		var categories = $scope.categories;
-		for (var i = 0; i < categories.length; i++) { 
-		    if(categories[i].name === $scope.newCategory.subcategory){
-		    	$scope.newCategory.subcategory = categories[i];
-		    	break;
-		    }
+	$scope.showFriends = function(){
+		if(!$scope.showFriend){
+			$scope.showFriend = true;
+		}else{
+			$scope.showFriend = false;
 		}
-		var category = $scope.newCategory;
-		categoryService.addCategory(category).then(function(response){
-    		if(response.data){
-    			$scope.error = false;
-    			alert("Uspesno dodat category: " + response.data.name);
-    			$scope.categories.push(response.data);
-    			$scope.show = null;
-    			$scope.newCategory = '';
-    		} else {
-    			$scope.error = true;
-    		}
-    	});
 	}
 	
-	$scope.deleteCategory = function(){
-		var category = $scope.selected;
-		categoryService.deleteCategory(category).then(function(response){
-    		if(response.data){
-    			$scope.categories = response.data
-    			$scope.selected = null;
-    			$scope.show = '';
-    		} else {
-    		}
-		});	
-	}
-	
-	$scope.updateCategory = function(){
-		$scope.editCategory.name = $scope.selected.name;
-		var categories = $scope.categories;
-		for (var i = 0; i < categories.length; i++) { 
-		    if(categories[i].name === $scope.editCategory.subcategory){
-		    	$scope.editCategory.subcategory = categories[i];
-		    	break;
-		    }
-		}
-		var category = $scope.editCategory;
-		categoryService.updateCategory(category).then(function(response){
-    		if(response.data){
-    			alert("Uspesno izmenjen category: " + response.data.name);
-    			var index = $scope.categories.indexOf($scope.selected);
-    			$scope.categories[index] = response.data;
-    			$scope.selected = null;
-    			$scope.show = '';
-    			$scope.editCategory = '';
-    		} else {
-    		}
-		});	
-	}
-}]);
-
-app.controller('shoppingCartController',['$rootScope','$scope','$location','$http','ShoppingCartService','DelivererService',function($rootScope,$scope,$location,$http,shoppingCartService,delivererService) {
-	
-	
-	shoppingCartService.getItems().then(function(response){
-		$scope.products = response.data;
-	});
-	
-	delivererService.getDeliverers().then(function(response){
-		$scope.deliverers =  response.data;
-	});
-	
-	$scope.removeItem = function(product){
-		shoppingCartService.removeItem(product).then(function(response){
-			var index = $scope.products.indexOf($scope.selected);
-			$scope.products.splice(index,1);
-			$rootScope.loggedUser.shoppingCart.shoppingCart.splice(index,1);
+	$scope.acceptRequest = function(request){
+		$scope.forRemoval = request;
+		guestService.acceptRequest($rootScope.loggedUser.id,request.id).then(function(response){
+			var index = $scope.requests.indexOf($scope.forRemoval);
+			$scope.requests.splice(index,1);
+			$scope.friends.push(response.data);
+			$scope.forRemoval = null;
 		});
-		
 	}
 	
-	$scope.setSelected = function(selected){
-		$scope.selected = selected;
-	}	
+	$scope.declineRequest = function(request){
+		$scope.forRemoval = request;
+		guestService.declineRequest($rootScope.loggedUser.id,request.id).then(function(response){
+			var index = $scope.requests.indexOf($scope.forRemoval);
+			$scope.requests.splice(index,1);
+			$scope.forRemoval = null;
+		});
+	}
 	
+	$scope.removeFriend = function(friend){
+		$scope.forRemoval = friend;
+		guestService.removeFriend($rootScope.loggedUser.id,friend.id).then(function(response){
+			var index = $scope.friends.indexOf($scope.forRemoval);
+			$scope.friends.splice(index,1);
+			$scope.forRemoval = null;
+		});
+	}
 	
-}]);
+	guestService.getFriends($rootScope.loggedUser.id).then(function(response){
+		$scope.friends = response.data;
+	});
+	
+	guestService.getRequests($rootScope.loggedUser.id).then(function(response){
+		$scope.requests = response.data;
+	});
 
-app.controller('actionController',['$rootScope','$scope','$location','$http','ActionService','ProductService',function($rootScope,$scope,$location,$http,actionService,productService) {
-	
-	
-	actionService.getActions().then(function(response){
-		$scope.actions = response.data;
-	});
-	
-	productService.getProducts().then(function(response){
-		$scope.products = response.data;
-	});
-	
-	
-	$scope.deleteAction = function(){
-		var action = $scope.selected;
-		actionService.deleteAction(action).then(function(response){
-			var index = $scope.actions.indexOf($scope.selected);
-			$scope.actions.splice(index,1);
-			$scope.selected = '';
-		});
-		
-	}
-	
-	$scope.addAction = function(){
-		var action = $scope.newAction;
-		actionService.addAction(action).then(function(response){
-			$scope.actions.push(response.data);
-			$scope.show = '';
-			$scope.newAction = '';
-		});
-		
-	}
-	
-	$scope.validProduct = function(product){
-		var valid = true;
-		var actions = $scope.actions;
-		var i;
-		for(i = 0; i < actions.length;i++){
-			if(actions[i].productCode===product.code){
-				valid = false;
-				break;
-			}
-		}
-		return valid;
-	}
-	
-	$scope.display = function(tab){
-		if(tab==1){
-			$scope.selected = '';
-		}
-		$scope.show = 1;
-		
-	}
-	
-	$scope.setSelected = function(selected){
-		$scope.selected = selected;
-		$scope.show = '';
-		$scope.newAction = '';
-	}	
-	
+
+
 }]);

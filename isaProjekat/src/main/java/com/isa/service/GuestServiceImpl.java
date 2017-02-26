@@ -29,6 +29,7 @@ public class GuestServiceImpl implements GuestService {
 	@Override
 	public ResponseEntity<List<Guest>> getFriendsForGuest(Long id) {
 		if(id != null){
+			
 			Guest guest = guestRepository.findOne(id);
 			List<Guest>friends=this.guestRepository.getFriendsForSender(guest);
 			List<Guest>friends1=this.guestRepository.getFriendsForReciever(guest);
@@ -149,5 +150,42 @@ public class GuestServiceImpl implements GuestService {
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
+
+	@Override
+	public Guest register(Guest guest) {
+		
+		return guestRepository.save(guest);
+		
+	}
+
+
+	@Override
+	public ResponseEntity<List<Guest>> getNonFriendsForGuest(Long id) {
+		Guest guest = guestRepository.findOne(id);
+		
+		List<Guest>friends=this.guestRepository.getLinksForSender(guest);
+		List<Guest>friends1=this.guestRepository.getLinksForReciever(guest);
+		
+		for(Guest g : friends1){
+			friends.add(g);
+		}
+		
+		
+		List<Guest> allGuests = guestRepository.getAllGuests();
+		
+		for(Guest g : friends){
+			for(Guest f : allGuests){
+				if(g.getId() == f.getId() || f.getId() == guest.getId()){
+					allGuests.remove(f);
+					break;
+				}
+			}
+		}
+		
+		
+		return new ResponseEntity<List<Guest>>(allGuests,HttpStatus.OK);
+	}
+	
 
 }

@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,6 +19,9 @@ import com.isa.entity.Grade;
 public class Guest extends User {
 	private static final long serialVersionUID = -8929827501630339454L;
 
+	@Enumerated(EnumType.STRING)
+	private GuestStatus status;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.sender", cascade=CascadeType.ALL)
 	@JsonIgnore
 	private Set<Friend> sent;
@@ -32,6 +37,20 @@ public class Guest extends User {
 	public Guest(){
 		
 	}
+	
+	
+
+	public GuestStatus getStatus() {
+		return status;
+	}
+
+
+
+	public void setStatus(GuestStatus status) {
+		this.status = status;
+	}
+
+
 
 	@JsonIgnore
 	public Set<Friend> getSent() {
