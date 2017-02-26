@@ -47,7 +47,10 @@ public class CookController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<WorkSchedule>> getWorkSchedules(){
-		Iterable<WorkSchedule> schedules=cookService.getWorkScheduleForCooks();
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("COOK"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Iterable<WorkSchedule> schedules=cookService.getWorkScheduleForCooks(((Cook)user).getRestaurant());
 		return new ResponseEntity<Iterable<WorkSchedule>>(schedules, HttpStatus.OK);
 	}
 	
@@ -58,8 +61,11 @@ public class CookController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<OrderItem>> getFoodOrderItems(@PathVariable("cookType")String cookType){
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("COOK"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 		ProductType pt=ProductType.valueOf(cookType);
-		Iterable<OrderItem> foodItems=cookService.getFoodOrderItems(pt);
+		Iterable<OrderItem> foodItems=cookService.getFoodOrderItems(pt,((Cook)user).getRestaurant());
 		return new ResponseEntity<Iterable<OrderItem>>(foodItems, HttpStatus.OK);
 	}
 	
@@ -137,8 +143,11 @@ public class CookController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<WorkSchedule>> getWorkScheduleBetween(@PathVariable("startDate")Date startDate,@PathVariable("endDate")Date endDate){
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("COOK"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 		List<WorkSchedule> ws=null;
-		ws = cookService.getWorkScheduleBetween(startDate, endDate);
+		ws = cookService.getWorkScheduleBetween(startDate, endDate,((Cook)user).getRestaurant());
 		Collections.sort(ws);
 		return new ResponseEntity<Iterable<WorkSchedule>>(ws, HttpStatus.OK);
 	}

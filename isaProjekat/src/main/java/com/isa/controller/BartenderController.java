@@ -45,7 +45,10 @@ public class BartenderController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<WorkSchedule>> getWorkSchedules(){
-		Iterable<WorkSchedule> schedules=bartenderService.getWorkScheduleForBartenders();
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("BARTENDER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Iterable<WorkSchedule> schedules=bartenderService.getWorkScheduleForBartenders(((Bartender)user).getRestaurant());
 		return new ResponseEntity<Iterable<WorkSchedule>>(schedules, HttpStatus.OK);
 	}
 	
@@ -56,7 +59,10 @@ public class BartenderController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<OrderItem>> getDringOrderItems(){
-		Iterable<OrderItem> drinkOrders=bartenderService.findDrinkOrderItems();
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("BARTENDER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Iterable<OrderItem> drinkOrders=bartenderService.findDrinkOrderItems(((Bartender)user).getRestaurant());
 		return new ResponseEntity<Iterable<OrderItem>>(drinkOrders, HttpStatus.OK);
 	}
 	
@@ -105,8 +111,11 @@ public class BartenderController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<WorkSchedule>> getWorkScheduleBetween(@PathVariable("startDate")Date startDate,@PathVariable("endDate")Date endDate){
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("BARTENDER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 		List<WorkSchedule> ws=null;
-		ws = bartenderService.getWorkScheduleBetween(startDate, endDate);
+		ws = bartenderService.getWorkScheduleBetween(startDate, endDate,((Bartender)user).getRestaurant());
 		Collections.sort(ws);
 		return new ResponseEntity<Iterable<WorkSchedule>>(ws, HttpStatus.OK);
 	}

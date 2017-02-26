@@ -26,8 +26,8 @@ insert into restaurant(res_id, res_desc, res_name) values(2,'Restoran domace kuh
 
 insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(3,'S',4,1);
 insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(4,'L',5,1);
-insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(5,'XL',6, 2);
-insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(6,'XXL',7,2);
+insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(5,'XL',6, 1);
+insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(6,'XXL',7,1);
 insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(8,'3XL',8,1);
 
 insert into guest (user_id) values (1);
@@ -63,6 +63,9 @@ insert into product(pr_id, pr_des, pr_name, pr_price, product_type) values(4,'de
 
 insert into restaurant_products(pr_id, res_id) values (1, 1);
 insert into restaurant_products(pr_id, res_id) values (2, 1);
+insert into restaurant_products(pr_id, res_id) values (3, 2);
+insert into restaurant_products(pr_id, res_id) values (2, 2);
+insert into restaurant_products(pr_id, res_id) values (4, 1);
 
 insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (1, '12-12-17', '10-12-15', true, 9);
 insert into request_offer(id, expiration_date, start_date, status, restaurant_manager_user_id)  values (2, '12-12-15', '10-12-15', true, 9);

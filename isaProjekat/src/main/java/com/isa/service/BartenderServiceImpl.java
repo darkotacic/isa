@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.entity.OrderItem;
+import com.isa.entity.Restaurant;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Bartender;
 import com.isa.repository.BartenderRepository;
@@ -28,13 +29,13 @@ public class BartenderServiceImpl implements BartenderService {
 	private BartenderRepository bartenderRepository;
 	
 	@Override
-	public Iterable<WorkSchedule> getWorkScheduleForBartenders() {
-		return workScheduleRepository.getWorkScheduleForBartenders();
+	public Iterable<WorkSchedule> getWorkScheduleForBartenders(Restaurant restaurant) {
+		return workScheduleRepository.getWorkScheduleForBartenders(restaurant);
 	}
 
 	@Override
-	public Iterable<OrderItem> findDrinkOrderItems() {
-		return orderItemRepository.findDrinkOrderItems();
+	public Iterable<OrderItem> findDrinkOrderItems(Restaurant restaurant) {
+		return orderItemRepository.findDrinkOrderItems(restaurant);
 	}
 
 	@Override
@@ -48,8 +49,8 @@ public class BartenderServiceImpl implements BartenderService {
 	}
 
 	@Override
-	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate) {
-		return workScheduleRepository.getWorkScheduleForBartendersBetween(startDate, endDate);
+	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate,Restaurant restaurant) {
+		return workScheduleRepository.getWorkScheduleForBartendersBetween(startDate, endDate,restaurant);
 	}
 
 }

@@ -57,7 +57,10 @@ public class WaiterController {
 	@ResponseBody
 	@Transactional(readOnly=true)
 	public ResponseEntity<Iterable<WorkSchedule>> getWorkspaceScheduleForWaiters(){
-		List<WorkSchedule> schedules=waiterService.getWorkScheduleForWaiters();
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("WAITER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		List<WorkSchedule> schedules=waiterService.getWorkScheduleForWaiters(((Waiter)user).getRestaurant());
 		return new ResponseEntity<Iterable<WorkSchedule>>(schedules, HttpStatus.OK);	
 	}
 	
@@ -285,8 +288,11 @@ public class WaiterController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<WorkSchedule>> getWorkScheduleBetween(@PathVariable("startDate")Date startDate,@PathVariable("endDate")Date endDate){
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("WAITER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 		List<WorkSchedule> ws=null;
-		ws = waiterService.getWorkScheduleBetween(startDate, endDate);
+		ws = waiterService.getWorkScheduleBetween(startDate, endDate,((Waiter)user).getRestaurant());
 		Collections.sort(ws);
 		return new ResponseEntity<Iterable<WorkSchedule>>(ws, HttpStatus.OK);
 	}

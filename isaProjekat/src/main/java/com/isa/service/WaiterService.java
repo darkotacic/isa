@@ -15,7 +15,7 @@ import com.isa.entity.users.Worker;
 
 public interface WaiterService {
 
-	public List<WorkSchedule> getWorkScheduleForWaiters();
+	public List<WorkSchedule> getWorkScheduleForWaiters(Restaurant restaurant);
 	public Order addOrder(Order order);
 	public Iterable<Order> findAllOrders(Restaurant restaurant);
 	public Order updateOrder(Order order);
@@ -28,7 +28,7 @@ public interface WaiterService {
 	public void deleteOrderItem(Long oi);
 	public Iterable<OrderItem> getOrderItemsForOrder(Order order);
 	public WorkSchedule getWorkSchedule(Worker worker,Date date);
-	public List<WorkSchedule> getWorkScheduleBetween(Date startDate,Date endDate);
+	public List<WorkSchedule> getWorkScheduleBetween(Date startDate,Date endDate,Restaurant restaurant);
 	public Waiter getWaiter(Long id);
 	
 }

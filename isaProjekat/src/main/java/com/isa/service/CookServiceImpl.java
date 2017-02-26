@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.entity.OrderItem;
 import com.isa.entity.ProductType;
+import com.isa.entity.Restaurant;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Cook;
 import com.isa.repository.CookRepository;
@@ -29,13 +30,13 @@ public class CookServiceImpl implements CookService {
 	private CookRepository cookRepository;
 	
 	@Override
-	public Iterable<WorkSchedule> getWorkScheduleForCooks() {
-		return workScheduleRepository.getWorkScheduleForCooks();
+	public Iterable<WorkSchedule> getWorkScheduleForCooks(Restaurant restaurant) {
+		return workScheduleRepository.getWorkScheduleForCooks(restaurant);
 	}
 
 	@Override
-	public Iterable<OrderItem> getFoodOrderItems(ProductType productType) {
-		return orderItemRepository.findFoodOrderItems(productType);
+	public Iterable<OrderItem> getFoodOrderItems(ProductType productType,Restaurant restaurant) {
+		return orderItemRepository.findFoodOrderItems(productType,restaurant);
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class CookServiceImpl implements CookService {
 	}
 
 	@Override
-	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate) {
-		return workScheduleRepository.getWorkScheduleForCooksBetween(startDate, endDate);
+	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate,Restaurant restaurant) {
+		return workScheduleRepository.getWorkScheduleForCooksBetween(startDate, endDate,restaurant);
 	}
 
 }

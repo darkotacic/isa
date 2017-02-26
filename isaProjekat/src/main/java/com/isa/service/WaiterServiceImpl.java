@@ -51,8 +51,8 @@ public class WaiterServiceImpl implements WaiterService {
 	private OrderItemRepository orderItemRepository;
 	
 	@Override
-	public List<WorkSchedule> getWorkScheduleForWaiters(){
-		List<WorkSchedule> schedules=workScheduleRepository.getWorkScheduleForWaiters();
+	public List<WorkSchedule> getWorkScheduleForWaiters(Restaurant restaurant){
+		List<WorkSchedule> schedules=workScheduleRepository.getWorkScheduleForWaiters(restaurant);
 		Collections.sort(schedules);
 		return schedules;
 	}
@@ -119,8 +119,8 @@ public class WaiterServiceImpl implements WaiterService {
 	}
 
 	@Override
-	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate) {
-		return workScheduleRepository.getWorkScheduleForWaitersBetween(startDate,endDate);
+	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate,Restaurant restaurant) {
+		return workScheduleRepository.getWorkScheduleForWaitersBetween(startDate,endDate,restaurant);
 	}
 
 	@Override

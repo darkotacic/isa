@@ -12,23 +12,23 @@ import com.isa.entity.users.Worker;
 
 public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long> {
 
-	@Query("select ws from Waiter w inner join w.workSchedules as ws")
-	public List<WorkSchedule> getWorkScheduleForWaiters();
+	@Query("select ws from Waiter w inner join w.workSchedules as ws where w.restaurant=?1")
+	public List<WorkSchedule> getWorkScheduleForWaiters(Restaurant restaurant);
 	
-	@Query("select ws from Waiter w inner join w.workSchedules as ws where ws.date between ?1 and ?2")
-	public List<WorkSchedule> getWorkScheduleForWaitersBetween(Date stardDate,Date endDate);
+	@Query("select ws from Waiter w inner join w.workSchedules as ws where ws.date between ?1 and ?2 and w.restaurant=?3")
+	public List<WorkSchedule> getWorkScheduleForWaitersBetween(Date stardDate,Date endDate,Restaurant restaurant);
 	
-	@Query("select ws from Cook c inner join c.workSchedules as ws")
-	public Iterable<WorkSchedule> getWorkScheduleForCooks();
+	@Query("select ws from Cook c inner join c.workSchedules as ws where c.restaurant=?1")
+	public Iterable<WorkSchedule> getWorkScheduleForCooks(Restaurant restaurant);
 	
-	@Query("select ws from Cook c inner join c.workSchedules as ws where ws.date between ?1 and ?2")
-	public List<WorkSchedule> getWorkScheduleForCooksBetween(Date stardDate,Date endDate);
+	@Query("select ws from Cook c inner join c.workSchedules as ws where ws.date between ?1 and ?2 and c.restaurant=?3")
+	public List<WorkSchedule> getWorkScheduleForCooksBetween(Date stardDate,Date endDate,Restaurant restaurant);
 	
-	@Query("select ws from Bartender b inner join b.workSchedules as ws")
-	public Iterable<WorkSchedule> getWorkScheduleForBartenders();
+	@Query("select ws from Bartender b inner join b.workSchedules as ws where b.restaurant=?1")
+	public Iterable<WorkSchedule> getWorkScheduleForBartenders(Restaurant restaurant);
 	
-	@Query("select ws from Bartender b inner join b.workSchedules as ws where ws.date between ?1 and ?2")
-	public List<WorkSchedule> getWorkScheduleForBartendersBetween(Date stardDate,Date endDate);
+	@Query("select ws from Bartender b inner join b.workSchedules as ws where ws.date between ?1 and ?2 and b.restaurant=?3")
+	public List<WorkSchedule> getWorkScheduleForBartendersBetween(Date stardDate,Date endDate,Restaurant restaurant);
 	
 	WorkSchedule findByWorkerAndDateAndStartTime(Worker w,Date d, double t);
 	
