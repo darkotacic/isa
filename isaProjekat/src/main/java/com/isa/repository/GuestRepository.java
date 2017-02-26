@@ -21,4 +21,13 @@ public interface GuestRepository extends CrudRepository<Guest,Long>{
 	@Query("select r.pk.sender from Guest g join g.recieved r where (r.status = 0 and r.pk.reciever=?1) ")
 	List<Guest> getRecievedRequestsForGuest(Guest guest);
 	
+	@Query("select s.pk.reciever from Guest g join g.sent s where (s.pk.sender=?1) ")
+	List<Guest> getLinksForSender(Guest guest);
+	
+	@Query("select r.pk.sender from Guest g join g.recieved r where (r.pk.reciever=?1)")
+	List<Guest> getLinksForReciever(Guest guest);
+	
+	@Query("from Guest g")
+	List<Guest> getAllGuests();
+	
 }

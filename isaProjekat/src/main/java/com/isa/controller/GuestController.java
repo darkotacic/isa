@@ -2,6 +2,7 @@ package com.isa.controller;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import com.isa.entity.Grade;
 import com.isa.entity.Order;
 import com.isa.entity.users.Guest;
 import com.isa.entity.users.User;
+import com.isa.mail.SmtpMailSender;
 import com.isa.service.GradeService;
 import com.isa.service.GuestService;
 import com.isa.service.WorkerService;
@@ -41,6 +43,9 @@ public class GuestController {
 	@Autowired
 	private HttpSession session;
 	
+	@Autowired
+	private SmtpMailSender smtpMailSender;
+	
 	@RequestMapping(
 			value = "/friends/{id}",
 			method = RequestMethod.GET,
@@ -49,6 +54,16 @@ public class GuestController {
 	@Transactional
 	public ResponseEntity<List<Guest>> getFriends(@PathVariable("id") Long user_id){
 		return this.guestService.getFriendsForGuest(user_id);
+	}
+	
+	@RequestMapping(
+			value = "/nonFriends/{id}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Guest>> getNonFriends(@PathVariable("id") Long user_id){
+		return this.guestService.getNonFriendsForGuest(user_id);
 	}
 	
 	@RequestMapping(
@@ -138,6 +153,19 @@ public class GuestController {
 	public ResponseEntity<Grade> deleteGrade(@RequestBody Grade grade){
 		gradeService.deleteGrade(grade);
 		return new ResponseEntity<Grade>(grade, HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
+			value="/register",
+			method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Guest> register(@RequestBody Guest guest) throws MessagingException{
+		Guest g = guestService.register(guest);
+		//smtpMailSender.send("kljajic77@gmail.com", "Test", "BODY TEST");
+		return new ResponseEntity<Guest>(g, HttpStatus.CREATED);	
 	}
 	
 }

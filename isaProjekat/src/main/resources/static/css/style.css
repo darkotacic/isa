@@ -1,0 +1,42 @@
+.ng-invalid {
+    border-color: red;
+    outline-color: red;
+}
+
+.ng-valid {
+    border-color: green;
+    outline-color: green;
+}
+
+.messages {
+  font-size: medium;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  color: red;
+}
+
+.item-content.active {
+    max-height: 1000px;
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+
+.item-content {
+    max-height: 0;
+    overflow: hidden;
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+    padding-bottom: 0px;
+}
+
+img.arrow.rotate90{
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+img.arrow {    
+    -webkit-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}

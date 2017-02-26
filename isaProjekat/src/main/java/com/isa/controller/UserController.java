@@ -49,19 +49,7 @@ public class UserController {
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-	
-	@RequestMapping(value="/register",
-			method=RequestMethod.GET,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<User> register(@RequestBody User user) {
-		User temp =  userService.register(user);
-		if(temp!=null){
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-	
+		
 	
 	@RequestMapping(value="/loggedUser",
 			method=RequestMethod.GET,

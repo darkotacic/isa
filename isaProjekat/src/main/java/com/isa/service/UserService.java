@@ -6,7 +6,6 @@ public interface UserService {
 	
 	User logIn(User user);
 	
-	User register(User user);
 	
 	User updateUser(User user);
 

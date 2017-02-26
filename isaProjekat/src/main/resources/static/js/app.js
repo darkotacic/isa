@@ -1,4 +1,4 @@
-var app = angular.module('webApp', [ 'ngRoute' , 'chart.js' , 'ngNotify' ]);
+var app = angular.module('webApp', [ 'ngRoute' , 'chart.js' , 'ngNotify','ngMessages' ]);
 
 // routeProvider
 app.config(function($routeProvider, $locationProvider) {
