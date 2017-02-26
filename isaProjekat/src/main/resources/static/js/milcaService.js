@@ -46,6 +46,12 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 			}
 		});
 	}
+	systemManagerService.deleteRestaurant = function(restaurant_id) {
+		return $http({
+			method : 'DELETE',
+			url : '../systemManager/deleteRestaurant?id=' + restaurant_id
+		});
+	}
 
 	systemManagerService.registerRestaurantManager = function(restaurant_id,
 			restaurantManager) {
@@ -63,6 +69,16 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 			}
 		});
 	}
+	
+	systemManagerService.deleteRestaurantManager = function(
+			restaurant_manager_id) {
+		return $http({
+			method : 'DELETE',
+			url : '../systemManager/deleteRestaurantManager?id='
+					+ restaurant_manager_id
+		});
+	}
+
 
 	systemManagerService.registerSystemManager = function(systemManager) {
 		return $http({
@@ -93,22 +109,6 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 			}
 		});
 
-	systemManagerService.deleteRestaurant = function(restaurant_id) {
-		return $http({
-			method : 'DELETE',
-			url : '../systemManager/deleteRestaurant?id=' + restaurant_id
-		});
-	}
-
-	systemManagerService.deleteRestaurantManager = function(
-			restaurant_manager_id) {
-		return $http({
-			method : 'DELETE',
-			url : '../systemManager/deleteRestaurantManager?id='
-					+ restaurant_manager_id
-		});
-	}
-
 	systemManagerService.deleteSystemManager = function(system_manager_id) {
 		return $http({
 			method : 'DELETE',
@@ -124,33 +124,6 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 });
 
 app.factory('BidderService', function bidderService($http) {
-
-	bidderService.registerBidderOffer = function(bidderOffer, bidder_id,
-			request_offer_id) {
-		return $http({
-			method : 'POST',
-			url : '../bidders/registerBid?request_offer_id=' + request_offer_id
-					+ '&bidder_id=' + bidder_id,
-			data : {
-				"price" : bidderOffer.price,
-				"garanty" : bidderOffer.garanty,
-				"dateOfDelivery" : bidderOffer.dateOfDelivery
-			}
-		});
-	}
-
-	bidderService.editBidderOffer = function(bidderOffer) {
-		return $http({
-			method : 'PUT',
-			url : '../bidders/updateBid',
-			data : {
-				"id" : bidderOffer.id,
-				"price" : bidderOffer.price,
-				"garanty" : bidderOffer.garanty,
-				"dateOfDelivery" : bidderOffer.dateOfDelivery
-			}
-		});
-	}
 
 	bidderService.getActiveOffers = function() {
 		return $http({
@@ -189,6 +162,33 @@ app.factory('BidderService', function bidderService($http) {
 					+ bidder_id + '&ro_id=' + request_id
 		});
 	}
+	
+	bidderService.registerBidderOffer = function(bidderOffer, bidder_id,
+			request_offer_id) {
+		return $http({
+			method : 'POST',
+			url : '../bidders/registerBid?request_offer_id=' + request_offer_id
+					+ '&bidder_id=' + bidder_id,
+			data : {
+				"price" : bidderOffer.price,
+				"garanty" : bidderOffer.garanty,
+				"dateOfDelivery" : bidderOffer.dateOfDelivery
+			}
+		});
+	}
+
+	bidderService.editBidderOffer = function(bidderOffer) {
+		return $http({
+			method : 'PUT',
+			url : '../bidders/updateBid',
+			data : {
+				"id" : bidderOffer.id,
+				"price" : bidderOffer.price,
+				"garanty" : bidderOffer.garanty,
+				"dateOfDelivery" : bidderOffer.dateOfDelivery
+			}
+		});
+	}	
 
 	bidderService.deleteBidderOffer = function(id) {
 		return $http({
@@ -442,6 +442,7 @@ app
 							data : {
 								"productName" : product.productName,
 								"description" : product.description,
+								"price" : product.price, 
 								"productType" : product.productType
 							}
 						});

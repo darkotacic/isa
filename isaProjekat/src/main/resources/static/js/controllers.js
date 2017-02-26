@@ -115,13 +115,21 @@ app.controller('registerController',['$rootScope','$scope','$location','$http','
 	}
 }]);
 
-app.controller('homeController',['$rootScope','$scope','$location','$http',function($rootScope,$scope,$location,$http) {
+app.controller('homeController',['$rootScope','$scope','$location','$http', 'RestaurantManagerService',function($rootScope,$scope,$location,$http, restaurantManagerService) {
 	
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
 	}  else if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
 		$location.path('/changePassword');
 	
+	restaurantManagerService
+	.checkIfRequestOfferExpired();
+	
+	restaurantManagerService
+	.checkIfWorkScheduleIsDone();
+	
+	$scope.minDate = moment(new Date()).format('YYYY-MM-DD')
+
 	
 	switch($rootScope.loggedUser.userRole) {
 	    case 'GUEST':
@@ -143,6 +151,7 @@ app.controller('homeController',['$rootScope','$scope','$location','$http',funct
 	}
 	
 }]);
+
 
 app.controller('profileController',['$rootScope','$scope','$location','$http','SessionService',function($rootScope,$scope,$location,$http,sessionService) {
 	

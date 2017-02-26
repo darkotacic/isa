@@ -1,24 +1,25 @@
 <h1 class="page-header">{{$parent.$parent.loggedUser.userName}} register your offer</h1>
-<div class="alert alert-danger" ng-show="error">
-	<p>Not able</p>
-</div>
-
 <form class="form-horizontal" name="myForm" novalidate
 	style="width: 50%">
 	<div class="form-group">
 		<label class="control-label col-sm-3" for="rn">Price:</label>
 		<div class="col-sm-9">
-			<input type="text" class="form-control" placeholder="Enter price"
-				required ng-Model="$parent.newBidderOffer.price" id="rn">
+			<input type="number" step="0.1" name ="price" class="form-control" placeholder="Enter price"
+				required ng-Model="$parent.newBidderOffer.price" id="rn" [min="10"] >
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="control-label col-sm-3" for="des">Garanty:</label>
 		<div class="col-sm-9">
-			<input type="text" class="form-control" id="des"
+			<input type="text" class="form-control" id="des" name="des"
 				placeholder="Enter garanty" required
-				ng-Model="$parent.newBidderOffer.garanty">
+				ng-Model="$parent.newBidderOffer.garanty" pattern="^[A-Z][a-z_ A-Z0-9]*"  [ng-maxlength="50"]>
 		</div>
+	</div>
+	<div role="alert" style="color: red">
+		<span class="error" ng-show="myForm.des.$error.maxlength"> Too
+			long!</span> <span class="error" ng-show="myForm.des.$error.pattern">
+			Example with all permited letters : "Sasa_da nekaNsda87" !</span>
 	</div>
 	<div class="form-group">
 		<label class="control-label col-sm-3" for="des">Date of delivery:</label>
@@ -31,8 +32,8 @@
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 			<button type="submit" class="btn btn-success"
-				ng-Click="$parent.registerBidderOffer()" title="Form invalid!"
-				data-toggle="tooltip" data-placement="top" tooltip>Submit</button>
+				ng-Click="$parent.registerBidderOffer()" ng-disabled="myForm.$invalid" title="Form invalid!"
+				data-toggle="tooltip" data-placement="top" tooltip">Submit</button>
 		</div>
 	</div>
 </form>

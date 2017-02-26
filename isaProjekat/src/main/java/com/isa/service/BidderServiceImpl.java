@@ -36,6 +36,7 @@ public class BidderServiceImpl implements BidderService {
 		temp.setUserName(b.getUserName());
 		temp.setPassword(b.getPassword());
 		temp.setSurname(b.getSurname());
+		temp.setFirstLogIn(b.isFirstLogIn());
 		return new ResponseEntity<Bidder>(this.bidderRepository.save(temp), HttpStatus.OK);
 	}
 

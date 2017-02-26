@@ -45,6 +45,8 @@ app
 								ngNotify, systemManagerService) {
 
 							$scope.display = function(tab) {
+								if(tab == 1)
+									$scope.selected = null;
 								$scope.show = tab;
 								$scope.selectedRestaurantManager = null;
 								$scope.restaurant = null;
@@ -84,7 +86,6 @@ app
 
 							$scope.registerRestaurant = function() {
 								var restaurant = $scope.restaurant;
-								$scope.selectedRestaurant = null;
 								systemManagerService.registerRestaurant(
 										restaurant).then(
 										function(response) {
@@ -154,6 +155,10 @@ app
 																		1);
 														$scope.selected = null;
 														$scope.show = null;
+														ngNotify.set('Successfuly deleted' , {
+															type : 'success',
+															theme : 'pitchy'
+														});
 													}
 												}).catch(function(response) {
 													ngNotify.set('Delete error' , {
@@ -206,6 +211,10 @@ app
 												function(response) {
 													if (response.status == 200) {
 														$scope.show = null;
+														ngNotify.set('Successfuly deleted' , {
+															type : 'success',
+															theme : 'pitchy'
+														});
 													} 
 												}).catch(function(response) {
 													ngNotify.set('Delete error' , {
@@ -219,9 +228,8 @@ app
 
 							$scope.registerSystemManager = function() {
 								$scope.selectedSystemManager = null;
-								var newSystemManager = $scope.newSystemManager;
 								systemManagerService.registerSystemManager(
-										newSystemManager).then(
+										$scope.newSystemManager).then(
 										function(response) {
 											if (response.data) {
 												swal({
@@ -257,6 +265,10 @@ app
 																.splice(index,
 																		1);
 														$scope.show = null;
+														ngNotify.set('Successfuly deleted' , {
+															type : 'success',
+															theme : 'pitchy'
+														});
 													} 
 												}).catch(function(response) {
 													ngNotify.set('Delete error' , {
@@ -298,15 +310,20 @@ app
 							}
 						} ]);
 
+
+
+
+
+
 app
 		.controller(
 				'bidderController',
 				[
 						'$rootScope',
 						'$scope',
-						'$location',
+						'$location', 'ngNotify',
 						'BidderService',
-						function($rootScope, $scope, $location, bidderService) {
+						function($rootScope, $scope, $location, ngNotify, bidderService) {
 							
 							$scope.display = function(tab) {
 								$scope.show = tab;
@@ -315,14 +332,10 @@ app
 								$scope.selectedRequestOffer = selected;
 								$scope.show = null;
 							}
-							$scope.canEditBidderOffer = false;
 							$scope.setSelectedBidderOffer = function(selected) {
 								$scope.selectedBidderOffer = selected;
-								if(selected.offerStatus.length == 'UN-DECIDED'.length)
-									$scope.canEditBidderOffer = true;
-								else 
-									$scope.canEditBidderOffer = false;
 								$scope.show = null;
+								$scope.newBidderOffer = null;
 							}
 
 							bidderService.getActiveOffers().then(
@@ -342,18 +355,10 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
 														$scope.requestOfferProducts = response.data;
 														$scope.show = 2;
-													} else {
-														$scope.error = true;
 													}
 												});
-							}
-
-							$scope.editSelectedBidderOffer = function(id) {
-								$scope.bidderOffer = $scope.selectedBidderOffer;
-								$scope.show = 3;
 							}
 
 							$scope.getBidderOfferForBidderAndRequest = function() {
@@ -366,10 +371,10 @@ app
 													if (response.data) {
 														$scope.show = 3;
 														$scope.bidderOffer = response.data;
-														$scope.error = false;
-													} else {
+													} else 
+														{
 														$scope.show = 1;
-													}
+														}
 												});
 							}
 
@@ -382,9 +387,6 @@ app
 													if (response.data) {
 														$scope.show = 1;
 														$scope.requestOffer = response.data;
-														$scope.error = false;
-													} else {
-														$scope.show = 1;
 													}
 												});
 							}
@@ -396,15 +398,20 @@ app
 										$scope.selectedRequestOffer.id).then(
 										function(response) {
 											if (response.data) {
-												$scope.error = false;
 												$scope.show = null;
-											} else {
-												$scope.error = true;
 											}
 										}).catch(function(response) {
-											$scope.error = true;
+											ngNotify.set('All text inputs must start with capital letter, date input must be after expiration date.' , {
+												type : 'error',
+											    sticky: true
+											});
 											   console.error('Gists error', response.status, response.data)
 										  });
+							}
+							
+							$scope.editSelectedBidderOffer = function(id) {
+								$scope.bidderOffer = $scope.selectedBidderOffer;
+								$scope.show = 3;
 							}
 
 							$scope.editBidderOffer = function() {
@@ -419,15 +426,13 @@ app
 										$scope.editBidderOffer).then(
 										function(response) {
 											if (response.data) {
-												$scope.error = false;
-												var index = $scope.bidderOffers.indexOf($scope.selectedBidderOffer);
-												$scope.bidderOffers[index] = response.data;
 												$scope.show = null;
-											} else {
-												$scope.error = true;
 											}
 										}).catch(function(response) {
-											$scope.error = true;
+											ngNotify.set('Name, Surname must start with capital letter, also must not contain special signs. If you did everything as written, your email address is not unique' , {
+												type : 'error',
+											    sticky: true
+											});
 											   console.error('Gists error', response.status, response.data)
 										  });
 							}
@@ -439,19 +444,22 @@ app
 										.then(
 												function(response) {
 													if (response.status == 200) {
-														$scope.error = false;
-														alert("Uspesno izbrisan");
 														var index = $scope.bidderOffers
-																.indexOf($scope.selectedBidderOffer);
+														.indexOf($scope.selectedBidderOffer);
 														$scope.bidderOffers
 																.splice(index,
 																		1);
+														ngNotify.set('Successfuly deleted' , {
+															type : 'success',
+															theme : 'pitchy'
+														});
 														$scope.show = null;
-													} else {
-														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Error delete' , {
+														type : 'error',
+													    sticky: true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 
@@ -477,19 +485,25 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.error = false;
 														$rootScope.loggedUser = response.data;
 														if(!firstLog)
 															$location.path('/home');
-													} else {
-														$scope.error = true;
 													}
 												}).catch(function(response) {
-													$scope.error = true;
+													ngNotify.set('Name, Surname must start with capital letter, also must not contain special signs. If you did everything as written, your email address is not unique' , {
+														type : 'error',
+													    sticky: true
+													});
 													   console.error('Gists error', response.status, response.data)
 												  });
 							}
 						} ]);
+
+
+
+
+
+
 app
 		.controller(
 				'restaurantManagerController',
@@ -503,6 +517,9 @@ app
 
 							$scope.display = function(tab) {
 								$scope.show = tab;
+								$scope.product = null;
+								$scope.selectedProduct = null;
+								$scope.selectedRestaurantProduct = null;
 							}
 							$scope.displayWorker = function(tab) {
 								$scope.showW = tab;
@@ -587,27 +604,6 @@ app
 							}
 							
 							restaurantManagerService
-							.checkIfRequestOfferExpired()
-							.then(
-									function(response) {
-										if(response.data == 0)
-											$scope.error = false
-										else
-											$scope.error = true;
-									});
-							
-							restaurantManagerService
-							.checkIfWorkScheduleIsDone()
-							.then(
-									function(response) {
-										if(response.data == 0)
-											$scope.error = false
-										else
-											$scope.error = true;
-									});
-
-
-							restaurantManagerService
 									.getRestaurant($rootScope.loggedUser.id)
 									.then(
 											function(response) {
@@ -681,6 +677,8 @@ app
 					
 							$scope.showProducts = false;
 							$scope.getProductsForRestaurant = function() {
+								$scope.product = null;
+								$scope.selectedProduct = null;
 								restaurantManagerService
 										.getProductsForRestaurant($scope.restaurant.id)
 										.then(
@@ -700,6 +698,7 @@ app
 												});
 							}
 							$scope.getAllProducts = function() {
+								$scope.product = null;
 								restaurantManagerService
 										.getAllProducts()
 										.then(

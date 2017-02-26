@@ -1,25 +1,35 @@
 <h2 class="page-header">Register system manager</h2>
-<div class="alert alert-danger" ng-show="error">
-	<p>Code or name already exists!</p>
-</div>
 <form name="myForm" novalidate>
 	<div class="form-group">
-		<label>Name:</label> <input type="text"
+		<label>Name:</label> <input type="text" name="name"
 			ng-Model="$parent.newSystemManager.userName" class="form-control"
-			placeholder="Enter name" required />
+			placeholder="Enter name" required pattern = "^[A-Z][a-z_ A-Z]*"/>
+	</div>
+	<div role="alert" style="color: red">
+		<span class="error" ng-show="myForm.name.$error.pattern">
+			Example with all permited letters : "Sasa_da nekaNsda" !</span>
 	</div>
 	<div class="form-group">
-		<label>Surname:</label> <input type="text"
+		<label>Surname:</label> <input type="text" name="surname"
 			ng-Model="$parent.newSystemManager.surname" class="form-control"
-			placeholder="Enter surname" required />
+			placeholder="Enter surname" required pattern="^[A-Z][a-z_ A-Z0-9]*" />
+	</div>
+	<div role="alert" style="color: red">
+		<span class="error" ng-show="myForm.surname.$error.pattern">
+			Example with all permited letters : "Sasa_da nekaNsda" !</span>
 	</div>
 	<div class="form-group">
-		<label>Email:</label> <input type="text"
+		<label>Email:</label> <input type="text" name="email"
 			ng-Model="$parent.newSystemManager.email" class="form-control"
 			placeholder="Enter email" required />
 	</div>
+	<div role="alert" style="color: red">
+		<span class="error"
+			ng-show="myForm.email.$dirty && myForm.email.$invalid> Example
+			: "username.surname@gmail.com" !</span>
+	</div>
 	<div class="form-group">
-		<label>Password:</label> <input type="password"
+		<label>Password:</label> <input type="password" name="pas"
 			ng-Model="$parent.newSystemManager.password" class="form-control"
 			placeholder="Enter password" required />
 	</div>
@@ -30,7 +40,7 @@
 	</div>
 	<div class="form-group">
 		<button type="submit"
-			class="btn btn-success" ng-Click="$parent.registerSystemManager()"
+			class="btn btn-success" title="Form invalid!" ng-disabled="myForm.$invalid" ng-Click="$parent.registerSystemManager()"
 			>Submit</button>
 	</div>
 </form>

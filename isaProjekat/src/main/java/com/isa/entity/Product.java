@@ -16,7 +16,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -39,7 +38,7 @@ public class Product implements Serializable {
 	@Size(min = 3, max = 30)
 	@Pattern(regexp = "^[A-Z][a-z_ A-Z]*")
 	@NotNull
-	@Column(name = "PR_NAME", unique = true, nullable = false)
+	@Column(name = "PR_NAME", nullable = false)
 	private String productName;
 
 	@Column(name = "PR_DES")
@@ -47,11 +46,10 @@ public class Product implements Serializable {
 	@Size(max = 60)
 	private String description;
 
-	@DecimalMin("0.10")
-	@Digits(integer = 4, fraction = 2)
 	@NotNull
+	@Digits(integer=6, fraction=2)
 	@Column(name = "PR_PRICE", nullable = false)
-	private double price;
+	private Double price;
 
 	@Enumerated(EnumType.STRING)
 	private ProductType productType;
@@ -97,7 +95,7 @@ public class Product implements Serializable {
 		return description;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 	@JsonIgnore
@@ -125,7 +123,7 @@ public class Product implements Serializable {
 		this.description = description;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

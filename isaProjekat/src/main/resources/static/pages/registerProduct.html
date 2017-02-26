@@ -4,17 +4,28 @@
 </div>
 <form name="myForm" novalidate>
 	<div class="form-group">
-		<label>Name:</label> <input type="text"
+		<label>Name:</label> <input type="text" name="name"
 			ng-Model="$parent.product.productName" class="form-control"
-			placeholder="Enter name" required />
+			placeholder="Enter name" required pattern = "^[A-Z][a-z A-Z]*"  ng-minlength="3" ng-maxlength="30"/>
+	</div>
+	<div role="alert" style="color: red">
+		<span class="error" ng-show="myForm.name.$error.minlength"> Too
+			short!</span> <span class="error" ng-show="myForm.name.$error.maxlength">
+			Too long!</span> <span class="error" ng-show="myForm.name.$error.pattern">
+			Example with all permited letters : "Sasa_da nekaNsda" !</span>
 	</div>
 	<div class="form-group">
-		<label>Description:</label> <input type="text"
+		<label>Description:</label> <input type="text" name="des"
 			ng-Model="$parent.product.description" class="form-control"
-			placeholder="Enter description" required />
+			placeholder="Enter description" required pattern = "^[A-Z][a-z_ A-Z0-9]*" ng-maxlength="60"/>
+	</div>
+	<div role="alert" style="color: red">
+		<span class="error" ng-show="myForm.des.$error.maxlength"> Too
+			long!</span> <span class="error" ng-show="myForm.des.$error.pattern">
+			Example with all permited letters : "Sasa_da nekaNsda87" !</span>
 	</div>
 	<div class="form-group">
-		<label>Price:</label> <input type="text"
+		<label>Price:</label> <input type="number" step="0.1"
 			ng-Model="$parent.product.price" class="form-control"
 			placeholder="Enter price" required />
 	</div>
