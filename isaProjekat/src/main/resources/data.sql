@@ -30,12 +30,12 @@ insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(5,'XL',
 insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(6,'XXL',7,1);
 insert into worker(user_id,wrk_shirt,wrk_shoe, restaurant_res_id) values(8,'3XL',8,1);
 
-insert into guest (user_id) values (1);
-insert into guest (user_id) values (2);
-insert into guest (user_id) values (13);
-insert into guest (user_id) values (14);
-insert into guest (user_id) values (15);
-insert into guest (user_id) values (16);
+insert into guest (user_id,status) values (1,'ACTIVE');
+insert into guest (user_id,status) values (2,'ACTIVE');
+insert into guest (user_id,status) values (13,'ACTIVE');
+insert into guest (user_id,status) values (14,'ACTIVE');
+insert into guest (user_id,status) values (15,'ACTIVE');
+insert into guest (user_id,status) values (16,'ACTIVE');
 insert into waiter (user_id) values (3);
 insert into waiter (user_id) values (4);
 insert into cook (user_id,cook_type) values (5,'SALAT');
