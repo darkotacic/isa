@@ -18,4 +18,6 @@ public interface RestaurantTableRepository extends CrudRepository<RestaurantTabl
 
 	@Query("select t from Segment s inner join s.tables as t where s.id = ?1 and t.free = 'true'")
 	List<RestaurantTable> seeIfCanDeleteSegment(Long id);
+	
+	RestaurantTable findBySegmentAndTableRowAndTableColumn(Segment s,int row, int column);
 }

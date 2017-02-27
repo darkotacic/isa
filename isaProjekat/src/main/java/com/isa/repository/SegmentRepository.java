@@ -16,4 +16,5 @@ public interface SegmentRepository extends CrudRepository<Segment, Long>{
 	@Query("select s from Segment s where s.restaurant=?1")
 	public Iterable<Segment> getSegmentsForRestautant(Restaurant restaurant);
 	
+	Segment findByPositionAndRestaurantAndSmokingAllowed(String s, Restaurant t, boolean b);
 }

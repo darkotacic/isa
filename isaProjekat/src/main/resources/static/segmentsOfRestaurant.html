@@ -1,5 +1,5 @@
 <div class="container" ng-controller="restaurantManagerController">
-	<h1 class="page-header">Segments of {{$scope.restaurant.name}}</h1>
+	<h1 class="page-header">Segments of {{$scope.restaurant.restaurantName}}</h1>
 	<div class="container">
 		<div class="table-responsive">
 			<table class="table">
@@ -8,6 +8,8 @@
 						<th>Id</th>
 						<th>Position</th>
 						<th>Smoking allowed</th>
+						<th> MaxTables/Row </th>
+						<th> MaxTables/Column </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -17,6 +19,8 @@
 						<td>{{segment.id}}</td>
 						<td>{{segment.position}}</td>
 						<td>{{!!segment.smokingAllowed}}</td>
+						<td>{{segment.width}}</td>
+						<td>{{segment.height}}</td>
 					</tr>
 				</tbody>
 			</table>

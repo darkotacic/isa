@@ -272,7 +272,7 @@ public class WaiterController {
 		Arrays.fill(allTables, new RestaurantTable());
 		Iterable<RestaurantTable> tablesInSegment=waiterService.getAllTablesForSegment(segment.getId());
 		for(RestaurantTable table:tablesInSegment){
-			int position=table.getRow()*segment.getWidth()+table.getColumn();
+			int position=table.getTableRow()*segment.getWidth()+table.getTableColumn();
 			allTables[position]=table;
 		}
 		List<RestaurantTable> tables = Arrays.asList(allTables);

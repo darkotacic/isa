@@ -46,6 +46,8 @@ app
 							$scope.display = function(tab) {
 								if(tab == 1)
 									$scope.selected = null;
+								if(tab == 4)
+									$scope.editRestaurant = $scope.selected;
 								$scope.show = tab;
 								$scope.selectedRestaurantManager = null;
 								$scope.restaurant = null;
@@ -106,17 +108,10 @@ app
 										  });
 							}
 
-							$scope.editRestaurant = function() {
+							$scope.editRestaurantData = function() {
 								$scope.restaurant = null;
-								$scope.newRestaurantManager = null;
-								if ($scope.editRestaurant.description == null)
-									$scope.editRestaurant.description = $scope.selected.description;
-								if ($scope.editRestaurant.restaurantName == null)
-									$scope.editRestaurant.restaurantName = $scope.selected.restaurantName;
-								$scope.editRestaurant.id = $scope.selected.id;
-								var restaurant = $scope.editRestaurant;
 								systemManagerService
-										.editRestaurant(restaurant)
+										.editRestaurantData($scope.editRestaurant)
 										.then(
 												function(response) {
 													if (response.data) {
@@ -290,6 +285,9 @@ app
 							
 							$scope.display = function(tab) {
 								$scope.show = tab;
+								if(tab == 1)
+									$scope.selected = null;
+								
 							}
 							$scope.setSelectedRequestOffer = function(selected) {
 								$scope.selectedRequestOffer = selected;
@@ -333,7 +331,7 @@ app
 												function(response) {
 													if (response.data) {
 														$scope.show = 3;
-														$scope.bidderOffer = response.data;
+														$scope.editBidderOffer = response.data;
 													} else 
 														{
 														$scope.show = 1;
@@ -373,19 +371,12 @@ app
 							}
 							
 							$scope.editSelectedBidderOffer = function(id) {
-								$scope.bidderOffer = $scope.selectedBidderOffer;
+								$scope.editBidderOffer = $scope.selectedBidderOffer;
 								$scope.show = 3;
 							}
 
-							$scope.editBidderOffer = function() {
-								if ($scope.editBidderOffer.price == null)
-									$scope.editBidderOffer.price = $scope.bidderOffer.price;
-								if ($scope.editBidderOffer.garanty == null)
-									$scope.editBidderOffer.garanty = $scope.bidderOffer.garanty;
-								if ($scope.editBidderOffer.dateOfDelivery == null)
-									$scope.editBidderOffer.dateOfDelivery = $scope.bidderOffer.dateOfDelivery;
-								$scope.editBidderOffer.id = $scope.bidderOffer.id;
-								bidderService.editBidderOffer(
+							$scope.editBidderOfferData = function() {
+								bidderService.editBidderOfferData(
 										$scope.editBidderOffer).then(
 										function(response) {
 											if (response.data) {
@@ -483,6 +474,8 @@ app
 								$scope.product = null;
 								$scope.selectedProduct = null;
 								$scope.selectedRestaurantProduct = null;
+								if(tab == 2)
+									$scope.editRestaurant = $scope.restaurant;
 							}
 							$scope.displayWorker = function(tab) {
 								if(tab == 1 || tab == 2 || tab == 3)
@@ -492,17 +485,25 @@ app
 							$scope.displaySegment = function(tab) {
 								if(tab == 1)
 									$scope.selectedSegment = null;
+								if(tab == 2)
+									$scope.editSegment = $scope.selectedSegment;
 								$scope.showS = tab;
 								
 							}
 							$scope.displayShift = function(tab) {
 								if(tab == 1)
 									$scope.selectedShift = null;
+								if(tab == 2)
+									$scope.editWorkSchedule = $scope.selectedShift;
 								$scope.showQ = tab;
 								
 							}
 							$scope.displayRequest = function(tab) {
 								$scope.showR = tab;
+								if(tab == 1)
+									$scope.selectedRequestOffer = null;
+								if(tab == 2)
+									$scope.editRequestOffer = $scope.selectedRequestOffer;
 								$scope.selectedBid = null;
 								$scope.selectedRestaurantProduct = null;
 								$scope.selectedRequestOfferProduct = null;
@@ -564,6 +565,7 @@ app
 							}
 							$scope.setSelectedTable = function(selected) {
 								$scope.selectedTable = selected;
+								$scope.editTable = selected;
 							}
 							
 							restaurantManagerService
@@ -613,15 +615,9 @@ app
 														});
 											});
 							
-							$scope.editRestaurant = function() {
-								if ($scope.editRestaurant.description == null)
-									$scope.editRestaurant.description = $scope.restaurant.description;
-								if ($scope.editRestaurant.restaurantName == null)
-									$scope.editRestaurant.restaurantName = $scope.restaurant.restaurantName;
-								$scope.editRestaurant.id = $scope.restaurant.id;
-								var restaurant = $scope.editRestaurant;
+							$scope.editRestaurantData = function() {
 								restaurantManagerService
-										.editRestaurant(restaurant)
+										.editRestaurantData($scope.editRestaurant)
 										.then(
 												function(response) {
 													if (response.data) {
@@ -859,6 +855,7 @@ app
 							
 							
 							$scope.showSegmentTables = function() {
+								$scope.replaceSegment = $scope.selectedSegment;
 								restaurantManagerService
 										.getTables($scope.selectedSegment.id)
 										.then(
@@ -868,6 +865,11 @@ app
 														$scope.showS = 3;
 													}
 												});
+							}
+							
+
+							$scope.changeReplaceSegment = function(segment) {
+								$scope.replaceSegment = segment;
 							}
 							
 							$scope.registerTable = function() {
@@ -891,12 +893,9 @@ app
 												  });
 							}
 
-							$scope.editTable = function() {
-								$scope.editTable.id = $scope.selectedTable.id;
-								if($scope.editTable.segment == null)
-									$scope.editTable.segment = $scope.selectedTable.segment;
+							$scope.editTableData = function() {
 								restaurantManagerService
-										.editTable($scope.editTable, $scope.editTable.segment.id)
+										.editTableData($scope.editTable, $scope.editTable.segment.id)
 										.then(
 												function(response) {
 													if (response.data) {
@@ -906,9 +905,10 @@ app
 															$scope.segmentTables[index] = response.data;
 														else 
 															$scope.segmentTables.splice(index, 1);
+														$scope.selectedTable = null;
 													} 
 												}).catch(function(response) {
-													ngNotify.set('Unexpected error' , {
+													ngNotify.set('Position in segment taken' , {
 														type : 'error',
 														sticky : 'true'
 													});
@@ -963,14 +963,23 @@ app
 												  });
 							}
 							
-							$scope.editSegment = function() {
-								if($scope.editSegment.position == null)
-									$scope.editSegment.position = $scope.selectedSegment.position;
-								if($scope.editSegment.smokingAllowed == null)
-									$scope.editSegment.smokingAllowed = $scope.selectedSegment.smokingAllowed;
-								$scope.editSegment.id = $scope.selectedSegment.id;
+							$scope.editSegmentData = function() {
+					/*
+					 * if($scope.editSegment.position == null)
+					 * $scope.editSegment.position =
+					 * $scope.selectedSegment.position;
+					 * if($scope.editSegment.smokingAllowed == null)
+					 * $scope.editSegment.smokingAllowed =
+					 * $scope.selectedSegment.smokingAllowed;
+					 * if($scope.editSegment.width == null)
+					 * $scope.editSegment.width = $scope.selectedSegment.width;
+					 * if($scope.editSegment.height == null)
+					 * $scope.editSegment.height =
+					 * $scope.selectedSegment.height; $scope.editSegment.id =
+					 * $scope.selectedSegment.id;
+					 */
 								restaurantManagerService
-										.editSegment($scope.editSegment)
+										.editSegmentData($scope.editSegment)
 										.then(
 												function(response) {
 													if (response.data) {
@@ -1138,15 +1147,6 @@ app
 							}
 							
 							$scope.editWorkScheduleInfo  = function() {
-								if($scope.editWorkSchedule.date == null)
-									$scope.editWorkSchedule.date = $scope.selectedShift.date;
-								if($scope.editWorkSchedule.startTime == null)
-									$scope.editWorkSchedule.startTime = $scope.selectedShift.startTime;
-								if($scope.editWorkSchedule.endTime == null)
-									$scope.editWorkSchedule.endTime = $scope.selectedShift.endTime;
-								if($scope.editWorkSchedule.twoDays == null)
-									$scope.editWorkSchedule.twoDays = $scope.selectedShift.twoDays;
-								$scope.editWorkSchedule.id = $scope.selectedShift.id;
 								restaurantManagerService
 										.editWorkScheduleInfo($scope.editWorkSchedule)
 										.then(
@@ -1192,14 +1192,9 @@ app
 												  });
 							}
 							
-							$scope.editRequestOffer  = function() {
-								if($scope.editRequestOffer.startDate == null)
-									$scope.editRequestOffer.startDate = $scope.selectedRequestOffer.startDate;
-								if($scope.editRequestOffer.expirationDate == null)
-									$scope.editRequestOffer.expirationDate = $scope.selectedRequestOffer.expirationDate;
-								$scope.editRequestOffer.id = $scope.selectedRequestOffer.id;
+							$scope.editRequestOfferData  = function() {
 								restaurantManagerService
-										.editRequestOffer($scope.editRequestOffer)
+										.editRequestOfferData($scope.editRequestOffer)
 										.then(
 												function(response) {
 													if (response.data) {

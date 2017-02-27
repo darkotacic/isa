@@ -8,21 +8,20 @@
 	<div class="form-group">
 		<label class="control-label col-sm-3" for="rn">Start date:</label>
 		<div class="col-sm-9">
-			<input type="date" class="form-control" ng-model="$parent.editRequestOffer.startDate"
-				ng-value="$parent.selectedRequestOffer.startDate" id="rn" >
+			<input type="date" class="form-control"
+				ng-model="$parent.editRequestOffer.startDate" id="rn" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="control-label col-sm-3" for="des">Expiration
 			date:</label>
 		<div class="col-sm-9">
-			<input type="date" class="form-control" id="des" ng-model="$parent.editRequestOffer.startDate"
-				ng-value="$parent.selectedRequestOffer.expirationDate" >
+			<input type="date" class="form-control" id="des"
+				ng-model="$parent.editRequestOffer.startDate" />
 		</div>
 	</div>
 	<div class="form-group">
 		<button type="submit" class="btn btn-success"
-			ng-disabled="myForm.$invalid"
-			ng-Click="$parent.editRequestOffer()">Submit</button>
+			ng-disabled="myForm.$invalid" ng-Click="$parent.editRequestOfferData()">Submit</button>
 	</div>
 </form>

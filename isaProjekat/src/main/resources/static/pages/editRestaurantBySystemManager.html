@@ -5,9 +5,7 @@
 		<label class="control-label col-sm-3" for="rn">Name:</label>
 		<div class="col-sm-9">
 			<input type="text" class="form-control" placeholder="Enter name"
-				name="name"
-				ng-Model="$parent.editRestaurant.restaurantName" id="rn"
-				ng-value="$parent.selected.restaurantName"
+				name="name" ng-Model="$parent.editRestaurant.restaurantName" id="rn"
 				pattern="^[A-Z][a-z_ A-Z]*" ng-minlength="3" ng-maxlength="30">
 		</div>
 	</div>
@@ -23,7 +21,6 @@
 			<input type="text" class="form-control" id="des" name="des"
 				placeholder="Enter description"
 				ng-Model="$parent.editRestaurant.description" id="rn"
-				ng-value="$parent.selected.description"
 				pattern="^[A-Z][a-z_ A-Z0-9]*" ng-maxlength="50">
 		</div>
 	</div>
@@ -35,7 +32,7 @@
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 			<button type="submit" class="btn btn-success"
-				ng-Click="editRestaurant()" title="Form invalid!"
+				ng-Click="editRestaurantData()" title="Form invalid!"
 				ng-disabled="myForm.$invalid" data-toggle="tooltip"
 				data-placement="top" tooltip>Save changes</button>
 		</div>

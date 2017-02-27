@@ -35,7 +35,7 @@ app.factory('SystemManagerService', function systemManagerService($http) {
 		});
 	}
 
-	systemManagerService.editRestaurant = function(restaurant) {
+	systemManagerService.editRestaurantData = function(restaurant) {
 		return $http({
 			method : 'PUT',
 			url : '../systemmanagers/updateRestaurant',
@@ -161,7 +161,7 @@ app.factory('BidderService', function bidderService($http) {
 		});
 	}
 
-	bidderService.editBidderOffer = function(bidderOffer) {
+	bidderService.editBidderOfferData = function(bidderOffer) {
 		return $http({
 			method : 'PUT',
 			url : '../bidders/updateBid',
@@ -406,7 +406,7 @@ app
 									+ id
 						});
 					}
-					restaurantManagerService.editRestaurant = function(
+					restaurantManagerService.editRestaurantData = function(
 							restaurant) {
 						return $http({
 							method : 'PUT',
@@ -448,18 +448,23 @@ app
 							url : '../restaurantmanagers/addRestaurantTable?segment='
 									+ id,
 							data : {
-								"numberOfChairs" : table.numberOfChairs
+								"numberOfChairs" : table.numberOfChairs,
+								"tableRow" : table.tableRow,
+								"tableColumn" : table.tableColumn
 							}
 						});
 					}
-					restaurantManagerService.editTable = function(table, id) {
+					restaurantManagerService.editTableData = function(table, id) {
 						return $http({
 							method : 'PUT',
 							url : '../restaurantmanagers/updateRestaurantTable?id='
 									+ id,
 							data : {
 								"id" : table.id,
-								"numberOfChairs" : table.numberOfChairs
+								"numberOfChairs" : table.numberOfChairs,
+								"tableRow" : table.tableRow,
+								"tableColumn" : table.tableColumn
+								
 							}
 						});
 					}
@@ -496,18 +501,22 @@ app
 							url : '../restaurantmanagers/addSegment?rest=' + id,
 							data : {
 								"position" : segment.position,
-								"smokingAllowed" : segment.smokingAllowed
+								"smokingAllowed" : segment.smokingAllowed,
+								"width" : segment.width,
+								"height" : segment.height
 							}
 						});
 					}
-					restaurantManagerService.editSegment = function(segment) {
+					restaurantManagerService.editSegmentData = function(segment) {
 						return $http({
 							method : 'PUT',
 							url : '../restaurantmanagers/updateSegment',
 							data : {
 								"id" : segment.id,
 								"position" : segment.position,
-								"smokingAllowed" : segment.smokingAllowed
+								"smokingAllowed" : segment.smokingAllowed,
+								"width" : segment.width,
+								"height" : segment.height
 							}
 						});
 					}
@@ -589,7 +598,7 @@ app
 						});
 					}
 					
-					restaurantManagerService.editRequestOffer = function(
+					restaurantManagerService.editRequestOfferData = function(
 							rq) {
 						return $http({
 							method : 'PUT',

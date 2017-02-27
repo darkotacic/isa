@@ -107,7 +107,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		temp.setUserName(sm.getUserName());
 		return new ResponseEntity<RestaurantManager>(this.restaurantManagerRepository.save(temp), HttpStatus.OK);
 	}
-	
+
 	@Override
 	public ResponseEntity<Restaurant> updateRestaurantProfile(Restaurant r) {
 		Restaurant temp = this.restaurantRepository.findOne(r.getId());
@@ -146,6 +146,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	public ResponseEntity<Segment> addSegmentToRestaurnat(Segment s, Long r_id) {
 		Restaurant r = this.restaurantRepository.findOne(r_id);
 		s.setRestaurant(r);
+		if (this.segmentRepository.findByPositionAndRestaurantAndSmokingAllowed(s.getPosition(), r,
+				s.isSmokingAllowed()) != null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.OK);
 	}
 
@@ -153,6 +156,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	public ResponseEntity<RestaurantTable> addRestaurantTableToSegment(RestaurantTable t, Long segment_id) {
 		Segment s = this.segmentRepository.findOne(segment_id);
 		t.setSegment(s);
+		if (this.restaurantTableRepository.findBySegmentAndTableRowAndTableColumn(s, t.getTableRow(),
+				t.getTableColumn()) != null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<RestaurantTable>(this.restaurantTableRepository.save(t), HttpStatus.OK);
 	}
 
@@ -172,6 +178,12 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Override
 	public ResponseEntity<RestaurantTable> updateRestaurantTable(RestaurantTable t, Long id) {
 		t.setSegment(this.segmentRepository.findOne(id));
+		if (this.restaurantTableRepository.findBySegmentAndTableRowAndTableColumn(t.getSegment(), t.getTableRow(),
+				t.getTableColumn()) != null)
+			if (this.restaurantTableRepository
+					.findBySegmentAndTableRowAndTableColumn(t.getSegment(), t.getTableRow(), t.getTableColumn())
+					.getId() != t.getId())
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<RestaurantTable>(this.restaurantTableRepository.save(t), HttpStatus.OK);
 	}
 
@@ -179,6 +191,11 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	public ResponseEntity<Segment> updateSegment(Segment s) {
 		Segment temp = this.segmentRepository.findOne(s.getId());
 		s.setRestaurant(temp.getRestaurant());
+		if (this.segmentRepository.findByPositionAndRestaurantAndSmokingAllowed(s.getPosition(), s.getRestaurant(),
+				s.isSmokingAllowed()) != null)
+			if (this.segmentRepository.findByPositionAndRestaurantAndSmokingAllowed(s.getPosition(), s.getRestaurant(),
+					s.isSmokingAllowed()).getId() != s.getId())
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<Segment>(this.segmentRepository.save(s), HttpStatus.OK);
 	}
 
@@ -229,9 +246,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		} else if (w.getStartTime() > w.getEndTime())
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		Worker u = this.workerRepository.findOne(worker_id);
+		if (this.workScheduleRepository.findByWorkerAndDate(u, w.getDate()) != null)
+			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
 		if (u.getUserRole().equals(UserRole.WAITER)) {
-			if (segment_id == 0)
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			Segment s = this.segmentRepository.findOne(segment_id);
 			w.setSegment(s);
 		}
@@ -259,11 +276,14 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			temp.setTwoDays(false);
 			temp.setSecondDate(null);
 		}
-		if(!temp.isTwoDays())
+		if (!temp.isTwoDays())
 			if (w.getStartTime() > w.getEndTime())
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		temp.setEndTime(w.getEndTime());
 		temp.setStartTime(w.getStartTime());
+		if (this.workScheduleRepository.findByWorkerAndDate(temp.getWorker(), w.getDate()) != null)
+			if (this.workScheduleRepository.findByWorkerAndDate(temp.getWorker(), w.getDate()).getId() != temp.getId())
+				return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
 		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(temp), HttpStatus.OK);
 	}
 
@@ -551,12 +571,15 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 
 	@Override
 	public ResponseEntity<List<Waiter>> getAllWaitersByNameAndRestaurant(Long id, String name) {
-		return new ResponseEntity<List<Waiter>>(this.waiterRepository.findByUserNameAndRestaurant(name,this.restaurantRepository.findOne(id)), HttpStatus.OK);
+		return new ResponseEntity<List<Waiter>>(
+				this.waiterRepository.findByUserNameAndRestaurant(name, this.restaurantRepository.findOne(id)),
+				HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<List<Product>> getAllProductsByNameAndRestaurant(Long id, String name) {
-		return new ResponseEntity<List<Product>>(this.productRepository.findProductByRestaurantAndName(name, id), HttpStatus.OK);
+		return new ResponseEntity<List<Product>>(this.productRepository.findProductByRestaurantAndName(name, id),
+				HttpStatus.OK);
 	}
 
 }

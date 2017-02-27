@@ -9,7 +9,7 @@
 		<label class="control-label col-sm-3" for="rn">Price:</label>
 		<div class="col-sm-9">
 			<input type="text" class="form-control" placeholder="Enter price"
-				required ng-Model="$parent.editBidderOffer.price" ng-value="$parent.bidderOffer.price" id="rn">
+				required ng-Model="$parent.editBidderOffer.price" />
 		</div>
 	</div>
 	<div class="form-group">
@@ -17,7 +17,7 @@
 		<div class="col-sm-9">
 			<input type="text" class="form-control" id="des"
 				placeholder="Enter garanty" required
-				ng-Model="$parent.editBidderOffer.garanty" ng-value="$parent.bidderOffer.garanty">
+				ng-Model="$parent.editBidderOffer.garanty"/>
 		</div>
 	</div>
 	<div class="form-group">
@@ -25,13 +25,13 @@
 		<div class="col-sm-9">
 			<input type="date" class="form-control" id="des"
 				placeholder="Enter date of delivery" required
-				ng-Model="$parent.editBidderOffer.dateOfDelivery" ng-value="$parent.bidderOffer.dateOfDelivery">
+				ng-Model="$parent.editBidderOffer.dateOfDelivery"/>
 		</div>
 	</div>
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 			<button type="submit" class="btn btn-success"
-				ng-Click="$parent.editBidderOffer()" title="Form invalid!"
+				ng-Click="$parent.editBidderOfferData()" title="Form invalid!"
 				data-toggle="tooltip" data-placement="top" tooltip>Submit</button>
 		</div>
 	</div>

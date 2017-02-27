@@ -20,8 +20,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "RESTAURANT_TABLE", uniqueConstraints = { @UniqueConstraint(columnNames = 
-{ "TABLE_ROW", "TABLE_COLUMN", "SEGMENT_ID"})})
+@Table(name = "RESTAURANT_TABLE", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "TABLE_ROW", "TABLE_COLUMN", "SEGMENT_ID" }) })
 public class RestaurantTable {
 
 	@Id
@@ -44,20 +44,22 @@ public class RestaurantTable {
 	@NotNull
 	@Column(name = "RES_FREE", columnDefinition = "boolean default true", insertable = true)
 	private boolean free = true;
-	
+
 	@Column(name = "TABLE_ROW")
 	private int tableRow;
-	
+
 	@Column(name = "TABLE_COLUMN")
 	private int tableColumn;
 
 	public RestaurantTable() {
-		this.id=null;
+		this.id = null;
 	}
+
 	@JsonIgnore
 	public Set<Order> getOrders() {
 		return orders;
 	}
+
 	@JsonProperty
 	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
@@ -90,21 +92,21 @@ public class RestaurantTable {
 	public void setSegment(Segment segment) {
 		this.segment = segment;
 	}
-	
-	public int getRow() {
+
+	public int getTableRow() {
 		return tableRow;
 	}
-	
-	public void setRow(int row) {
-		this.tableRow = row;
+
+	public void setTableRow(int tableRow) {
+		this.tableRow = tableRow;
 	}
-	
-	public int getColumn() {
+
+	public int getTableColumn() {
 		return tableColumn;
 	}
-	
-	public void setColumn(int column) {
-		this.tableColumn = column;
+
+	public void setTableColumn(int tableColumn) {
+		this.tableColumn = tableColumn;
 	}
 
 }
