@@ -76,21 +76,21 @@ insert into offered_products(ro_id, pr_id) values (1, 1);
 insert into bidder_offer(id, bo_dod, bo_garanty, bo_price, bidder_user_id, request_offer_id) values (1, '13-12-15', 'Return money', 300.3, 11, 1);
 insert into bidder_offer(id, bo_dod, bo_garanty, bo_price, bidder_user_id, request_offer_id) values (2, '13-12-15', 'Return money', 300.3, 11, 2);
 
-insert into segment(id, sgm_pos, restaurant_res_id) values(1,'basta',1);
-insert into segment(id, sgm_pos, sgm_smoking, restaurant_res_id) values(2,'unutra',false,1);
-insert into segment(id, sgm_pos, restaurant_res_id) values(3,'unutra',1);
+insert into segment(id, sgm_pos, restaurant_res_id, width, height) values(1,'basta',1,4,3);
+insert into segment(id, sgm_pos, sgm_smoking, restaurant_res_id, width, height) values(2,'unutra',false,1,5,3);
+insert into segment(id, sgm_pos, restaurant_res_id, width, height) values(3,'unutra',1,4,6);
 
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(1,false,4,1);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(2,true,2,1);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(3,true,6,1);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(4,true,4,2);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(5,true,2,2);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(6,true,4,2);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(7,true,4,3);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(8,true,8,3);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(9,true,4,1);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(10,true,3,1);
-insert into restaurant_table(id, res_free, res_chair, segment_id) values(11,true,2,1);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(1,false,4,1,0,0);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(2,true,2,1,0,1);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(3,true,6,1,1,0);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(4,true,4,2,0,0);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(5,true,2,2,0,1);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(6,true,4,2,1,2);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(7,true,4,3,1,3);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(8,true,8,3,1,4);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(9,true,4,1,0,2);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(10,true,3,1,0,3);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(11,true,2,1,1,4);
 
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(1,'17-02-25','17-02-25',8.0,15.0,1,4,3);
 insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(2,'16-10-15','16-10-15',15.0,22.0,2,null,4);

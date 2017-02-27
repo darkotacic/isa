@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "SEGMENT", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "RESTAURANT_RES_ID", "SGM_POS", "SGM_SMOKING" }) })
+@UniqueConstraint(columnNames = { "RESTAURANT_RES_ID", "SGM_POS", "SGM_SMOKING" }) })
 public class Segment implements Serializable {
 
 	private static final long serialVersionUID = 5329505235746769431L;
@@ -45,6 +45,12 @@ public class Segment implements Serializable {
 
 	@Column(name = "SGM_SMOKING", columnDefinition = "boolean default true", insertable = true)
 	private boolean smokingAllowed;
+	
+	@Column(name = "WIDTH")
+	private int width;
+	
+	@Column(name = "HEIGHT")
+	private int height;
 
 	@Pattern(regexp = "^[A-Z][a-z_ A-Z0-9]*")
 	@Size(max = 60)
@@ -102,6 +108,22 @@ public class Segment implements Serializable {
 
 	public Restaurant getRestaurant() {
 		return restaurant;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 }

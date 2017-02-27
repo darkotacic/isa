@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "RESTAURANT_TABLE")
+@Table(name = "RESTAURANT_TABLE", uniqueConstraints = { @UniqueConstraint(columnNames = 
+{ "TABLE_ROW", "TABLE_COLUMN", "SEGMENT_ID"})})
 public class RestaurantTable {
 
 	@Id
@@ -42,6 +44,12 @@ public class RestaurantTable {
 	@NotNull
 	@Column(name = "RES_FREE", columnDefinition = "boolean default true", insertable = true)
 	private boolean free = true;
+	
+	@Column(name = "TABLE_ROW")
+	private int tableRow;
+	
+	@Column(name = "TABLE_COLUMN")
+	private int tableColumn;
 
 	public RestaurantTable() {
 
@@ -81,6 +89,22 @@ public class RestaurantTable {
 
 	public void setSegment(Segment segment) {
 		this.segment = segment;
+	}
+	
+	public int getRow() {
+		return tableRow;
+	}
+	
+	public void setRow(int row) {
+		this.tableRow = row;
+	}
+	
+	public int getColumn() {
+		return tableColumn;
+	}
+	
+	public void setColumn(int column) {
+		this.tableColumn = column;
 	}
 
 }
