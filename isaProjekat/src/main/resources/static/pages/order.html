@@ -51,8 +51,14 @@
 			<table class="table table-striped">
 				<tr><td>Order id:</td><td>{{selected.id}}</td></tr>
 				<tr>
-				 	<td>Table:</td><td><input type="text" ng-model="selected.table.id" ng-value="{{selected.table.id}}"/></td>
-				<tr>
+				 	<td>Table:</td>
+				 	<td>
+				 		<div class="styled-select blue semi-square">
+					 		<select id="editTable">
+								<option ng-repeat="t in tables" value="{{t.id}}">Table {{t.id}}</option>
+							</select>
+						</div>
+				</tr>
 				<tr>
 					<td></td><td><button type="button" class="btn btn-primary" ng-click=editOrder()>Confirm</button></td>
 				</tr>
@@ -66,7 +72,7 @@
 		<table class="table table-stiped">
 			<tr><th>Product name</th><th>Price</th><th>Quantity</th></tr>
 			<tr ng-repeat="product in products">
-				 <td>{{product.productName}}</td><td>{{product.price}}</td><td><input id="product{{product.id}}" type="text" value="0"/></td>
+				<td>{{product.productName}}</td><td>{{product.price}}</td><td><input id="product{{product.id}}" class="form-control" type="number" value="0" min="0"/></td>
 			</tr>
 		</table>
 		<input class="btn btn-primary" type="button" value="Confirm" ng-click=addOrderItems()>
@@ -81,7 +87,7 @@
 				 <td>{{item.product.productName}}</td>
 				 <td>{{item.product.price}}</td>
 				 <td>
-				 	<input id="item{{item.id}}" type="text" value="{{item.quantity}}" ng-if="item.orderItemStatus=='ONHOLD'"/>
+				 	<input id="item{{item.id}}" class="form-control" type="number" min="0" value="{{item.quantity}}" ng-if="item.orderItemStatus=='ONHOLD'"/>
 				 	<span ng-if="item.orderItemStatus!='ONHOLD'">{{item.quantity}}</span>
 				 </td>
 				 <td>{{item.orderItemStatus}}</td>

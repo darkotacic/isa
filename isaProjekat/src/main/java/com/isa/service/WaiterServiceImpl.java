@@ -83,8 +83,8 @@ public class WaiterServiceImpl implements WaiterService {
 	}
 
 	@Override
-	public Iterable<Segment> getAllSegments() {
-		return segmentRepository.findAll();
+	public Iterable<Segment> getAllSegments(Restaurant restaurant) {
+		return segmentRepository.getSegmentsForRestautant(restaurant);
 	}
 	
 	@Override

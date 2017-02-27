@@ -3,8 +3,10 @@
 	<div class="checkbox">
   		<label><input type="checkbox" ng-model='allSegments' checked="checked" ng-disabled="workSchedule == ''">Display all segments</label>
 	</div>
-	<div class="row" ng-repeat="seg in segments" ng-if='checkSegment(seg)'>
+	<div class="card-group" ng-repeat="seg in segments" ng-if='checkSegment(seg)'>
 		<h2 ng-init="getTablesForSegment(seg.id,$index)">Segment {{seg.id}}</h2>
+		<p>Position: {{seg.position}}</p>
+		<p>Smoking allowed: {{seg.smokingAllowed}}</p>
 		<div class="thumbnail col-sm-4" ng-repeat="tab in seg.tables">
 			<div class="caption">
 				<h3><i>Table</i></h3>

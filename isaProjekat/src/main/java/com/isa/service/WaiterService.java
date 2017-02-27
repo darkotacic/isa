@@ -21,7 +21,7 @@ public interface WaiterService {
 	public Order updateOrder(Order order);
 	public void deleteOrder(Order order);
 	public Waiter updateWaiterInformation(Waiter waiter);
-	public Iterable<Segment> getAllSegments();
+	public Iterable<Segment> getAllSegments(Restaurant restaurant);
 	public Iterable<RestaurantTable> getAllTablesForSegment(Long segmentId);
 	public RestaurantTable getTable(Long id);
 	public Product getProduct(Long id);

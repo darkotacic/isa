@@ -138,6 +138,13 @@ app.factory('WaiterService', function waiterService($http) {
 		});
 	}
 	
+	waiterService.getAllTables = function(){
+		return $http({
+			method : 'GET',
+			url: '../waiters/getAllTables'
+		});
+	}
+	
 	return waiterService;
 	
 });
@@ -152,15 +159,19 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	$scope.products=null;
 	$scope.editOrdersItems=null;
 	$scope.orderItems=null;
+	$scope.tables=null;
 	
 	$scope.setSelected = function(ord){
 		if($scope.selected == ord){
 			$scope.selected= "";
 			$scope.edit=false;
+			$scope.lastAddedOrder=null;
+			$scope.editOrdersItems=null;
 			return;
 		}
 		$scope.editOrdersItems=null;
 		$scope.selected = ord;
+		$scope.edit=false;
 	}
 	
 	waiterService.getWorkSchedules().then(function(response){
@@ -205,7 +216,11 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	}
 	
 	$scope.editOrder=function(){
-		waiterService.updateOrder($scope.selected,$scope.selected.table.id).then(function(response){
+		var tableId=document.getElementById('editTable').value;
+		waiterService.updateOrder($scope.selected,tableId).then(function(response){
+			var index=$scope.orders.indexOf($scope.selected);
+			$scope.orders.splice(index,1);
+			$scope.orders.push(response.data)
 		});
 		$scope.edit=false;
 	}
@@ -228,13 +243,16 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	$scope.deleteOrder=function(){
 		waiterService.deleteOrder($scope.selected).then(function(response){
 			var index=$scope.orders.indexOf($scope.selected);
-			alert(index);
 			$scope.orders.splice(index,1);
 		});
 	}
 	
 	waiterService.getProducts().then(function(response){
 		$scope.products=response.data;
+	});
+	
+	waiterService.getAllTables().then(function(response){
+		$scope.tables=response.data;
 	});
 	
 	$scope.addOrderItems=function(){
@@ -542,6 +560,75 @@ app.controller('bartenderController',['$rootScope','$scope','$location','Bartend
   			  type: "success",
   			  timer: 3000
   			});
+		});
+	}
+	
+}]);
+
+app.factory('GradeService', function gradeService($http) {
+	
+	gradeService.addGrade = function(grade,orderId){
+		return $http({
+			method : 'POST',
+			url: '../guests/addGrade/'+orderId,
+			data: {
+				"gradeOfService": grade.gradeOfService,
+				"gradeOfOrderItem": grade.gradeOfOrderItem,
+				"gradeOfRestaurant": grade.gradeOfRestaurant
+			}
+		});
+	}
+	
+	gradeService.deleteGrade = function(order){
+		return $http({
+			method : 'DELETE',
+			url: 'guests/deleteGrade',
+			data: {
+				"id": grade.id,
+				"order": grade.order,
+				"guest": grade.guest,
+				"restaurant": grade.rerestaurant,
+				"gradeOfService": grade.gradeOfService,
+				"gradeOfOrderItem": grade.gradeOfOrderItem,
+				"gradeOfRestaurant": grade.gradeOfRestaurant
+			},
+			headers: {
+				   'Content-Type': 'application/json',
+				   'Accept': 'application/json'
+			}
+		});
+	}
+	
+	return gradeService;
+	
+});
+
+app.controller('gradeController',['$rootScope','$scope','$location','GradeService','WaiterService',function($rootScope,$scope,$location,gradeService,waiterService){
+	
+	$scope.user= $rootScope.loggedUser;
+	$scope.orders=null;
+	$scope.grades=null;
+	$scope.selected=null;
+	
+	waiterService.getOrders.then(function(response){
+		$scope.orders=response.data;
+	});
+	
+	$scope.setSelected = function(ord){
+		if($scope.selected == ord){
+			$scope.selected= null;
+			return;
+		}
+		$scope.selected = ord;
+	}
+	
+	gradeService.addGrade=function(){
+		gradeService.addGrade($scope.grade).then(function(response){
+		});
+	}
+	
+	gradeService.deleteGrade=function(){
+		gradeService.addGrade($scope.selected).then(function(response){
 		});
 	}
 	

@@ -97,11 +97,11 @@ public class WaiterController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Order> editOrder(@RequestBody Order order,@PathVariable("tableId")Long tableId){
+	public ResponseEntity<Order> editOrder(@RequestBody Order order,@PathVariable("tableId")String tableId){
 		User user=(User) session.getAttribute("user");
 		if(user==null || !user.getUserRole().toString().equals("WAITER"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-		RestaurantTable rt=waiterService.getTable(tableId);
+		RestaurantTable rt=waiterService.getTable(Long.parseLong(tableId));
 		Order temp=workerService.getOrder(order.getId());
 		temp.setTable(rt);
 		temp.setWaiter((Waiter)user);
@@ -253,7 +253,10 @@ public class WaiterController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Iterable<Segment>> getAllSegments(){
-		Iterable<Segment> segments=waiterService.getAllSegments();
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("WAITER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Iterable<Segment> segments=waiterService.getAllSegments(((Waiter)user).getRestaurant());
 		return new ResponseEntity<Iterable<Segment>>(segments, HttpStatus.OK);
 	}
 	
@@ -308,6 +311,19 @@ public class WaiterController {
 		if(user==null || !user.getUserRole().toString().equals("WAITER"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 		return restaurantManagerService.getAllProductsForRestaurant(((Waiter)user).getRestaurant().getId());
+	}
+	
+	@RequestMapping(
+			value="/getAllTables",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<RestaurantTable>> getAllTables(){
+		User user=(User) session.getAttribute("user");
+		if(user==null || !user.getUserRole().toString().equals("WAITER"))
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		return restaurantManagerService.getAllTablesForRestaurant(((Waiter)user).getRestaurant().getId());
 	}
 	
 }

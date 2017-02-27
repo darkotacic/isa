@@ -1,31 +1,31 @@
 <div role="form" class="form-inline" ng-controller="profileController">
-	<h1 class="page-header">PROFILE</h1>
+	<h1 class="page-header text-center">PROFILE</h1>
 	
 	<div class="container marketing">
-		<form name="profileForm">
+		<form class="form-horizontal" name="profileForm">
 			<table class="table table-striped">
 				<tr>
 					<td>ID</td><td>{{user.id}}</td>
 				</tr>
 				<tr>
-					<td>Email</td><td><input name="email" type="email" ng-model="user.email" required/><span style="color:red" ng-show="profileForm.email.$dirty && profileForm.email.$invalid">NIJE UNET MAIL!</span></td>
+					<td>Email</td><td><input class="form-control" name="email" type="email" ng-model="user.email" required/><span style="color:red" ng-show="profileForm.email.$dirty && profileForm.email.$invalid"> Email is not valid!</span></td>
 				</tr>
 				<tr>
-					<td>Name</td><td><input type="text" ng-model="user.userName" required/></td>
+					<td>Name</td><td><input class="form-control" name="name" type="text" ng-model="user.userName" ng-pattern="/^[A-Z][a-z]+$/" required/><span style="color:red" ng-show="profileForm.name.$invalid"> Name is not valid!</span></td>
 				<tr>
-					<td>Surname</td><td><input type="text" ng-model="user.surname" required/></td>
+					<td>Surname</td><td><input class="form-control" name="surname" type="text" ng-model="user.surname" ng-pattern="/^[A-Z][a-z]+$/" required/><span style="color:red" ng-show="profileForm.surname.$invalid"> Surname is not valid!</span></td>
 				</tr>
 				<tr>
-					<td>Password</td><td><input type="password" ng-model="user.password" required/></td>
+					<td>Password</td><td><input class="form-control" type="password" name="password" ng-model="user.password" ng-pattern="/^(?=.*[a-z])(?=.*\d)(?=.*[A-Z]).{8,}$/" required/><span style="color:red" ng-show="profileForm.password.$invalid"> Password must have 8 characters, at least one capital letter and one numeric!</span></td>
 				</tr>
 				<tr>
-					<td>Birthday</td><td><input type="date" ng-model="user.dateOfBirth" required/></td>
+					<td>Birthday</td><td><input class="form-control" type="date" ng-model="user.dateOfBirth" required/></td>
 				</tr>
 				<tr ng-if="loggedUser.userRole=='WAITER' || loggedUser.userRole=='COOK' || loggedUser.userRole=='BARTENDER'">
-					<td>Shoe number</td><td><input type="text" ng-model="user.shoeNumber" required/></td>
+					<td>Shoe number</td><td><input class="form-control" name="shoeNumber" type="text" ng-model="user.shoeNumber" ng-pattern="/^[0-9]*$/" required/><span style="color:red" ng-show="profileForm.shoeNumber.$invalid"> Shoe number must be a number!</span></td>
 				</tr>
 				<tr ng-if="loggedUser.userRole=='WAITER' || loggedUser.userRole=='COOK' || loggedUser.userRole=='BARTENDER'">
-					<td>Shirt size</td><td><input type="text" ng-model="user.shirtSize" required/></td>
+					<td>Shirt size</td><td><input class="form-control" type="text" name="shirtSize" ng-model="user.shirtSize" ng-pattern="/^[a-zA-Z]*$/" required/><span style="color:red" ng-show="profileForm.shirtSize.$invalid"> Shirt size is not valid!</span></td>
 				</tr>
 				<tr>
 					<td></td><td><input ng-disabled="profileForm.$invalid" class="btn btn-primary" type="button" value="Confirm" ng-click="confirmEditProfile()"/></td>
