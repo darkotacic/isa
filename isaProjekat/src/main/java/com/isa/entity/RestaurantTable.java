@@ -52,7 +52,7 @@ public class RestaurantTable {
 	private int tableColumn;
 
 	public RestaurantTable() {
-
+		this.id=null;
 	}
 	@JsonIgnore
 	public Set<Order> getOrders() {

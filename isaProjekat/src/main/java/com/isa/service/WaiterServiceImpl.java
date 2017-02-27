@@ -128,4 +128,9 @@ public class WaiterServiceImpl implements WaiterService {
 		return waiterRepository.findOne(id);
 	}
 
+	@Override
+	public Segment getSegment(Long id) {
+		return segmentRepository.findOne(id);
+	}
+
 }

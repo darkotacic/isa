@@ -1,5 +1,6 @@
 package com.isa.controller;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -198,9 +199,8 @@ public class WaiterController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Order> createCheck(@RequestBody Order order){
-		Date checkDate=new Date();
 		Calendar calendar=Calendar.getInstance();
-		calendar.setTime(checkDate);
+		calendar.setTime(new Date());
 		Order o=workerService.getOrder(order.getId());
 		Iterable<OrderItem> orderItems=waiterService.getOrderItemsForOrder(o);
 		int price=0;
@@ -267,7 +267,15 @@ public class WaiterController {
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Iterable<RestaurantTable>> getTablesForSegment(@PathVariable("id")Long segmentId){
-		Iterable<RestaurantTable> tables=waiterService.getAllTablesForSegment(segmentId);
+		Segment segment=waiterService.getSegment(segmentId);
+		RestaurantTable[] allTables = new RestaurantTable[segment.getHeight()*segment.getWidth()];
+		Arrays.fill(allTables, new RestaurantTable());
+		Iterable<RestaurantTable> tablesInSegment=waiterService.getAllTablesForSegment(segment.getId());
+		for(RestaurantTable table:tablesInSegment){
+			int position=table.getRow()*segment.getWidth()+table.getColumn();
+			allTables[position]=table;
+		}
+		List<RestaurantTable> tables = Arrays.asList(allTables);
 		return new ResponseEntity<Iterable<RestaurantTable>>(tables, HttpStatus.OK);
 	}
 	

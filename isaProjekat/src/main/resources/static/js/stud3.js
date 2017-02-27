@@ -160,6 +160,7 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	$scope.editOrdersItems=null;
 	$scope.orderItems=null;
 	$scope.tables=null;
+	$scope.user= $rootScope.loggedUser;
 	
 	$scope.setSelected = function(ord){
 		if($scope.selected == ord){
@@ -317,6 +318,15 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 		$scope.lastAddedOrder=null;
 		$scope.editOrdersItems=null;
 	}
+	
+	$scope.range = function(min, max, step) {
+	    step = step || 1;
+	    var input = [];
+	    for (var i = min; i < max; i += step) {
+	        input.push(i);
+	    }
+	    return input;
+	};
 	
 }]);
 

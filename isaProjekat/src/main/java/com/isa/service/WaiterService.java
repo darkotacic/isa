@@ -30,5 +30,6 @@ public interface WaiterService {
 	public WorkSchedule getWorkSchedule(Worker worker,Date date);
 	public List<WorkSchedule> getWorkScheduleBetween(Date startDate,Date endDate,Restaurant restaurant);
 	public Waiter getWaiter(Long id);
+	public Segment getSegment(Long id);
 	
 }

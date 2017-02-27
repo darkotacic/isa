@@ -3,7 +3,7 @@
 
 	<div ng-if="workSchedule!=''" ng-init="getTodayTables()">
 		<h2>Tables</h2>
-	    <div class="thumbnail col-sm-4" ng-repeat="table in resTables">
+	    <div class="thumbnail col-sm-4" ng-repeat="table in resTables" ng-if="table.id!=null">
 	      	<div class="caption">
 	        	<h3>Table</h3>
 	        	<p class="bg-primary">Table id: {{table.id}}</p>

@@ -1,19 +1,48 @@
 <div class="container" ng-controller="waiterController">
 	<h1>Tables in segments</h1>
 	<div class="checkbox">
-  		<label><input type="checkbox" ng-model='allSegments' checked="checked" ng-disabled="workSchedule == ''">Display all segments</label>
+  		<label><input type="checkbox" ng-model='allSegments' checked="checked" ng-disabled="workSchedule == '' || user.userRole!='WAITER'">Display all segments</label>
 	</div>
-	<div class="card-group" ng-repeat="seg in segments" ng-if='checkSegment(seg)'>
+	<div ng-repeat="seg in segments" ng-if='checkSegment(seg)'>
 		<h2 ng-init="getTablesForSegment(seg.id,$index)">Segment {{seg.id}}</h2>
 		<p>Position: {{seg.position}}</p>
 		<p>Smoking allowed: {{seg.smokingAllowed}}</p>
-		<div class="thumbnail col-sm-4" ng-repeat="tab in seg.tables">
-			<div class="caption">
-				<h3><i>Table</i></h3>
-				<p class="bg-primary">Table: {{tab.id}} </p>
-				<p class="bg-info">Number of chairs: {{tab.numberOfChairs}} </p>
-				<p class="bg-primary">Free: {{tab.free}} </p>
+		<div class="row" ng-repeat="x in range(0,seg.height)">
+			<div class="thumbnail" style="display:inline-block;width:180px" ng-repeat="y in range(0,seg.width)">
+				<div class="caption" ng-if="seg.tables[x*seg.width+y].id!=null">
+					<h3><i>Table</i></h3>
+					<p class="bg-primary">Table: {{seg.tables[x*seg.width+y].id}} </p>
+					<p class="bg-info">Number of chairs: {{seg.tables[x*seg.width+y].numberOfChairs}} </p>
+					<p class="bg-primary">Free: {{seg.tables[x*seg.width+y].free}} </p>
+				</div>
+				<div class="caption" ng-if="seg.tables[x*seg.width+y].id==null">
+					<h3><i>No table</i></h3>
+					<p>There is no table</p> 
+					<p>on this position</p>
+					<p>in the restaurant.</p>
+				</div>
 			</div>
 		</div>
+		<!--  
+		<div class="row" ng-if='checkSegment(seg)'>
+			<h2 ng-init="getTablesForSegment(seg.id,$index)">Segment {{seg.id}}</h2>
+			<p>Position: {{seg.position}}</p>
+			<p>Smoking allowed: {{seg.smokingAllowed}}</p>
+			<div class="thumbnail col-sm-4" ng-repeat="tab in seg.tables">
+				<div class="caption" ng-if="tab.id!=null">
+					<h3><i>Table</i></h3>
+					<p class="bg-primary">Table: {{tab.id}} </p>
+					<p class="bg-info">Number of chairs: {{tab.numberOfChairs}} </p>
+					<p class="bg-primary">Free: {{tab.free}} </p>
+				</div>
+				<div class="caption" ng-if="tab.id==null">
+					<h3><i>No table</i></h3>
+					<p>There is no table</p> 
+					<p>on this position</p>
+					<p>in the restaurant.</p>
+				</div>
+			</div>
+		</div>
+		-->
 	</div>
 </div>
