@@ -2,7 +2,6 @@ package com.isa.controller;
 
 import java.util.List;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import com.isa.entity.Grade;
 import com.isa.entity.Order;
 import com.isa.entity.users.Guest;
 import com.isa.entity.users.User;
-import com.isa.mail.SmtpMailSender;
+import com.isa.mail.SendEmail;
 import com.isa.service.GradeService;
 import com.isa.service.GuestService;
 import com.isa.service.WorkerService;
@@ -43,8 +42,6 @@ public class GuestController {
 	@Autowired
 	private HttpSession session;
 	
-	@Autowired
-	private SmtpMailSender smtpMailSender;
 	
 	@RequestMapping(
 			value = "/friends/{id}",
@@ -162,10 +159,21 @@ public class GuestController {
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Guest> register(@RequestBody Guest guest) throws MessagingException{
+	public ResponseEntity<Guest> register(@RequestBody Guest guest) throws Exception{
 		Guest g = guestService.register(guest);
-		//smtpMailSender.send("kljajic77@gmail.com", "Test", "BODY TEST");
+		@SuppressWarnings("unused")
+		SendEmail se = new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate/"+g.getEmail()+">OVDE</a>");
 		return new ResponseEntity<Guest>(g, HttpStatus.CREATED);	
+	}
+	@RequestMapping(
+			value="/activate/{email}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Guest> activate(@PathVariable("email") String email) throws Exception{
+		Guest g = guestService.activate(email);
+		return new ResponseEntity<Guest>(g, HttpStatus.OK);	
 	}
 	
 }

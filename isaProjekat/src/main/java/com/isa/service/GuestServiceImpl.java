@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.isa.entity.users.Friend;
 import com.isa.entity.users.FriendId;
 import com.isa.entity.users.Guest;
+import com.isa.entity.users.GuestStatus;
+import com.isa.entity.users.User;
 import com.isa.repository.FriendRepository;
 import com.isa.repository.GuestRepository;
+import com.isa.repository.UserRepository;
 
 
 @Service
@@ -21,6 +24,9 @@ public class GuestServiceImpl implements GuestService {
 	
 	@Autowired
 	private GuestRepository guestRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
 	private FriendRepository friendRepository;
@@ -170,21 +176,27 @@ public class GuestServiceImpl implements GuestService {
 		for(Guest g : friends1){
 			friends.add(g);
 		}
-		
-		
-		List<Guest> allGuests = guestRepository.getAllGuests();
+		List<Guest> allGuests = guestRepository.getAllGuests(guest);
 		
 		for(Guest g : friends){
 			for(Guest f : allGuests){
-				if(g.getId() == f.getId() || f.getId() == guest.getId()){
+				if(g.getId() == f.getId()){
 					allGuests.remove(f);
 					break;
 				}
 			}
 		}
-		
-		
 		return new ResponseEntity<List<Guest>>(allGuests,HttpStatus.OK);
+	}
+
+
+	@Override
+	public Guest activate(String email) {
+		User user = userRepository.findByEmail(email);
+		Guest old = guestRepository.findOne(user.getId());
+		old.setStatus(GuestStatus.ACTIVE);
+		Guest g = guestRepository.save(old);
+		return g;
 	}
 	
 

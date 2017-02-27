@@ -174,7 +174,20 @@ app.controller('profileController',['$rootScope','$scope','$location','$http','S
 
 }]);
 
-app.controller('guestController',['$rootScope','$scope','$location','$http','GuestService',function($rootScope,$scope,$location,$http,guestService) {
+app.controller('restaurantController',['$rootScope','$scope','$location','$http','SessionService','SystemManagerService',function($rootScope,$scope,$location,$http,sessionService,systemManagerService) {
+	
+	if (!$rootScope.loggedUser) {
+		$location.path('/login');
+	} else if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
+		$location.path('/changePassword');
+	
+	systemManagerService.getRestaurants($rootScope.loggedUser.id).then(function(response){
+		$scope.restaurants = response.data;
+	});
+	
+}]);
+
+app.controller('friendsController',['$rootScope','$scope','$location','$http','GuestService',function($rootScope,$scope,$location,$http,guestService) {
 	
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
@@ -185,12 +198,28 @@ app.controller('guestController',['$rootScope','$scope','$location','$http','Gue
 	$scope.showRequest = true;
 	$scope.showFriend = true;
 	$scope.search = true;
+	$scope.showSent = true;
+	
+	
+		
+	$scope.showDialog = function(friend){
+		document.getElementById('id01').style.display='block';
+		$scope.display = friend;
+	}
 	
 	$scope.showSearch = function(){
 		if(!$scope.search){
 			$scope.search = true;
 		}else{
 			$scope.search = false;
+		}
+	}
+	
+	$scope.showSents = function(){
+		if(!$scope.showSent){
+			$scope.showSent = true;
+		}else{
+			$scope.showSent = false;
 		}
 	}
 	
@@ -234,6 +263,17 @@ app.controller('guestController',['$rootScope','$scope','$location','$http','Gue
 		guestService.removeFriend($rootScope.loggedUser.id,friend.id).then(function(response){
 			var index = $scope.friends.indexOf($scope.forRemoval);
 			$scope.friends.splice(index,1);
+			$scope.nonFriends.push($scope.forRemoval)
+			$scope.forRemoval = null;
+		});
+	}
+	
+	$scope.sendRequest = function(reciever){
+		$scope.forRemoval = reciever
+		guestService.sendRequest($rootScope.loggedUser.id,reciever.id).then(function(response){
+			var index = $scope.nonFriends.indexOf($scope.forRemoval);
+			$scope.nonFriends.splice(index,1);
+			$scope.sentRequests.push($scope.forRemoval);
 			$scope.forRemoval = null;
 		});
 	}
@@ -244,6 +284,14 @@ app.controller('guestController',['$rootScope','$scope','$location','$http','Gue
 	
 	guestService.getRequests($rootScope.loggedUser.id).then(function(response){
 		$scope.requests = response.data;
+	});
+	
+	guestService.getSentRequests($rootScope.loggedUser.id).then(function(response){
+		$scope.sentRequests = response.data;
+	});
+	
+	guestService.getNonFriends($rootScope.loggedUser.id).then(function(response){
+		$scope.nonFriends = response.data;
 	});
 
 

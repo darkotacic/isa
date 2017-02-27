@@ -85,6 +85,13 @@ app.factory('GuestService', function guestService($http) {
 		});
 	}
 	
+	guestService.getSentRequests = function(id){
+		return $http({
+			method : 'GET',
+			url: '../guests/sentRequests/'+id
+		});
+	}
+	
 	guestService.acceptRequest = function(user_id,sender_id){
 		return $http({
 			method : 'POST',
@@ -103,6 +110,20 @@ app.factory('GuestService', function guestService($http) {
 		return $http({
 			method : 'POST',
 			url: '../guests/removeFriend?user_id='+user_id+'&friend_id='+friend_id
+		});
+	}
+	
+	guestService.getNonFriends = function(user_id){
+		return $http({
+			method : 'GET',
+			url: '../guests/nonFriends/' + user_id
+		});
+	}
+	
+	guestService.sendRequest = function(user_id,reciever_id){
+		return $http({
+			method : 'POST',
+			url: '../guests/sendRequest?user_id='+user_id+'&reciever_id='+reciever_id
 		});
 	}
 

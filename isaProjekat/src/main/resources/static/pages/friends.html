@@ -1,4 +1,4 @@
-<div ng-controller='guestController'>
+<div ng-controller='friendsController'>
 		Friend requests: <img src="../images/arrow.jpg" alt="arrow" class="arrow" ng-class="{rotate90: showRequest}" ng-click="showRequests()">
 	<br/>
 	<div class="w3-card-8 w3-dark-grey item-content" style="display:inline-block" ng-class="{active: showRequest}" ng-repeat="request in requests">
@@ -22,20 +22,49 @@
 		  <img src="../images/smiley.jpg" alt="Avatar" >
 		  <h5>{{friend.userName +' '+ friend.surname}} </h5>
 		
-		  <button class="w3-button w3-green">Show</button>
+		  <button class="w3-button w3-green" ng-click="showDialog(friend)">Show</button>
 		  <button class="w3-button w3-red" ng-click="removeFriend(friend)">Remove</button>
+		</div>
+	</div>
+	
+	<div id="id01" class="w3-modal">
+	    <div class="w3-modal-content w3-animate-zoom">
+	      <header class="w3-container w3-teal"> 
+	        <span onclick="document.getElementById('id01').style.display='none'" 
+	        class="w3-closebtn">&times;</span>
+	        <h2>Friend info</h2>
+	      </header>
+	      <div class="w3-container">
+	        <label class="control-label col-sm-3">First name:</label> <p>{{display.userName}}</p><img src="../images/smiley.jpg" alt="Avatar" class="topright">
+	        <label class="control-label col-sm-3">Last name:</label><p>{{display.surname}}</p>
+	        <label class="control-label col-sm-3">Email:</label><p>{{display.email}}</p>
+	       	<label class="control-label col-sm-3">Date of birth:</label><p>{{display.dateOfBirth}}</p>
+	      </div>
+	    </div>
+	  </div>
+	
+	<br/>
+		Sent request: <img src="../images/arrow.jpg" alt="arrow" class="arrow" ng-class="{rotate90: showSent}" ng-click="showSents()">
+	<br/>
+	
+	<div class="w3-card-8 w3-dark-grey item-content" style="display:inline-block" ng-class="{active: showSent}" ng-repeat="sentRequest in sentRequests">
+		<div class="w3-container w3-center" >
+		  <h3>Guest</h3>
+		  <img src="../images/smiley.jpg" alt="Avatar" >
+		  <h5>{{sentRequest.userName +' '+ sentRequest.surname}} </h5>
+		  <label class="w3-button w3-green">Pending</label>
 		</div>
 	</div>
 	<br/>
 		Find friends: <img src="../images/arrow.jpg" alt="arrow" class="arrow" ng-class="{rotate90: search}" ng-click="showSearch()">
 	<br/>
 	
-	<div class="w3-card-8 w3-dark-grey item-content" style="display:inline-block" ng-class="{active: search}" ng-repeat="notFriend in notFriends">
+	<div class="w3-card-8 w3-dark-grey item-content" style="display:inline-block" ng-class="{active: search}" ng-repeat="notFriend in nonFriends">
 		<div class="w3-container w3-center" >
 		  <h3>Guest</h3>
 		  <img src="../images/smiley.jpg" alt="Avatar" >
 		  <h5>{{notFriend.userName +' '+ notFriend.surname}} </h5>
-		  <button class="w3-button w3-green">Send friend request</button>
+		  <button class="w3-button w3-green" ng-click="sendRequest(notFriend)">Send friend request</button>
 		</div>
 	</div>
 

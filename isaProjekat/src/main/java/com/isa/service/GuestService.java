@@ -12,6 +12,8 @@ public interface GuestService {
 	
 	Guest register(Guest guest);
 	
+	Guest activate(String email);
+	
 	ResponseEntity<List<Guest>> getNonFriendsForGuest(Long id);
 	
 	ResponseEntity<List<Guest>> getSentRequestsForGuest(Long id);
