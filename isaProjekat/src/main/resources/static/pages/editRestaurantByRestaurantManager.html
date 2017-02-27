@@ -6,7 +6,7 @@
 		<div class="col-sm-9">
 			<input type="text" class="form-control" placeholder="Enter name"
 				name="name" ng-Model="$parent.editRestaurant.restaurantName" id="rn"
-				pattern="^[A-Z][a-z_ A-Z]*" ng-minlength="3" ng-maxlength="30" />
+				pattern="^[A-Z][a-z_ A-Z]*" ng-minlength="3" ng-maxlength="30" required/>
 		</div>
 	</div>
 	<div role="alert" style="color: red">
@@ -21,7 +21,7 @@
 			<input type="text" class="form-control" id="des" name="des"
 				placeholder="Enter description"
 				ng-Model="$parent.editRestaurant.description" id="rn"
-				pattern="^[A-Z][a-z_ A-Z0-9]*" ng-maxlength="50" />
+				pattern="^[A-Z][a-z_ A-Z0-9]*" ng-maxlength="50" required/>
 		</div>
 	</div>
 	<div role="alert" style="color: red">

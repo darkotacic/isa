@@ -13,7 +13,7 @@ import javax.mail.internet.MimeMessage;
 public class SendEmail {
 
 	
-	public SendEmail(String sendTo, String link){
+	public SendEmail(String sendTo, String link, String subject , String text){
 		  // Recipient's email ID needs to be mentioned.
 	      String to = sendTo;
 
@@ -39,8 +39,8 @@ public class SendEmail {
 	      {
 	          message.setFrom(new InternetAddress(from));
 	          message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-	          message.setSubject("Aktivacioni link");
-	          message.setText("Aktivirajte nalog klikom na link: "+link, "utf-8", "html");
+	          message.setSubject(subject);
+	          message.setText(text+link, "utf-8", "html");
 	          Transport.send(message, username	, password);
 	      }
 	      catch (AddressException e) {e.printStackTrace();}

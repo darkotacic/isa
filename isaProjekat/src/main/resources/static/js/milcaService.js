@@ -137,6 +137,13 @@ app.factory('BidderService', function bidderService($http) {
 			url : '../bidders/getRequestOffer?id=' + id
 		});
 	}
+	
+	bidderService.getBidderOffer = function(id) {
+		return $http({
+			method : 'GET',
+			url : '../bidders/getBidderOffer?id=' + id
+		});
+	}
 
 	bidderService.getBidderOfferForBidderAndRequest = function(request_id,
 			bidder_id) {
@@ -228,6 +235,35 @@ app
 									+ id
 						});
 					}
+					
+					restaurantManagerService.getRestaurantTable = function(
+							id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantmanagers/getRestaurantTable?id='
+									+ id
+						});
+					}
+					
+					restaurantManagerService.getWorkSchedule = function(
+							id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantmanagers/getWorkSchedule?id='
+									+ id
+						});
+					}
+					
+
+					restaurantManagerService.getRequestOffer = function(
+							id) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantmanagers/getRequestOffer?id='
+									+ id
+						});
+					}
+					
 					restaurantManagerService.restaurantGrade = function(
 							id) {
 						return $http({

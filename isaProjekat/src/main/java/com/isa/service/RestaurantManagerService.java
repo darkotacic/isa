@@ -124,5 +124,11 @@ public interface RestaurantManagerService {
 
 	ResponseEntity<RestaurantManager> update(RestaurantManager r);
 
+	ResponseEntity<RestaurantTable> getRestaurantTable(Long id);
+
+	ResponseEntity<WorkSchedule> getWorkSchedule(Long id);
+
+	ResponseEntity<BidderOffer> getBidderOffer(Long id);
+
 
 }

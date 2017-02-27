@@ -371,8 +371,21 @@ app
 							}
 							
 							$scope.editSelectedBidderOffer = function(id) {
+								bidderService.getBidderOffer(
+										$scope.selectedBidderOffer.id).then(
+										function(response) {
+											if (response.data) {
+												if($scope.selectedBidderOffer.offerStatus != response.data.offerStatus) {
+													$scope.selectedBidderOffer = response.data;
+													var index = $scope.bidderOffers
+													.indexOf($scope.selectedBidderOffer);
+													$scope.bidderOffers[index] = response.data;
+												}
+												else 		
+													$scope.show = 3;
+											}
+										});
 								$scope.editBidderOffer = $scope.selectedBidderOffer;
-								$scope.show = 3;
 							}
 
 							$scope.editBidderOfferData = function() {
@@ -493,17 +506,50 @@ app
 							$scope.displayShift = function(tab) {
 								if(tab == 1)
 									$scope.selectedShift = null;
-								if(tab == 2)
-									$scope.editWorkSchedule = $scope.selectedShift;
 								$scope.showQ = tab;
+								if(tab == 2) {
+									$scope.editWorkSchedule = $scope.selectedShift;
+									restaurantManagerService.getWorkSchedule(
+											$scope.selectedShift.id).then(
+											function(response) {
+												if (response.data) {
+													if($scope.selectedShift.done != response.data.done){
+														var index = $scope.restaurantShifts
+														.indexOf($scope.selectedShift);
+														$scope.restaurantShifts[index] = response.data;
+														$scope.showQ = null;
+														$scope.selectedShift = response.data;
+													}
+													else 		
+														$scope.showQ = 2;
+												}
+											});
+								}
+								
 								
 							}
 							$scope.displayRequest = function(tab) {
 								$scope.showR = tab;
 								if(tab == 1)
-									$scope.selectedRequestOffer = null;
-								if(tab == 2)
+									$scope.selectedRequestOffer = null; 
+								if(tab == 2) {
 									$scope.editRequestOffer = $scope.selectedRequestOffer;
+									restaurantManagerService.getRequestOffer(
+											$scope.selectedRequestOffer.id).then(
+											function(response) {
+												if (response.data) {
+													if($scope.selectedRequestOffer.status != response.data.status){
+														var index = $scope.managerOffers
+														.indexOf($scope.selectedRequestOffer);
+														$scope.managerOffers[index] = response.data;
+														$scope.showR = null;
+														$scope.selectedShift = response.data;
+													}
+													else 		
+														$scope.showR = 2;
+												}
+											});
+									}
 								$scope.selectedBid = null;
 								$scope.selectedRestaurantProduct = null;
 								$scope.selectedRequestOfferProduct = null;
@@ -894,6 +940,7 @@ app
 							}
 
 							$scope.editTableData = function() {
+								$scope.checkTableStatus();
 								restaurantManagerService
 										.editTableData($scope.editTable, $scope.editTable.segment.id)
 										.then(
@@ -916,7 +963,23 @@ app
 												  });
 							}
 							
+							$scope.checkTableStatus = function() {
+								restaurantManagerService.getRestaurantTable(
+										$scope.selectedTable.id).then(
+										function(response) {
+											if(response.data) {
+												if($scope.selectedTable.free != response.data.free){
+													var index = $scope.segmentTables
+													.indexOf($scope.selectedTable);
+													$scope.segmentTables[index] = response.data;
+													$scope.selectedTable = null;
+												}
+											}
+										});
+							}
+							
 							$scope.deleteTable = function() {
+								$scope.checkTableStatus();
 								restaurantManagerService
 										.deleteTable($scope.selectedTable.id)
 										.then(
@@ -964,20 +1027,6 @@ app
 							}
 							
 							$scope.editSegmentData = function() {
-					/*
-					 * if($scope.editSegment.position == null)
-					 * $scope.editSegment.position =
-					 * $scope.selectedSegment.position;
-					 * if($scope.editSegment.smokingAllowed == null)
-					 * $scope.editSegment.smokingAllowed =
-					 * $scope.selectedSegment.smokingAllowed;
-					 * if($scope.editSegment.width == null)
-					 * $scope.editSegment.width = $scope.selectedSegment.width;
-					 * if($scope.editSegment.height == null)
-					 * $scope.editSegment.height =
-					 * $scope.selectedSegment.height; $scope.editSegment.id =
-					 * $scope.selectedSegment.id;
-					 */
 								restaurantManagerService
 										.editSegmentData($scope.editSegment)
 										.then(

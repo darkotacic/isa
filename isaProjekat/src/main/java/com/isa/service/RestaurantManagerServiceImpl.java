@@ -581,5 +581,20 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 		return new ResponseEntity<List<Product>>(this.productRepository.findProductByRestaurantAndName(name, id),
 				HttpStatus.OK);
 	}
+	@Override
+	public ResponseEntity<RestaurantTable> getRestaurantTable(Long id) {
+		return new ResponseEntity<RestaurantTable>(this.restaurantTableRepository.findOne(id), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<WorkSchedule> getWorkSchedule(Long id) {
+		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.findOne(id), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<BidderOffer> getBidderOffer(Long id) {
+		return new ResponseEntity<BidderOffer>(this.bidderOfferRepository.findOne(id), HttpStatus.OK);
+	}
+
 
 }

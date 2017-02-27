@@ -25,6 +25,8 @@ public interface BidderService {
 	ResponseEntity<List<RequestOffer>> getActiveRequestOffers();
 
 	ResponseEntity<RequestOffer> getRequestOffer(Long id);
+
+	ResponseEntity<BidderOffer> getBidderOffer(Long id);
 	
 	
 }

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import com.isa.entity.users.Cook;
 import com.isa.entity.users.RestaurantManager;
 import com.isa.entity.users.Waiter;
 import com.isa.entity.users.Worker;
+import com.isa.mail.SendEmail;
 import com.isa.service.RestaurantManagerService;
 
 @RestController
@@ -40,13 +42,17 @@ public class RestaurantManagerController {
 	@Autowired
 	private RestaurantManagerService restaurantManagerService;
 
+	@Autowired
+	private HttpSession session;
+
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<RestaurantManager> update(@RequestBody @Valid RestaurantManager r) {
+		session.setAttribute("user", r);
 		return restaurantManagerService.update(r);
 	}
-	
+
 	@RequestMapping(value = "/updateRestaurant", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
@@ -110,8 +116,9 @@ public class RestaurantManagerController {
 	@RequestMapping(value = "/updateRestaurantTable", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<RestaurantTable> updateRestaurantTable(@RequestBody @Valid RestaurantTable rt,@RequestParam(value = "id") Long id) {
-		return restaurantManagerService.updateRestaurantTable(rt,id);
+	public ResponseEntity<RestaurantTable> updateRestaurantTable(@RequestBody @Valid RestaurantTable rt,
+			@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.updateRestaurantTable(rt, id);
 	}
 
 	@RequestMapping(value = "/updateSegment", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -338,6 +345,21 @@ public class RestaurantManagerController {
 	@Transactional
 	public ResponseEntity<RequestOffer> acceptBidderOffer(@RequestParam(value = "bid_id") Long r_id,
 			@RequestParam(value = "req_id") Long q_id) {
+		// http://localhost:8080/!#/bidderOffersForBidder.html
+		List<BidderOffer> biddings = getAllBidderOffersForRequestOffer(r_id).getBody();
+		for (int i = 0; i < biddings.size(); i++) {
+			if (biddings.get(i).getId() == r_id) {
+				@SuppressWarnings("unused")
+				SendEmail se = new SendEmail(biddings.get(i).getBidder().getEmail(),
+						"<a href=http://localhost:8080/!#/bidderOffersForBidder.html> Check </a>", "Notification",
+						"Your bidder offer " + biddings.get(i).getId() + " is accepted. Check here :");
+			} else {
+				@SuppressWarnings("unused")
+				SendEmail se = new SendEmail(biddings.get(i).getBidder().getEmail(),
+						"<a href=http://localhost:8080/!#/bidderOffersForBidder.html> Check </a>", "Notification",
+						"Your bidder offer " + biddings.get(i).getId() + " is declined. Check here :");
+			}
+		}
 		return restaurantManagerService.acceptBidderOffer(r_id, q_id);
 	}
 
@@ -351,10 +373,10 @@ public class RestaurantManagerController {
 	@RequestMapping(value = "/getGradeForOrder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public double getGradeForOrder(@RequestParam(value = "id") Long id,@RequestParam(value = "res_id") Long res_id) {
+	public double getGradeForOrder(@RequestParam(value = "id") Long id, @RequestParam(value = "res_id") Long res_id) {
 		return restaurantManagerService.gradeForOrder(id, res_id);
 	}
-	
+
 	@RequestMapping(value = "/getGradeForWaiter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
@@ -366,7 +388,8 @@ public class RestaurantManagerController {
 	@ResponseBody
 	@Transactional
 	public double getRestaurantEarnings(@RequestParam(value = "id") Long id,
-			@RequestParam(value = "start") String startDate, @RequestParam(value = "end") String endDate) throws ParseException {
+			@RequestParam(value = "start") String startDate, @RequestParam(value = "end") String endDate)
+			throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
 		Date start = formatter.parse(startDate);
 		Date end = formatter.parse(endDate);
@@ -393,31 +416,55 @@ public class RestaurantManagerController {
 	public double checkIfRequestOfferExpired() {
 		return restaurantManagerService.checkIfRequestOfferExpired();
 	}
-	
+
 	@RequestMapping(value = "/checkIfWorkScheduleIsDone", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
 	public double checkIfWorkScheduleIsDone() {
 		return restaurantManagerService.checkIfWorkScheduleIsDone();
 	}
+
 	@RequestMapping(value = "/checkIfSegmentCanBeDeleted", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
 	public double checkIfSegmentCanBeDeleted(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.checkIfSegmentCanBeDeleted(id);
 	}
-	
+
 	@RequestMapping(value = "/getAllWaitersByNameAndRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<List<Waiter>> getAllWaitersByNameAndRestaurant(@RequestParam(value = "id") Long id, @RequestParam(value = "name") String name) {
+	public ResponseEntity<List<Waiter>> getAllWaitersByNameAndRestaurant(@RequestParam(value = "id") Long id,
+			@RequestParam(value = "name") String name) {
 		return restaurantManagerService.getAllWaitersByNameAndRestaurant(id, name);
 	}
-	
+
 	@RequestMapping(value = "/getAllProductsByNameAndRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<List<Product>> getAllProductsByNameAndRestaurant(@RequestParam(value = "id") Long id, @RequestParam(value = "name") String name) {
+	public ResponseEntity<List<Product>> getAllProductsByNameAndRestaurant(@RequestParam(value = "id") Long id,
+			@RequestParam(value = "name") String name) {
 		return restaurantManagerService.getAllProductsByNameAndRestaurant(id, name);
+	}
+
+	@RequestMapping(value = "/getRestaurantTable", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<RestaurantTable> getRestaurantTable(@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.getRestaurantTable(id);
+	}
+
+	@RequestMapping(value = "/getWorkSchedule", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<WorkSchedule> getWorkSchedule(@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.getWorkSchedule(id);
+	}
+
+	@RequestMapping(value = "/getBidderOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<BidderOffer> getBidderOffer(@RequestParam(value = "id") Long id) {
+		return restaurantManagerService.getBidderOffer(id);
 	}
 }

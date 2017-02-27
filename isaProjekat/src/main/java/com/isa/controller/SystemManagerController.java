@@ -2,6 +2,7 @@ package com.isa.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,14 @@ public class SystemManagerController {
 	@Autowired 
 	private SystemManagerService systemManagerService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<SystemManager> updateSystem(@RequestBody @Valid SystemManager sm) {
+		session.setAttribute("user", sm);
 		return systemManagerService.updateSystemManager(sm);
 	}
 	

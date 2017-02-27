@@ -35,7 +35,7 @@
 								waiters</div></td>
 						<td><div ng-if="shift.worker.userRole == 'WAITER' ">
 								<div ng-if="shift.replacement != null ">
-									{{shift.replacement.worker.id}}</div>
+									{{shift.replacement.id}}</div>
 								<div ng-if="shift.replacement == null ">No replacement</div>
 							</div>
 							<div ng-if="shift.worker.userRole != 'WAITER'">Only for

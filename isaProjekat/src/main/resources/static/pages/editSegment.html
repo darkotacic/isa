@@ -7,7 +7,7 @@
 		ng-Model="$parent.editSegment.position"
 		ng-value="$parent.selectedSegment.position" class="form-control"
 		placeholder="Enter position" pattern="^[A-Z][a-z_ A-Z0-9]*"
-		ng-maxlength="60" />
+		ng-maxlength="60" required/>
 </div>
 <div role="alert" style="color: red">
 	<span class="error" ng-show="myForm.des.$error.maxlength"> Too
@@ -17,18 +17,18 @@
 <label>Smoking allowed?</label>
 <div class="form-group">
 	<label class="radio-inline"> <input type="radio" value=true
-		ng-model="$parent.editSegment.smokingAllowed" /> Yes
+		ng-model="$parent.editSegment.smokingAllowed" required/> Yes
 	</label> <label class="radio-inline"> <input type="radio" value=false
-		ng-model="$parent.editSegment.smokingAllowed" /> No
+		ng-model="$parent.editSegment.smokingAllowed" required/> No
 	</label>
 </div>
 <div class="form-group">
 	<label>Max number of tables in row:</label> <input type="number"
-		min="1" ng-Model="$parent.editSegment.width" class="form-control" />
+		min="1" ng-Model="$parent.editSegment.width" class="form-control" required/>
 </div>
 <div class="form-group">
 	<label>Max number of tables in column:</label> <input type="number"
-		min="1" ng-Model="$parent.editSegment.height" class="form-control" />
+		min="1" ng-Model="$parent.editSegment.height" class="form-control" required/>
 </div>
 <div class="form-group">
 	<button type="submit" class="btn btn-success"

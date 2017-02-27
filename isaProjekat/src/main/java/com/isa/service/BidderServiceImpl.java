@@ -86,5 +86,10 @@ public class BidderServiceImpl implements BidderService {
 	public ResponseEntity<RequestOffer> getRequestOffer(Long id) {
 		return new ResponseEntity<RequestOffer>(this.requestOfferRepository.findOne(id), HttpStatus.OK);
 	}
+	
+	@Override
+	public ResponseEntity<BidderOffer> getBidderOffer(Long id) {
+		return new ResponseEntity<BidderOffer>(this.bidderOfferRepository.findOne(id), HttpStatus.OK);
+	}
 
 }

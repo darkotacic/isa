@@ -162,7 +162,7 @@ public class GuestController {
 	public ResponseEntity<Guest> register(@RequestBody Guest guest) throws Exception{
 		Guest g = guestService.register(guest);
 		@SuppressWarnings("unused")
-		SendEmail se = new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>");
+		SendEmail se = new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>", "Aktivacioni link", "Za aktivaciju klik ovde");
 		return new ResponseEntity<Guest>(g, HttpStatus.CREATED);	
 	}
 	@RequestMapping(

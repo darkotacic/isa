@@ -2,6 +2,7 @@ package com.isa.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,14 @@ public class BidderController {
 	@Autowired
 	private BidderService bidderService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
 	public ResponseEntity<Bidder> update(@RequestBody @Valid Bidder b) {
+		session.setAttribute("user", b);
 		return bidderService.updateProfile(b);
 	}
 	
@@ -89,4 +94,12 @@ public class BidderController {
 	public ResponseEntity<BidderOffer> getBidderOfferForBidderAndRequestOffer(@RequestParam(value = "b_id") Long bidder_id, @RequestParam(value = "ro_id") Long request_offer_id) {
 		return bidderService.getBidderOfferByBidderAndRequestOffer(bidder_id, request_offer_id);
 	}
+	
+	@RequestMapping(value = "/getBidderOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<BidderOffer> getBidderOffer(@RequestParam(value = "id") Long id) {
+		return bidderService.getBidderOffer(id);
+	}
+	
 }

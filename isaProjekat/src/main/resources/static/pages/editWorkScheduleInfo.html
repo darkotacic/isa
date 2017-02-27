@@ -3,27 +3,27 @@
 	<div class="form-group">
 		<label>Date:</label> <input type="date"
 			ng-Model="$parent.editWorkSchedule.date" class="form-control"
-			placeholder="Enter date"/>
+			placeholder="Enter date" required/>
 	</div>
 	<label>Two days shift?</label>
 	<div class="form-group">
 		<label class="radio-inline"> <input type="radio" value=true
-			ng-model="$parent.editWorkSchedule.twoDays"/> Yes
+			ng-model="$parent.editWorkSchedule.twoDays" required/> Yes
 		</label> <label class="radio-inline"> <input type="radio" value=false
-			ng-model="$parent.editWorkSchedule.twoDays"/> No
+			ng-model="$parent.editWorkSchedule.twoDays" required/> No
 		</label>
 	</div>
 	<div class="form-group">
 		<label>Start time:</label> <input type="number"  step="0.1" min="00.00" max="24.00"
 			ng-Model="$parent.editWorkSchedule.startTime"
 			class="form-control"
-			placeholder="Enter start time"  />
+			placeholder="Enter start time"  required/>
 	</div>
 	<div class="form-group">
 		<label>End time:</label> <input type="number"  step="0.1" min="00.00" max="24.00"
 			ng-Model="$parent.editWorkSchedule.endTime"
 			class="form-control"
-			placeholder="Enter end time , format 11.12" />
+			placeholder="Enter end time , format 11.12" required/>
 	</div>
 	<div class="form-group">
 		<button type="submit" class="btn btn-success" ng-disabled="myForm.$invalid"
