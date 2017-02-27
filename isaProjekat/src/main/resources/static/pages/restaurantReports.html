@@ -21,6 +21,60 @@
 			class="form-control" id="des" readonly=true
 			ng-value="restaurantEarnings">
 	</div>
+	<h2 class="page-header">Enter waiter name, to get his grade:</h2>
+	<form name="myFormNew" novalidate>
+		<div class="form-group">
+			<input type="text" ng-Model="waiterName" class="form-control"
+				placeholder="Enter waiter" required />
+			<button type="submit" class="btn btn-success"
+				ng-disabled="myFormNew.$invalid"
+				ng-Click="getAllWaitersByNameAndRestaurant()">Submit</button>
+		</div>
+	</form>
+	<div ng-if="!onlyWithThatName">
+		<h2 class="page-header">Waiters named {{waiterName}} :</h2>
+		<div class="container">
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Surname</th>
+							<th>Email</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="waiter in namedWaiters"
+							ng-click="setSelectedWaiter(waiter)"
+							ng-class="{'info' : selectedWaiter===waiter}">
+							<td>{{waiter.id}}</td>
+							<td>{{waiter.userName}}</td>
+							<td>{{waiter.surname}}</td>
+							<td>{{waiter.email}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="conteinter">
+			<div class="row">
+				<div class="col-xs-12 offset3">
+					<div class="text-left">
+						<button type="button" class="btn btn-success"
+							ng-Click="getGradeOfWaiter()" ng-disabled="!selectedWaiter">Waiter
+							grade</button>
+					</div>
+				</div>
+			</div>
+			<br />
+		</div>
+	</div>
+	<div class="form-group">
+		<label>Waiter grade:</label> <input type="text" class="form-control"
+			id="des" readonly=true ng-value="waiterGrade" />
+	</div>
+
 	<h2 class="page-header">Restaurant waiters :</h2>
 	<div class="container">
 		<div class="table-responsive">
@@ -54,9 +108,6 @@
 					<button type="button" class="btn btn-primary"
 						ng-click="getEarningForWaiter()" ng-disabled="!selectedWorker">Waiter
 						earnings</button>
-					<button type="button" class="btn btn-success"
-						ng-Click="getGradeOfWaiter()" ng-disabled="!selectedWorker">Waiter
-						grade</button>
 				</div>
 			</div>
 		</div>
@@ -65,21 +116,21 @@
 	<div class="form-group">
 		<label>Selected waiters earnings:</label> <input type="text"
 			class="form-control" id="des" readonly=true ng-value="waiterEarnings"
-			ng-model="waiterEarnings"> <label>Selected waiters
-			grade:</label> <input type="text" class="form-control" id="des" readonly=true
-			ng-value="waiterGrade" ng-model="waiterGrade">
+			ng-model="waiterEarnings">
 	</div>
-	<br />
-	<br/>
-	<br/>
-	<div class="form-group">
-		<button type="button" class="btn btn-primary"
-			ng-click="getProductsForRestaurant()" ng-disabled="showProducts">Show
-			restaurant products</button>
-	</div>
+	<br /> <br /> <br />
+	<h2 class="page-header">Enter product name, to get his grade:</h2>
+	<form name="myFormPro" novalidate>
+		<div class="form-group">
+			<input type="text" ng-Model="productName" class="form-control"
+				placeholder="Enter product" required />
+			<button type="submit" class="btn btn-success"
+				ng-disabled="myFormPro.$invalid"
+				ng-Click="getAllProductsByNameAndRestaurant()">Submit</button>
+		</div>
+	</form>
 	<div ng-if="showProducts">
-		<h1 class="page-header">Products of
-			{{$parent.restaurant.restaurantName}}</h1>
+		<h1 class="page-header">Products named {{productName}}</h1>
 		<div class="container">
 			<div class="table-responsive">
 				<table class="table">
@@ -92,10 +143,9 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-if="product.productType != 'DRINK'"
-							ng-repeat="product in restaurantProducts"
-							ng-click="setSelectedRestaurantProduct(product)"
-							ng-class="{'info' : selectedRestaurantProduct===product}">
+						<tr ng-repeat="product in namedProducts"
+							ng-click="setSelectedNamedProduct(product)"
+							ng-class="{'info' : selectedNamedProduct===product}">
 							<td>{{product.id}}</td>
 							<td>{{product.productName}}</td>
 							<td>{{product.description}}</td>
@@ -111,14 +161,14 @@
 					<div class="text-left">
 						<button type="button" class="btn btn-primary"
 							ng-click="getProductGrade()"
-							ng-disabled="!selectedRestaurantProduct">Product grade</button>
+							ng-disabled="!selectedNamedProduct">Product grade</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
-			<label>Product grade:</label> <input type="text" class="form-control"
-				id="des" readonly=true ng-model="gradeProduct">
-		</div>
+	</div>
+	<div class="form-group">
+		<label>Product grade:</label> <input type="text" class="form-control"
+			id="des" readonly=true ng-model="gradeProduct">
 	</div>
 </div>

@@ -162,16 +162,16 @@ public class GuestController {
 	public ResponseEntity<Guest> register(@RequestBody Guest guest) throws Exception{
 		Guest g = guestService.register(guest);
 		@SuppressWarnings("unused")
-		SendEmail se = new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate/"+g.getEmail()+">OVDE</a>");
+		SendEmail se = new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>");
 		return new ResponseEntity<Guest>(g, HttpStatus.CREATED);	
 	}
 	@RequestMapping(
-			value="/activate/{email}",
+			value="/activate",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Guest> activate(@PathVariable("email") String email) throws Exception{
+	public ResponseEntity<Guest> activate(@RequestParam("email") String email) throws Exception{
 		Guest g = guestService.activate(email);
 		return new ResponseEntity<Guest>(g, HttpStatus.OK);	
 	}

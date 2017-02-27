@@ -406,4 +406,18 @@ public class RestaurantManagerController {
 	public double checkIfSegmentCanBeDeleted(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.checkIfSegmentCanBeDeleted(id);
 	}
+	
+	@RequestMapping(value = "/getAllWaitersByNameAndRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Waiter>> getAllWaitersByNameAndRestaurant(@RequestParam(value = "id") Long id, @RequestParam(value = "name") String name) {
+		return restaurantManagerService.getAllWaitersByNameAndRestaurant(id, name);
+	}
+	
+	@RequestMapping(value = "/getAllProductsByNameAndRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Product>> getAllProductsByNameAndRestaurant(@RequestParam(value = "id") Long id, @RequestParam(value = "name") String name) {
+		return restaurantManagerService.getAllProductsByNameAndRestaurant(id, name);
+	}
 }

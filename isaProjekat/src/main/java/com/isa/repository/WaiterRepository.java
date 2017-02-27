@@ -1,6 +1,7 @@
 package com.isa.repository;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,4 +15,6 @@ public interface WaiterRepository extends CrudRepository<Waiter, Long> {
 	Double getEarningsForRestaurant(Restaurant t, Date startDate, Date endDate);
 	@Query("select sum(o.price) from Waiter w inner join w.orders as o where w.id = ?1 and o.orderStatus='PAID'")
 	Double getEarningsForWaiter(Long id);
+	
+	List<Waiter> findByUserNameAndRestaurant(String name, Restaurant res);
 }

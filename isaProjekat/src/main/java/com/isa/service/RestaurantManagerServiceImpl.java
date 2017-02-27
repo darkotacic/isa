@@ -259,6 +259,9 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			temp.setTwoDays(false);
 			temp.setSecondDate(null);
 		}
+		if(!temp.isTwoDays())
+			if (w.getStartTime() > w.getEndTime())
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		temp.setEndTime(w.getEndTime());
 		temp.setStartTime(w.getStartTime());
 		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(temp), HttpStatus.OK);
@@ -544,6 +547,16 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Override
 	public double checkIfSegmentCanBeDeleted(Long id) {
 		return this.restaurantTableRepository.seeIfCanDeleteSegment(id).size();
+	}
+
+	@Override
+	public ResponseEntity<List<Waiter>> getAllWaitersByNameAndRestaurant(Long id, String name) {
+		return new ResponseEntity<List<Waiter>>(this.waiterRepository.findByUserNameAndRestaurant(name,this.restaurantRepository.findOne(id)), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<List<Product>> getAllProductsByNameAndRestaurant(Long id, String name) {
+		return new ResponseEntity<List<Product>>(this.productRepository.findProductByRestaurantAndName(name, id), HttpStatus.OK);
 	}
 
 }

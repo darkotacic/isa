@@ -211,6 +211,14 @@ app
 							url : '../restaurantmanagers/checkIfRequestOfferExpired'
 						});
 					}
+					
+					restaurantManagerService.checkIfWorkScheduleIsDone = function() {
+						return $http({
+							method : 'PUT',
+							url : '../restaurantmanagers/checkIfWorkScheduleIsDone'
+						});
+					}
+
 
 					restaurantManagerService.seeIfCanDeleteSegment = function(
 							id) {
@@ -262,13 +270,6 @@ app
 							method : 'GET',
 							url : '../restaurantmanagers/getRestaurantEarnings?id='
 									+ id + '&start=' + start + '&end=' + end
-						});
-					}
-
-					restaurantManagerService.checkIfWorkScheduleIsDone = function() {
-						return $http({
-							method : 'PUT',
-							url : '../restaurantmanagers/checkIfWorkScheduleIsDone'
 						});
 					}
 
@@ -646,6 +647,21 @@ app
 						});
 					}
 
+					restaurantManagerService.getAllWaitersByNameAndRestaurant = function(id, name) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantmanagers/getAllWaitersByNameAndRestaurant?id='
+									+ id + '&name=' + name
+						});
+					}
+					
+					restaurantManagerService.getAllProductsByNameAndRestaurant = function(id, name) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantmanagers/getAllProductsByNameAndRestaurant?id='
+									+ id + '&name=' + name
+						});
+					}
 					
 					return restaurantManagerService;
 

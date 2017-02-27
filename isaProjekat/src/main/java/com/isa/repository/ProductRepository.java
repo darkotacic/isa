@@ -17,4 +17,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 	
 	@Query("select p from RequestOffer ro inner join ro.products as p where ro.id= ?1")
 	List<Product> getProductsForRequestOffer(Long t);
+	
+	@Query("select p from Restaurant r inner join r.menu as p where p.productName = ?1 and r.id = ?2")
+	List<Product> findProductByRestaurantAndName(String name, Long id );
 }

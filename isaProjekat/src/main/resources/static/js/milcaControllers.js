@@ -541,6 +541,12 @@ app
 								$scope.selectedShift = selected;
 								$scope.showQ = null;
 							}
+							$scope.setSelectedWaiter = function(selected) {
+								$scope.selectedWaiter = selected;
+							}
+							$scope.setSelectedNameProduct = function(selected) {
+								$scope.selectedNameProduct = selected;
+							}
 							$scope.canEditSegment = false;
 							$scope.setSelectedSegment = function(selected) {
 								restaurantManagerService
@@ -639,8 +645,6 @@ app
 											$scope.managerOffers = response.data;
 										} 
 									});
-					
-							$scope.showProducts = false;
 							$scope.getProductsForRestaurant = function() {
 								$scope.product = null;
 								$scope.selectedProduct = null;
@@ -649,7 +653,6 @@ app
 										.then(
 												function(response) {
 													if (response.data) {
-														$scope.showProducts = true;
 														$scope.restaurantProducts = response.data;
 														$scope.selectedBid = null;
 														$scope.selectedRestaurantProduct = null;
@@ -1155,6 +1158,7 @@ app
 														.indexOf($scope.selectedShift);
 													$scope.restaurantShifts[index] = response.data;
 													$scope.showQ = null;
+													$scope.selectedShift = null;
 													}
 												}).catch(function(response) {
 													ngNotify.set('Date must be today, or future, also if not twoDaysShift, than end time must be after start time' , {
@@ -1335,14 +1339,16 @@ app
 							}
 							$scope.getGradeOfWaiter = function() {
 							restaurantManagerService
-							.getGradeOfWaiter($scope.selectedWorker.id)
+							.getGradeOfWaiter($scope.selectedWaiter.id)
 							.then(
 									function(response) {
-										if(response.data) {
-											if(response.data != -1)
+										if(response.data) { 
+											if(response.data != -1)  
 												$scope.waiterGrade = response.data;
 											else 
 												$scope.waiterGrade = 'No grades yet'
+												
+													
 										}});
 							}
 							
@@ -1379,7 +1385,7 @@ app
 							
 							$scope.getProductGrade = function() {
 								restaurantManagerService
-								.getProductGrade($scope.restaurant.id, $scope.selectedRestaurantProduct.id)
+								.getProductGrade($scope.restaurant.id, $scope.selectedNamedProduct.id)
 								.then(
 										function(response) {
 											if(response.data) {
@@ -1387,6 +1393,48 @@ app
 													$scope.gradeProduct = response.data;
 												else 
 													$scope.gradeProduct = 'No grades yet'
+											}
+										});
+								}
+							$scope.onlyWithThatName = true;
+							$scope.getAllWaitersByNameAndRestaurant = function() {
+								restaurantManagerService
+								.getAllWaitersByNameAndRestaurant($scope.restaurant.id, $scope.waiterName)
+								.then(
+										function(response) {
+											if(response.data) {
+												if(response.data.length > 1) {
+													$scope.namedWaiters = response.data;
+													$scope.onlyWithThatName = false;
+												}else if(response.data.length == 0){
+													$scope.waiterGrade = 'No waiter with that name'
+												} else{
+													$scope.onlyWithThatName = true;
+													$scope.selectedWaiter = response.data[0];
+													$scope.getGradeOfWaiter();
+													
+												}
+											}
+										});
+								}
+							$scope.showProducts = false;
+							$scope.getAllProductsByNameAndRestaurant = function() {
+								restaurantManagerService
+								.getAllProductsByNameAndRestaurant($scope.restaurant.id, $scope.productName)
+								.then(
+										function(response) {
+											if(response.data) {
+												if(response.data.length > 1) {
+													$scope.namedProducts = response.data;
+													$scope.showProducts = true;
+												}else if(response.data.length == 0){
+													$scope.gradeProduct = 'No product with that name'
+												} else{
+													$scope.showProducts = false;
+													$scope.selectedNamedProduct = response.data[0];
+													$scope.getProductGrade();
+													
+												}
 											}
 										});
 								}
