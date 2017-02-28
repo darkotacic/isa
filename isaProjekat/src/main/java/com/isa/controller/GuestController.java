@@ -2,8 +2,6 @@ package com.isa.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,14 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.entity.Grade;
-import com.isa.entity.Order;
 import com.isa.entity.Segment;
 import com.isa.entity.users.Guest;
-import com.isa.entity.users.User;
 import com.isa.mail.SendEmail;
-import com.isa.service.GradeService;
 import com.isa.service.GuestService;
-import com.isa.service.WorkerService;
 
 @RestController
 @RequestMapping(value="/guests")
@@ -33,16 +27,6 @@ public class GuestController {
 
 	@Autowired
 	private GuestService guestService;
-	
-	@Autowired
-	private WorkerService workerService;
-	
-	@Autowired
-	private GradeService gradeService;
-	
-	@Autowired
-	private HttpSession session;
-	
 	
 	@RequestMapping(
 			value = "/friends/{id}",
@@ -125,32 +109,32 @@ public class GuestController {
 	}
 	
 	@RequestMapping(
-			value="/addGrade/{orderId}",
+			value="/addGrade/{reservationId}",
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Grade> addGrade(@RequestBody Grade grade,@PathVariable("orderId")Long orderId){
-		User user=(User) session.getAttribute("user");
-		if(user==null || !user.getUserRole().toString().equals("GUEST"))
-			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-		grade.setGuest((Guest) user);
-		Order order=workerService.getOrder(orderId);
-		grade.setOrder(order);
-		grade.setRestaurant(order.getWaiter().getRestaurant());
-		gradeService.addGrade(grade);
-		return new ResponseEntity<Grade>(grade, HttpStatus.OK);
+	public ResponseEntity<Grade> addGrade(@RequestBody Grade grade,@PathVariable("reservationId")Long reservationId){
+		return guestService.addGrade(grade, reservationId);
 	}
 	
 	@RequestMapping(
-			value="/deleteGrade",
+			value="/deleteGrade/{reservationId}",
+			method=RequestMethod.DELETE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Grade> deleteGrade(@PathVariable("reservationId")Long reservationId){
+		return guestService.deleteGrade(reservationId);
+	}
+	
+	@RequestMapping(
+			value="/editGrade/{reservationId}",
 			method=RequestMethod.DELETE,
 			consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Grade> deleteGrade(@RequestBody Grade grade){
-		gradeService.deleteGrade(grade);
-		return new ResponseEntity<Grade>(grade, HttpStatus.OK);	
+	public ResponseEntity<Grade> editGrade(@RequestBody Grade grade,@PathVariable("reservationId") Long reservationId){
+		return guestService.editGrade(grade,reservationId);	
 	}
 	
 	@RequestMapping(
@@ -162,9 +146,8 @@ public class GuestController {
 	@Transactional
 	public ResponseEntity<Guest> register(@RequestBody Guest guest) throws Exception{
 		Guest g = guestService.register(guest);
-		@SuppressWarnings("unused")
-		SendEmail se = new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>", "Aktivacioni link", "Za aktivaciju klik ovde");
-		return new ResponseEntity<Guest>(g, HttpStatus.CREATED);	
+		new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>", "Aktivacioni link", "Za aktivaciju klik ovde").start();;
+		return new ResponseEntity<Guest>(g, HttpStatus.CREATED);
 	}
 	@RequestMapping(
 			value="/activate",

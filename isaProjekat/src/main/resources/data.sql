@@ -1,10 +1,10 @@
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (1,'16-10-15','darko.tacic@gmail.com','sifra','Darko','Tacic','GUEST');
-insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (2,'16-10-15','marko.kljajic@gmail.com','sifra','Marko','Kljajic','GUEST');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (2,'16-10-15','milica.govedarica@gmail.com','sifra','Milca','Govedarica','GUEST');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (13,'16-10-15','test13.test@gmail.com','sifra','Test','Test','GUEST');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (14,'16-10-15','test14.test@gmail.com','sifra','Test','Test','GUEST');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (15,'16-10-15','test15.test@gmail.com','sifra','Test','Test','GUEST');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (16,'16-10-15','test16.test@gmail.com','sifra','Test','Test','GUEST');
-insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (3,'16-10-15','milica.govedarica@gmail.com','sifra','Milca','Govedarica','WAITER');
+insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (3,'16-10-15','kljajic77@gmail.com','sifra','Marko','Kljajic','WAITER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (4,'16-10-15','sasa.momcilovic@gmail.com','sifra','Sasa','Momcilovic','WAITER');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (5,'16-10-15','mirko.odalovic@gmail.com','sifra','Mirko','Odalovic','COOK');
 insert into user (user_id,user_date,user_email,user_pass,user_name,user_surname,user_role) values (6,'16-10-15','bakir.niksic@gmail.com','sifra','Baki','Niksic','COOK');
@@ -76,7 +76,7 @@ insert into segment(id, sgm_pos, restaurant_res_id, height, width) values(1,'bas
 insert into segment(id, sgm_pos, sgm_smoking, restaurant_res_id, height, width) values(2,'unutra',false,1,5,3);
 insert into segment(id, sgm_pos, restaurant_res_id, height, width) values(3,'unutra',1,4,6);
 
-insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(1,false,4,1,0,0);
+insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(1,true,4,1,0,0);
 insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(2,true,2,1,0,2);
 insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(3,true,6,1,1,1);
 insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(10,true,3,1,2,1);
@@ -88,17 +88,23 @@ insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, tab
 insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(7,true,4,3,1,3);
 insert into restaurant_table(id, res_free, res_chair, segment_id, table_row, table_column) values(8,true,8,3,1,4);
 
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(1,'17-02-27','17-02-27',8.0,15.0,1,4,3);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(2,'16-10-27','16-10-27',15.0,22.0,2,null,4);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(3,'16-10-16','16-10-16',7.0,14.0,2,4,3);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(4,'16-10-16','16-10-16',14.0,21.0,3,null,4);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(5,'16-10-16','16-10-16',7.0,14.0,2,6,5);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(6,'16-10-16','16-10-16',7.0,14.0,2,null,8);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(7,'17-02-16','17-02-16',8.0,13.0,2,4,3);
-insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(8,'17-02-16','17-02-16',13.0,22.0,1,null,4);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(1,'17-03-02','17-03-02',8.0,15.0,1,4,3);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(2,'17-03-02','17-03-02',15.0,22.0,2,null,4);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(3,'17-03-01','17-03-01',7.0,14.0,2,4,3);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(4,'17-03-01','17-03-01',14.0,21.0,3,null,4);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(5,'17-03-02','17-03-02',7.0,14.0,2,6,5);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(6,'17-03-02','17-03-02',7.0,14.0,2,null,8);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(7,'17-03-03','17-03-03',8.0,13.0,2,4,3);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(8,'17-03-03','17-03-03',13.0,22.0,1,null,4);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(9,'17-02-28','17-02-28',8.0,13.0,2,4,3);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(10,'17-02-28','17-02-28',13.0,22.0,1,null,4);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(11,'17-03-01','17-03-01',7.0,14.0,2,6,5);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(12,'17-03-01','17-03-01',7.0,14.0,2,null,8);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(13,'17-02-28','17-02-28',7.0,14.0,2,6,5);
+insert into work_schedule(work_sch_id, work_sch_date, work_sch_second_date, work_sch_start, work_sch_end, segment_id, replacement_user_id,worker_user_id) values(14,'17-02-28','17-02-28',7.0,14.0,2,null,8);
 
-insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status) values(1,'17-02-16',12.0,1,3,0,'NOTPAID');
-insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status) values(2,'16-10-16',17.47,3,4,0,'NOTPAID');
+insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status) values(1,'17-03-02',10.0,1,3,0,'NOTPAID');
+insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status) values(2,'17-03-02',17.47,3,4,0,'NOTPAID');
 
 insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(1,2,8,null,1,1,'ONHOLD');
 insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(2,1,null,6,1,2,'ONHOLD');
@@ -108,3 +114,8 @@ insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order
 insert into grade(grd_id, grd_meal, grd_res, grd_service, guest_user_id, order_res_ord_id, restaurant_res_id) values (1, 3, 5, 2, 1, 1, 1);
 insert into grade(grd_id, grd_meal, grd_res, grd_service, guest_user_id, order_res_ord_id, restaurant_res_id) values (2, 4, 5, 8, 1, 1, 1);
 insert into grade(grd_id, grd_meal, grd_res, grd_service, guest_user_id, order_res_ord_id, restaurant_res_id) values (3, 9, 5, 8, 1, 1, 1);
+
+insert into reservation(id,reservation_start,reservation_end,restaurant_res_id) values (1,12.0,13.30,1);
+insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status, reservation_id) values(3,'17-02-28',12.0,11,3,990.6,'PAID',1);
+insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(5,2,8,null,3,1,'DONE');
+insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(6,1,null,6,3,2,'DONE');

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.isa.entity.Grade;
 import com.isa.entity.Segment;
 import com.isa.entity.users.Guest;
 
@@ -30,4 +31,10 @@ public interface GuestService {
 	ResponseEntity<Guest> declineRequest(Long user_id,Long sender_id);
 	
 	ResponseEntity<Guest> removeFriend(Long user_id,Long friend_id);
+	
+	ResponseEntity<Grade> addGrade(Grade grade,Long reservationId);
+	
+	ResponseEntity<Grade> editGrade(Grade grade,Long reservationId);
+	
+	ResponseEntity<Grade> deleteGrade(Long reservationId);
 }

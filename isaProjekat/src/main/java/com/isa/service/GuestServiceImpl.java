@@ -4,12 +4,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.isa.entity.Grade;
 import com.isa.entity.Order;
 import com.isa.entity.OrderStatus;
 import com.isa.entity.Reservation;
@@ -20,7 +23,9 @@ import com.isa.entity.users.FriendId;
 import com.isa.entity.users.Guest;
 import com.isa.entity.users.GuestStatus;
 import com.isa.entity.users.User;
+import com.isa.entity.users.UserRole;
 import com.isa.repository.FriendRepository;
+import com.isa.repository.GradeRepository;
 import com.isa.repository.GuestRepository;
 import com.isa.repository.ReservationRepository;
 import com.isa.repository.SegmentRepository;
@@ -46,6 +51,11 @@ public class GuestServiceImpl implements GuestService {
 	@Autowired
 	private ReservationRepository reservationRepository;
 
+	@Autowired
+	private GradeRepository gradeRepository;
+	
+	@Autowired
+	private HttpSession session;
 
 	@Override
 	public ResponseEntity<List<Guest>> getFriendsForGuest(Long id) {
@@ -246,6 +256,53 @@ public class GuestServiceImpl implements GuestService {
 		
 		return segments;
 	}
+
 	
+	@Override
+	public ResponseEntity<Grade> addGrade(Grade grade, Long reservationId) {
+		User user=(User) session.getAttribute("user");
+		if(user==null || user.getUserRole()!=UserRole.GUEST)
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Reservation reservation=reservationRepository.findOne(reservationId);
+		for(Order order:reservation.getOrders()){
+			Grade g=new Grade(grade.getGradeOfService(), grade.getGradeOfOrderItem(), grade.getGradeOfRestaurant());
+			g.setOrder(order);
+			g.setRestaurant(order.getTable().getSegment().getRestaurant());
+			g.setGuest((Guest)user);
+			gradeRepository.save(g);
+		}
+		return new ResponseEntity<Grade>(grade, HttpStatus.OK);
+	}
+
+
+	@Override
+	public ResponseEntity<Grade> editGrade(Grade grade, Long reservationId) {
+		User user=(User) session.getAttribute("user");
+		if(user==null || user.getUserRole()!=UserRole.GUEST)
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Reservation reservation=reservationRepository.findOne(reservationId);
+		for(Order order:reservation.getOrders()){
+			Grade g=gradeRepository.fingGradeByOrder(order, (Guest)user);
+			g.setGradeOfOrderItem(grade.getGradeOfOrderItem());
+			g.setGradeOfRestaurant(grade.getGradeOfRestaurant());
+			g.setGradeOfService(grade.getGradeOfService());
+			gradeRepository.save(g);
+		}
+		return new ResponseEntity<Grade>(grade, HttpStatus.OK);
+	}
+
+
+	@Override
+	public ResponseEntity<Grade> deleteGrade(Long reservationId) {
+		User user=(User) session.getAttribute("user");
+		if(user==null || user.getUserRole()!=UserRole.GUEST)
+			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
+		Reservation reservation=reservationRepository.findOne(reservationId);
+		for(Order order:reservation.getOrders()){
+			Grade g=gradeRepository.fingGradeByOrder(order, (Guest)user);
+			gradeRepository.delete(g);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 }

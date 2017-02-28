@@ -23,6 +23,7 @@ import com.isa.entity.OrderItemStatus;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Bartender;
 import com.isa.entity.users.User;
+import com.isa.mail.SendEmail;
 import com.isa.service.BartenderService;
 import com.isa.service.WorkerService;
 
@@ -80,6 +81,7 @@ public class BartenderController {
 		OrderItem temp=workerService.getOrderItem(orderItem.getId());
 		temp.setOrderItemStatus(OrderItemStatus.DONE);
 		workerService.addOrderItem(temp);
+		new SendEmail(temp.getOrder().getWaiter().getEmail(),"", "Notice about completion of the drink.", "The drink: "+temp.getProduct().getProductName()+", quantity: "+temp.getQuantity()+"\n is completed by bartender "+temp.getBartender().getSurname()+" for order "+temp.getOrder().getId()+" and ready to be served on table "+temp.getOrder().getTable().getId()+".").start();;
 		return new ResponseEntity<OrderItem>(temp, HttpStatus.OK);
 	}
 	

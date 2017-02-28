@@ -64,6 +64,10 @@ public class Restaurant implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private Set<Worker> workers = new HashSet<Worker>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private Set<Reservation> reservations=new HashSet<Reservation>();
 
 	public Restaurant() {
 
@@ -126,8 +130,17 @@ public class Restaurant implements Serializable {
 	}
 
 	public Long getId() {
-		// TODO Auto-generated method stub
 		return id;
+	}
+
+	@JsonIgnore
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+	@JsonProperty
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
 	}
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
@@ -26,7 +27,6 @@ import com.isa.entity.users.Guest;
 @Entity
 @Table(name="RESERVATION")
 public class Reservation  implements Serializable {
-
 
 	private static final long serialVersionUID = 8170102871778902664L;
 	
@@ -58,6 +58,9 @@ public class Reservation  implements Serializable {
 	@Column(name = "RESERVATION_END")
 	private double endTime;
 	
+	@ManyToOne(optional = false)
+	private Restaurant restaurant;
+	
 	public double getStartTime() {
 		return startTime;
 	}
@@ -81,21 +84,33 @@ public class Reservation  implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	@JsonIgnore
 	public Set<Order> getOrders() {
 		return orders;
 	}
+	
 	@JsonProperty
 	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
 	}
+	
 	@JsonIgnore
 	public Set<Guest> getPeople() {
 		return people;
 	}
+	
 	@JsonProperty
 	public void setPeople(Set<Guest> people) {
 		this.people = people;
+	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
 
 }

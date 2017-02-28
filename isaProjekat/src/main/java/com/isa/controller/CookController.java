@@ -24,6 +24,7 @@ import com.isa.entity.ProductType;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Cook;
 import com.isa.entity.users.User;
+import com.isa.mail.SendEmail;
 import com.isa.service.CookService;
 import com.isa.service.WorkerService;
 
@@ -84,6 +85,7 @@ public class CookController {
 		startPrepare.setCook((Cook)user);
 		startPrepare.setOrderItemStatus(OrderItemStatus.ONPREPARATION);
 		OrderItem temp=workerService.addOrderItem(startPrepare);
+		new SendEmail(temp.getOrder().getWaiter().getEmail(),"", "Notice of beginning of the preparation of the meal.", "The meal: "+temp.getProduct().getProductName()+", quantity: "+temp.getQuantity()+"\n was started with preparation for order "+temp.getOrder().getId()+", table "+temp.getOrder().getTable().getId()+" by the chef "+temp.getCook().getSurname()+".").start();;
 		return new ResponseEntity<OrderItem>(temp, HttpStatus.OK);
 	}
 	
@@ -112,6 +114,7 @@ public class CookController {
 		OrderItem temp=workerService.getOrderItem(orderItem.getId());
 		temp.setOrderItemStatus(OrderItemStatus.DONE);
 		workerService.addOrderItem(temp);
+		new SendEmail(temp.getOrder().getWaiter().getEmail(),"", "Notice about completion of the meal.", "The meal: "+temp.getProduct().getProductName()+", quantity: "+temp.getQuantity()+"\n is completed for order "+temp.getOrder().getId()+" and ready to be served on table "+temp.getOrder().getTable().getId()+".").start();;
 		return new ResponseEntity<OrderItem>(temp, HttpStatus.OK);
 	}
 	

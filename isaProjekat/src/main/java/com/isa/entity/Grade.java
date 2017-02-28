@@ -43,6 +43,12 @@ public class Grade implements Serializable {
 	public Grade() {
 
 	}
+	
+	public Grade(double gradeOfService,double gradeOfOrderItem,double gradeOfRestaurant) {
+		this.gradeOfService=gradeOfService;
+		this.gradeOfOrderItem=gradeOfOrderItem;
+		this.gradeOfRestaurant=gradeOfRestaurant;
+	}
 
 	public Restaurant getRestaurant() {
 		return restaurant;

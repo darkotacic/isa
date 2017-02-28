@@ -53,6 +53,7 @@ public class RestaurantTable {
 
 	public RestaurantTable() {
 		this.id = null;
+		this.free=true;
 	}
 
 	@JsonIgnore

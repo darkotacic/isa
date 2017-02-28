@@ -203,9 +203,11 @@ public class WaiterController {
 		calendar.setTime(new Date());
 		Order o=workerService.getOrder(order.getId());
 		Iterable<OrderItem> orderItems=waiterService.getOrderItemsForOrder(o);
-		int price=0;
+		double price=0;
 		for(OrderItem oi:orderItems){
 			price+=oi.getProduct().getPrice()*oi.getQuantity();
+			if(oi.getOrderItemStatus()!=OrderItemStatus.DONE)
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		WorkSchedule worker=waiterService.getWorkSchedule(o.getWaiter(), o.getDate());
 		if(worker==null)

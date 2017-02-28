@@ -214,6 +214,8 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	
 	$scope.showEditOrder=function(){
 		$scope.edit=true;
+		$scope.editOrdersItems=null;
+		$scope.lastAddedOrder=null;
 	}
 	
 	$scope.editOrder=function(){
@@ -271,11 +273,13 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 	$scope.addItemsTo=function(){
 		$scope.lastAddedOrder=$scope.selected;
 		$scope.editOrdersItems=null;
+		$scope.edit=false;
 	}
 	
 	$scope.editOrderItems=function(){
 		$scope.editOrdersItems=$scope.selected;
 		$scope.lastAddedOrder=null;
+		$scope.edit=false;
 		waiterService.getOrderItemsForOrder($scope.editOrdersItems.id).then(function(response){
 			$scope.orderItems=response.data;
 		});
@@ -314,7 +318,14 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 			$scope.orders.splice(index,1);
 			$scope.orders.push(check);
 			swal("Check created!", 'Waiter: '+check.waiter.userName+', price: '+check.price, "success")
-		});
+		}).catch(function(response) {
+			swal({
+				  title: "Make check error",
+				  text: "You can not create an check for given order because there are order items that were not deliver to customer..",
+				  type: "success",
+				  timer: 3000
+			});
+	    });
 		$scope.lastAddedOrder=null;
 		$scope.editOrdersItems=null;
 	}

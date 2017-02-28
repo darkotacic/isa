@@ -10,41 +10,52 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class SendEmail {
+public class SendEmail extends Thread{
 
+	private String sendTo;
+	private String link;
+	private String subject;
+	private String text;
 	
 	public SendEmail(String sendTo, String link, String subject , String text){
-		  // Recipient's email ID needs to be mentioned.
-	      String to = sendTo;
+		this.sendTo=sendTo;
+		this.link=link;
+		this.subject=subject;
+		this.text=text; 
+	}
+	
+	@Override
+	public void run() {
+		// Recipient's email ID needs to be mentioned.
+	    String to = sendTo;
+	    // Sender's email ID needs to be mentioned
+	    String from = "isa.user.mail@gmail.com";
+	    final String username = "isa.user.mail@gmail.com";//change accordingly
+	    final String password = "dedamraz";//change accordingly
 
-	      // Sender's email ID needs to be mentioned
-	      String from = "isa.user.mail@gmail.com";
-	      final String username = "isa.user.mail@gmail.com";//change accordingly
-	      final String password = "dedamraz";//change accordingly
+	    // Assuming you are sending email through relay.jangosmtp.net
+	    String host = "smtp.gmail.com";
 
-	      // Assuming you are sending email through relay.jangosmtp.net
-	      String host = "smtp.gmail.com";
-
-	      Properties props = new Properties();
-	      props.put("mail.smtp.auth", "true");
-	      props.put("mail.smtp.starttls.enable", "true");
-	      props.put("mail.smtp.host", host);
-	      props.put("mail.smtp.port", "587");
-	      Session.getInstance(props, null);
+	    Properties props = new Properties();
+	    props.put("mail.smtp.auth", "true");
+	    props.put("mail.smtp.starttls.enable", "true");
+	    props.put("mail.smtp.host", host);
+	    props.put("mail.smtp.port", "587");
+	    Session.getInstance(props, null);
 	      
-	      Session session = Session.getDefaultInstance(props);
-	      MimeMessage message = new MimeMessage(session);
+	    Session session = Session.getDefaultInstance(props);
+	    MimeMessage message = new MimeMessage(session);
 	      
-	      try
-	      {
-	          message.setFrom(new InternetAddress(from));
-	          message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-	          message.setSubject(subject);
-	          message.setText(text+link, "utf-8", "html");
-	          Transport.send(message, username	, password);
-	      }
-	      catch (AddressException e) {e.printStackTrace();}
-	      catch (MessagingException e) {e.printStackTrace();}
+	    try
+	    {
+	    	message.setFrom(new InternetAddress(from));
+	        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+	        message.setSubject(subject);
+	        message.setText(text+link, "utf-8", "html");
+	        Transport.send(message, username	, password);
+	    }
+	    catch (AddressException e) {e.printStackTrace();}
+	    catch (MessagingException e) {e.printStackTrace();}
 	}
 	
 }
