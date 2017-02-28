@@ -1,8 +1,10 @@
 package com.isa.service;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import com.isa.entity.Group;
 import com.isa.entity.Order;
 import com.isa.entity.OrderItem;
 import com.isa.entity.Product;
@@ -15,7 +17,6 @@ import com.isa.entity.users.Worker;
 
 public interface WaiterService {
 
-	public List<WorkSchedule> getWorkScheduleForWaiters(Restaurant restaurant);
 	public Order addOrder(Order order);
 	public Iterable<Order> findAllOrders(Restaurant restaurant);
 	public Order updateOrder(Order order);
@@ -28,7 +29,7 @@ public interface WaiterService {
 	public void deleteOrderItem(Long oi);
 	public Iterable<OrderItem> getOrderItemsForOrder(Order order);
 	public WorkSchedule getWorkSchedule(Worker worker,Date date);
-	public List<WorkSchedule> getWorkScheduleBetween(Date startDate,Date endDate,Restaurant restaurant);
+	public List<Group> getWorkSchedulesForMonth(int monthNumber,Restaurant restaurant) throws ParseException;
 	public Waiter getWaiter(Long id);
 	public Segment getSegment(Long id);
 	

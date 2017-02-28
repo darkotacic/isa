@@ -1,6 +1,9 @@
 package com.isa.service;
 
-import java.util.Collections;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.isa.entity.Group;
 import com.isa.entity.Order;
 import com.isa.entity.OrderItem;
 import com.isa.entity.Product;
@@ -49,13 +53,6 @@ public class WaiterServiceImpl implements WaiterService {
 	
 	@Autowired
 	private OrderItemRepository orderItemRepository;
-	
-	@Override
-	public List<WorkSchedule> getWorkScheduleForWaiters(Restaurant restaurant){
-		List<WorkSchedule> schedules=workScheduleRepository.getWorkScheduleForWaiters(restaurant);
-		Collections.sort(schedules);
-		return schedules;
-	}
 	
 	@Override
 	public Order addOrder(Order order){
@@ -119,8 +116,26 @@ public class WaiterServiceImpl implements WaiterService {
 	}
 
 	@Override
-	public List<WorkSchedule> getWorkScheduleBetween(Date startDate, Date endDate,Restaurant restaurant) {
-		return workScheduleRepository.getWorkScheduleForWaitersBetween(startDate,endDate,restaurant);
+	public List<Group> getWorkSchedulesForMonth(int monthNumber,Restaurant restaurant) throws ParseException {
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(new Date());
+		int year=calendar.get(Calendar.YEAR);
+		int month=calendar.get(Calendar.MONTH)+1+monthNumber;
+		int minDay=1,maxDay=31;
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		Date date1=sdf.parse(year+"-"+month+'-'+minDay);
+		Date date2=sdf.parse(year+"-"+month+'-'+maxDay);
+		List<WorkSchedule> schedules=workScheduleRepository.getWorkScheduleForWaitersBetween(date1,date2,restaurant);
+		Group[] groups=new Group[31];
+		for(int i=0;i<groups.length;i++){
+			groups[i]=new Group(sdf.parse(year+"-"+month+"-"+minDay++));
+			for(WorkSchedule schedule:schedules){
+				if(groups[i].getDateAsDate().compareTo(schedule.getDate())==0)
+					groups[i].addSchedule(schedule);
+			}
+		}
+		List<Group> val = Arrays.asList(groups);
+		return val;
 	}
 
 	@Override

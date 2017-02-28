@@ -117,10 +117,10 @@ app.factory('WaiterService', function waiterService($http) {
 		});
 	}
 	
-	waiterService.getWorkSchedulesBetween = function(startDate,endDate){
+	waiterService.getWorkSchedulesForMonth = function(monthNumber){
 		return $http({
 			method : 'GET',
-			url: '../waiters/getWorkSchedules/'+startDate+'/'+endDate
+			url: '../waiters/getWorkSchedulesForMonth/'+monthNumber
 		});
 	}
 	
@@ -174,10 +174,6 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 		$scope.selected = ord;
 		$scope.edit=false;
 	}
-	
-	waiterService.getWorkSchedules().then(function(response){
-		$scope.schedules=response.data;
-	})
 	
 	waiterService.getSegments().then(function(response){
 		$scope.segments=response.data;
@@ -388,10 +384,10 @@ app.factory('CookService', function cookService($http) {
 		});
 	}
 	
-	cookService.getWorkSchedulesBetween = function(startDate,endDate){
+	cookService.getWorkSchedulesForMonth = function(monthNumber){
 		return $http({
 			method : 'GET',
-			url: '../cooks/getWorkSchedules/'+startDate+'/'+endDate
+			url: '../cooks/getWorkSchedulesForMonth/'+monthNumber
 		});
 	}
 	
@@ -427,10 +423,10 @@ app.factory('BartenderService', function bartenderService($http) {
 		});
 	}
 	
-	bartenderService.getWorkSchedulesBetween = function(startDate,endDate){
+	bartenderService.getWorkSchedulesForMonth = function(monthNumber){
 		return $http({
 			method : 'GET',
-			url: 'bartenders/getWorkSchedules/'+startDate+'/'+endDate
+			url: 'bartenders/getWorkSchedulesForMonth/'+monthNumber
 		});
 	}
 	
@@ -441,9 +437,8 @@ app.factory('BartenderService', function bartenderService($http) {
 app.controller('workerController',['$rootScope','$scope','$location','WaiterService','CookService','BartenderService',function($rootScope,$scope,$location,waiterService,cookService,bartenderService){
 	
 	$scope.user= $rootScope.loggedUser;
-	$scope.schedules=null;
-	$scope.onlyForMe=false;
-	$scope.forMe=false;
+	$scope.groups=null;
+	$scope.currentMonth=0;
 	
 	$scope.initDate=function(){
 		var now=new Date();
@@ -454,35 +449,61 @@ app.controller('workerController',['$rootScope','$scope','$location','WaiterServ
 	$scope.getWorkSchedules=function(){
 		if($scope.user.userRole=="WAITER"){
 			waiterService.getWorkSchedules().then(function(response){
-				$scope.schedules=response.data;
+				$scope.groups=response.data;
 			})
 		}else if($scope.user.userRole=="COOK"){
 			cookService.getWorkSchedules().then(function(response){
-				$scope.schedules=response.data;
+				$scope.groups=response.data;
 			});
 		}else if($scope.user.userRole=="BARTENDER"){
 			bartenderService.getWorkSchedules().then(function(response){
-				$scope.schedules=response.data;
+				$scope.groups=response.data;
 			})
 		}
 	}
-
-	$scope.searchSchedules=function(){
-		$scope.forMe=$scope.onlyForMe;
+	
+	$scope.nextMonth=function(){
+		$scope.currentMonth+=1;
 		if($scope.user.userRole=="WAITER"){
-			waiterService.getWorkSchedulesBetween($scope.startDate,$scope.endDate).then(function(response){
-				$scope.schedules=response.data;
+			waiterService.getWorkSchedulesForMonth($scope.currentMonth).then(function(response){
+				$scope.groups=response.data;
 			});
 		}else if($scope.user.userRole=="COOK"){
-			cookService.getWorkSchedulesBetween($scope.startDate,$scope.endDate).then(function(response){
-				$scope.schedules=response.data;
+			cookService.getWorkSchedulesForMonth($scope.currentMonth).then(function(response){
+				$scope.groups=response.data;
 			});
 		}else if($scope.user.userRole=="BARTENDER"){
-			bartenderService.getWorkSchedulesBetween($scope.startDate,$scope.endDate).then(function(response){
-				$scope.schedules=response.data;
+			bartenderService.getWorkSchedulesForMonth($scope.currentMonth).then(function(response){
+				$scope.groups=response.data;
 			});
 		}
 	}
+	
+	$scope.previousMonth=function(){
+		$scope.currentMonth-=1;
+		if($scope.user.userRole=="WAITER"){
+			waiterService.getWorkSchedulesForMonth($scope.currentMonth).then(function(response){
+				$scope.groups=response.data;
+			});
+		}else if($scope.user.userRole=="COOK"){
+			cookService.getWorkSchedulesForMonth($scope.currentMonth).then(function(response){
+				$scope.groups=response.data;
+			});
+		}else if($scope.user.userRole=="BARTENDER"){
+			bartenderService.getWorkSchedulesForMonth($scope.currentMonth).then(function(response){
+				$scope.groups=response.data;
+			});
+		}
+	}
+	
+	$scope.range = function(min, max, step) {
+	    step = step || 1;
+	    var input = [];
+	    for (var i = min; i < max; i += step) {
+	        input.push(i);
+	    }
+	    return input;
+	};
 	
 }]);
 

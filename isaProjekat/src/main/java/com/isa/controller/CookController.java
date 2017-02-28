@@ -1,7 +1,6 @@
 package com.isa.controller;
 
-import java.util.Collections;
-import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -18,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.entity.Group;
 import com.isa.entity.OrderItem;
 import com.isa.entity.OrderItemStatus;
 import com.isa.entity.ProductType;
-import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Cook;
 import com.isa.entity.users.User;
 import com.isa.mail.SendEmail;
@@ -47,12 +46,17 @@ public class CookController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Iterable<WorkSchedule>> getWorkSchedules(){
+	public ResponseEntity<List<Group>> getWorkSchedules(){
 		User user=(User) session.getAttribute("user");
 		if(user==null || !user.getUserRole().toString().equals("COOK"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-		Iterable<WorkSchedule> schedules=cookService.getWorkScheduleForCooks(((Cook)user).getRestaurant());
-		return new ResponseEntity<Iterable<WorkSchedule>>(schedules, HttpStatus.OK);
+		List<Group> schedules;
+		try {
+			schedules = cookService.getWorkSchedulesForMonth(0,((Cook)user).getRestaurant());
+		} catch (ParseException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Group>>(schedules, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -85,7 +89,7 @@ public class CookController {
 		startPrepare.setCook((Cook)user);
 		startPrepare.setOrderItemStatus(OrderItemStatus.ONPREPARATION);
 		OrderItem temp=workerService.addOrderItem(startPrepare);
-		new SendEmail(temp.getOrder().getWaiter().getEmail(),"", "Notice of beginning of the preparation of the meal.", "The meal: "+temp.getProduct().getProductName()+", quantity: "+temp.getQuantity()+"\n was started with preparation for order "+temp.getOrder().getId()+", table "+temp.getOrder().getTable().getId()+" by the chef "+temp.getCook().getSurname()+".").start();;
+		new SendEmail(temp.getOrder().getWaiter().getEmail(),"", "Notice of beginning of the preparation of the meal.", "The meal: "+temp.getProduct().getProductName()+", quantity: "+temp.getQuantity()+"\n was started with preparation for order "+temp.getOrder().getId()+", table "+temp.getOrder().getTable().getId()+" by the chef "+temp.getCook().getSurname()+".").start();
 		return new ResponseEntity<OrderItem>(temp, HttpStatus.OK);
 	}
 	
@@ -114,7 +118,7 @@ public class CookController {
 		OrderItem temp=workerService.getOrderItem(orderItem.getId());
 		temp.setOrderItemStatus(OrderItemStatus.DONE);
 		workerService.addOrderItem(temp);
-		new SendEmail(temp.getOrder().getWaiter().getEmail(),"", "Notice about completion of the meal.", "The meal: "+temp.getProduct().getProductName()+", quantity: "+temp.getQuantity()+"\n is completed for order "+temp.getOrder().getId()+" and ready to be served on table "+temp.getOrder().getTable().getId()+".").start();;
+		new SendEmail(temp.getOrder().getWaiter().getEmail(),"", "Notice about completion of the meal.", "The meal: "+temp.getProduct().getProductName()+", quantity: "+temp.getQuantity()+"\n is completed for order "+temp.getOrder().getId()+" and ready to be served on table "+temp.getOrder().getTable().getId()+".").start();
 		return new ResponseEntity<OrderItem>(temp, HttpStatus.OK);
 	}
 	
@@ -140,19 +144,22 @@ public class CookController {
 	}
 	
 	@RequestMapping(
-			value="/getWorkSchedules/{startDate}/{endDate}",
+			value="/getWorkSchedulesForMonth/{monthNumber}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Iterable<WorkSchedule>> getWorkScheduleBetween(@PathVariable("startDate")Date startDate,@PathVariable("endDate")Date endDate){
+	public ResponseEntity<List<Group>> getWorkSchedulesForMonth(@PathVariable("monthNumber")int monthNumber){
 		User user=(User) session.getAttribute("user");
 		if(user==null || !user.getUserRole().toString().equals("COOK"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-		List<WorkSchedule> ws=null;
-		ws = cookService.getWorkScheduleBetween(startDate, endDate,((Cook)user).getRestaurant());
-		Collections.sort(ws);
-		return new ResponseEntity<Iterable<WorkSchedule>>(ws, HttpStatus.OK);
+		List<Group> schedules;
+		try {
+			schedules = cookService.getWorkSchedulesForMonth(monthNumber,((Cook)user).getRestaurant());
+		} catch (ParseException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Group>>(schedules, HttpStatus.OK);
 	}
 	
 }

@@ -1,8 +1,8 @@
 package com.isa.controller;
 
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.entity.Group;
 import com.isa.entity.Order;
 import com.isa.entity.OrderItem;
 import com.isa.entity.OrderItemStatus;
@@ -57,12 +58,17 @@ public class WaiterController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional(readOnly=true)
-	public ResponseEntity<Iterable<WorkSchedule>> getWorkspaceScheduleForWaiters(){
+	public ResponseEntity<List<Group>> getWorkspaceScheduleForWaiters(){
 		User user=(User) session.getAttribute("user");
 		if(user==null || !user.getUserRole().toString().equals("WAITER"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-		List<WorkSchedule> schedules=waiterService.getWorkScheduleForWaiters(((Waiter)user).getRestaurant());
-		return new ResponseEntity<Iterable<WorkSchedule>>(schedules, HttpStatus.OK);	
+		List<Group> schedules;
+		try {
+			schedules = waiterService.getWorkSchedulesForMonth(0, ((Waiter)user).getRestaurant());
+		} catch (ParseException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Group>>(schedules, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -295,19 +301,22 @@ public class WaiterController {
 	}
 	
 	@RequestMapping(
-			value="/getWorkSchedules/{startDate}/{endDate}",
+			value="/getWorkSchedulesForMonth/{monthNumber}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<Iterable<WorkSchedule>> getWorkScheduleBetween(@PathVariable("startDate")Date startDate,@PathVariable("endDate")Date endDate){
+	public ResponseEntity<List<Group>> getWorkSchedulesForMonth(@PathVariable("monthNumber")int monthNumber){
 		User user=(User) session.getAttribute("user");
 		if(user==null || !user.getUserRole().toString().equals("WAITER"))
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
-		List<WorkSchedule> ws=null;
-		ws = waiterService.getWorkScheduleBetween(startDate, endDate,((Waiter)user).getRestaurant());
-		Collections.sort(ws);
-		return new ResponseEntity<Iterable<WorkSchedule>>(ws, HttpStatus.OK);
+		List<Group> schedules;
+		try {
+			schedules = waiterService.getWorkSchedulesForMonth(monthNumber,((Waiter)user).getRestaurant());
+		} catch (ParseException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Group>>(schedules, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
