@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.isa.entity.Grade;
+import com.isa.entity.Reservation;
 import com.isa.entity.Segment;
 import com.isa.entity.users.Guest;
 
@@ -17,6 +18,12 @@ public interface GuestService {
 	Guest activate(String email);
 	
 	List<Segment> getSegments();
+	
+	Reservation getReservation(Long id);
+	
+	Reservation createReservation(Reservation reservation,Long restaurantId);
+	
+	Guest inviteFriend(Long friendId,Long resId);
 	
 	ResponseEntity<List<Guest>> getNonFriendsForGuest(Long id);
 	

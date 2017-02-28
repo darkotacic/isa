@@ -1,4 +1,4 @@
-<div ng-controller="restaurantController">
+<div class="containter" ng-controller="restaurantController">
 	<div class="container">
 		<div class="table-responsive">
 			<table class="table">
@@ -26,10 +26,11 @@
 		<input class="btn btn-primary" type="button" value="Make reservation" ng-click="showMake()"/>
 	</div>
 	<form name="myForm" novalidate>
-		<div ng-if="makeReservation!=false">
+		<div ng-show="makeReservation!=false">
 					<div class="form-group">
-						<label>Reservation date:</label> <input type="date" ng-value="date"
-						step="0.1" min="00.00" max="24.00"
+						<label>Reservation date:</label> 
+						<input type="date" ng-value="date"
+						 min="{{currentDate | date:'yyyy-MM-dd'}}")
 						ng-Model="reservation.date" class="form-control"
 						placeholder="Enter date" required />
 					</div>
@@ -40,7 +41,63 @@
 							placeholder="Enter start time" required />
 							<span ng-show="!myForm.myDecimal.$valid" style="color:red">Valid format is 00-24h with 1 decimal</span>
 					</div>
+					
+					<div class="form-group">
+						<label>End time:</label> <input type="number" name="myDecimal" step="0.1" min="00.00" max="24.00"
+							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-Model="reservation.endTime" class="form-control"
+							placeholder="Enter start time" required />
+							<span ng-show="!myForm.myDecimal.$valid" style="color:red">Valid format is 00-24h with 1 decimal</span>
+					</div>
 		</div>
 	</form>
+	<div class="container" ng-if="myForm.$valid && makeReservation!=false">
+		<button type="button" class="btn btn-primary" ng-click=showView(1)>Select tables</button>
+		<button type="button" class="btn btn-primary" ng-click=showView(2)>Select friends</button>
+		<button type="button" class="btn btn-primary" ng-disabled="!selectedTables.length>0" ng-click=confirm()>Confirm reservation</button>
+	</div>
 	
+	<div class="container" ng-show=show==1>
+		<h1>Choose segment:</h1>
+		<div class="styled-select blue semi-square">
+   			<select  ng-model="selctedSegment" ng-change="clearTables()">
+				<option ng-repeat="seg in segments" ng-selected="selctedSegment == seg.Id" value="{{seg.id}}">Segment {{seg.id}}</option>
+			</select>
+      	</div>
+		<div ng-repeat="seg in segments" ng-if="selctedSegment==seg.id">
+			<h3 ng-init="getTablesForSegment(seg.id,$index)">Segment {{seg.id}}</h2>
+			<p>Position: {{seg.position}}</p>
+			<p>Smoking allowed: {{seg.smokingAllowed}}</p>
+			<div class="row" ng-repeat="x in range(0,seg.height)">
+				<div class="thumbnail" style="display:inline-block;width:180px" ng-repeat="y in range(0,seg.width)">
+					<div class="caption" id={{seg.id}}#{{x*seg.width+y}} ng-if="seg.tables[x*seg.width+y].id!=null" ng-click="addTable(seg.tables[x*seg.width+y],x*seg.width+y)" ng-class="{authTabs: !seg.tables[x*seg.width+y].free, authTabsGreen: seg.tables[x*seg.width+y].free}">
+						<h3><i>Table</i></h3>
+						<p class="bg-primary">Table: {{seg.tables[x*seg.width+y].id}} </p>
+						<p class="bg-info">Number of chairs: {{seg.tables[x*seg.width+y].numberOfChairs}} </p>
+						<p class="bg-primary">Free: {{seg.tables[x*seg.width+y].free}} </p>
+					</div>
+					<div class="caption authTabs" id={{seg.id}}#{{x*seg.width+y}} ng-if="seg.tables[x*seg.width+y].id==null">
+						<h3><i>No table</i></h3>
+						<p>There is no table</p> 
+						<p>on this position</p>
+						<p>in the restaurant.</p>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+	
+	<div class="container" ng-show=show==2>
+		<h1>Choose friends:</h1>
+		<div class="w3-card-8 w3-dark-grey" style="display:inline-block" ng-repeat="friend in friends">
+		
+			<div class="w3-container w3-center" >
+			  <h3 ng-init="initFriend(friend)">Friend</h3>
+			  <img src="../images/smiley.jpg" alt="Avatar" >
+			  <h5>{{friend.userName +' '+ friend.surname}} </h5>
+			
+			  <button class="w3-button w3-green" ng-click="invite(friend)" ng-if="!friend.invited">Invite</button>
+			  <button class="w3-button w3-red" ng-click="invite(friend)"ng-if="friend.invited">Remove</button>
+			</div>
+		</div>
+	</div>	
 </div>

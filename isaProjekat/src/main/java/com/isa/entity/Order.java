@@ -44,7 +44,7 @@ public class Order implements Serializable {
 	@ManyToOne(optional = false)
 	private RestaurantTable table;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	private Waiter waiter;
 	
 	@ManyToOne

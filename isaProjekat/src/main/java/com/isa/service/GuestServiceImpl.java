@@ -16,6 +16,7 @@ import com.isa.entity.Grade;
 import com.isa.entity.Order;
 import com.isa.entity.OrderStatus;
 import com.isa.entity.Reservation;
+import com.isa.entity.Restaurant;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
 import com.isa.entity.users.Friend;
@@ -28,6 +29,7 @@ import com.isa.repository.FriendRepository;
 import com.isa.repository.GradeRepository;
 import com.isa.repository.GuestRepository;
 import com.isa.repository.ReservationRepository;
+import com.isa.repository.RestaurantRepository;
 import com.isa.repository.SegmentRepository;
 import com.isa.repository.UserRepository;
 
@@ -53,6 +55,9 @@ public class GuestServiceImpl implements GuestService {
 
 	@Autowired
 	private GradeRepository gradeRepository;
+	
+	@Autowired
+	private RestaurantRepository restaurantRepository;
 	
 	@Autowired
 	private HttpSession session;
@@ -235,7 +240,7 @@ public class GuestServiceImpl implements GuestService {
 			Calendar calendar=Calendar.getInstance();
 			calendar.setTime(new Date());
 			double currentTime=calendar.get(Calendar.HOUR_OF_DAY)+(calendar.get(Calendar.MINUTE)/100.0);
-			if(currentTime > r.getStartTime() && r.getEndTime() < currentTime){
+			if(currentTime > r.getStartTime() && r.getEndTime() > currentTime){
 				flag = true;
 			}
 			for(Order o : r.getOrders()){
@@ -303,6 +308,31 @@ public class GuestServiceImpl implements GuestService {
 			gradeRepository.delete(g);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+
+	@Override
+	public Reservation createReservation(Reservation reservation,Long restaurantId) {
+		Restaurant r = restaurantRepository.findOne(restaurantId);
+		reservation.setRestaurant(r);
+		return reservationRepository.save(reservation);
+	}
+
+
+	@Override
+	public Reservation getReservation(Long id) {
+		return reservationRepository.findOne(id);
+	}
+
+
+	@Override
+	public Guest inviteFriend(Long friendId, Long resId) {
+		Guest g = guestRepository.findOne(friendId);
+		Reservation r = reservationRepository.findOne(resId);
+		r.getPeople().add(g);
+		reservationRepository.save(r);
+		return g;
+		
 	}
 
 }

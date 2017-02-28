@@ -78,6 +78,44 @@ app.factory('GuestService', function guestService($http) {
 		});
 	}
 	
+	guestService.createOrder = function(tableNum,resId,date){
+		return $http({
+			method : 'POST',
+			url: '../guests/createOrder?tableId='+tableNum+"&resId="+resId,
+			data: {
+				"date": date
+			}
+		
+		});
+	}
+	
+	guestService.inviteFriend = function(friendId,resId){
+		return $http({
+			method : 'POST',
+			url: '../guests/inviteFriend?friendId='+friendId+"&resId="+resId
+		});
+	}
+	
+	guestService.createReservation = function(reservation,resId){
+		return $http({
+			method : 'POST',
+			url: '../guests/createReservation?id='+resId,
+			data: {
+					"startTime": reservation.startTime,
+					"endTime": reservation.endTime,
+			}	
+		});
+	}
+	
+	
+	
+	guestService.getSegments = function(){
+		return $http({
+			method : 'GET',
+			url: '../guests/segments/'
+		});
+	}
+	
 	guestService.getRequests = function(id){
 		return $http({
 			method : 'GET',

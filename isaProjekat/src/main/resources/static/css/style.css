@@ -166,3 +166,13 @@ select#soflow-color {
    border-radius: 20px;
    padding-left: 15px;
 }
+
+div.authTabs:hover {
+ cursor: pointer;
+ background-color:  #CC0000;
+}
+
+.authTabsGreen:hover {
+ cursor: pointer;
+ background-color:  green;
+}

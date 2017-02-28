@@ -1,5 +1,6 @@
 package com.isa.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.entity.Grade;
+import com.isa.entity.Order;
+import com.isa.entity.OrderStatus;
+import com.isa.entity.Reservation;
+import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
 import com.isa.entity.users.Guest;
 import com.isa.mail.SendEmail;
 import com.isa.service.GuestService;
+import com.isa.service.WaiterService;
 
 @RestController
 @RequestMapping(value="/guests")
@@ -27,6 +33,9 @@ public class GuestController {
 
 	@Autowired
 	private GuestService guestService;
+	
+	@Autowired
+	private WaiterService waiterService;
 	
 	@RequestMapping(
 			value = "/friends/{id}",
@@ -169,6 +178,53 @@ public class GuestController {
 	public ResponseEntity<List<Segment>> segments(){
 		List<Segment> tables = guestService.getSegments();
 		return new ResponseEntity<List<Segment>>(tables, HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
+			value="/createReservation",
+			method=RequestMethod.POST,
+			produces=MediaType.APPLICATION_JSON_VALUE,
+			consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Reservation> createReservation(@RequestBody Reservation r,@RequestParam("id") Long restaurantId){
+		Reservation reservation = guestService.createReservation(r,restaurantId);
+		return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
+			value="/createOrder",
+			method=RequestMethod.POST,
+			produces=MediaType.APPLICATION_JSON_VALUE,
+			consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Order> createOrder(@RequestParam("tableId")Long tableId,@RequestBody Order order,@RequestParam("resId")Long resId){
+		Reservation r = guestService.getReservation(resId);
+		System.out.println(order.getDate());
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(order.getDate());
+		RestaurantTable rt=waiterService.getTable(tableId);
+		//////////////////
+		//order.setWaiter((Waiter)user);
+		/////////////////
+		order.setTable(rt);
+		order.setReservation(r);
+		order.setTime(r.getStartTime());
+		order.setPrice(0);
+		order.setOrderStatus(OrderStatus.NOTPAID);
+		Order o=waiterService.addOrder(order);
+		return new ResponseEntity<Order>(o, HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
+			value="/inviteFriend",
+			method=RequestMethod.POST,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Guest> inviteFriend(@RequestParam("friendId")Long friendId,@RequestParam("resId")Long resId){
+		return new ResponseEntity<Guest>(this.guestService.inviteFriend(friendId,resId), HttpStatus.OK);	
 	}
 	
 }

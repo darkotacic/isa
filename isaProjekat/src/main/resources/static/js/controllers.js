@@ -174,7 +174,7 @@ app.controller('profileController',['$rootScope','$scope','$location','$http','S
 
 }]);
 
-app.controller('restaurantController',['$rootScope','$scope','$location','$http','SessionService','SystemManagerService',function($rootScope,$scope,$location,$http,sessionService,systemManagerService) {
+app.controller('restaurantController',['$rootScope','$scope','$location','$http','SessionService','SystemManagerService','WaiterService','GuestService',function($rootScope,$scope,$location,$http,sessionService,systemManagerService,waiterService,guestService) {
 	
 	if (!$rootScope.loggedUser) {
 		$location.path('/login');
@@ -184,13 +184,84 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 	
 	$scope.selected = null;
 	
+	$scope.currentDate = new Date();
+	
+	$scope.selectedTables = [];
+	
+	$scope.selectedFriends = [];
+	
 	$scope.makeReservation = false;
+	
+	$scope.show = null;
+	
+	$scope.invite = function(friend){
+		var friendIndex = $scope.selectedFriends.indexOf(friend.id);
+		if(friendIndex == -1){
+			$scope.selectedFriends.push(friend.id);
+			friend.invited = true;
+		} else {
+			$scope.selectedFriends.splice(friendIndex,1);
+			friend.invited = false;
+		}
+	}
+	
+	$scope.confirm = function(){
+		guestService.createReservation($scope.reservation,$scope.selected.id).then(function(response){
+			   var reservation = response.data
+			   angular.forEach($scope.selectedTables, function(value, key){
+				      guestService.createOrder(value,reservation.id,$scope.reservation.date).then(function(response){
+				    	 $scope.lastAddedOrder = response.data; 
+				      });
+			   });
+			   
+			   angular.forEach($scope.selectedFriends, function(value, key){
+				      guestService.inviteFriend(value,reservation.id).then(function(response){
+				    	 $scope.lastAddedFriend = response.data; 
+				      });
+			   });
+		})
+
+	}
+	
+	
+	$scope.initFriend = function(friend){
+		friend.invited = false;
+	}
 	
 	$scope.showMake = function(){
 		$scope.makeReservation = true;
 	}
 	
+	$scope.getTablesForSegment=function(id,index){
+		waiterService.getTablesForSegment(id).then(function(response){
+			$scope.segments[index].tables=response.data;
+		});
+	}
 	
+	
+	$scope.addTable=function(table,index){
+		if(table.free){
+			var tableIndex = $scope.selectedTables.indexOf(table.id);
+			if(tableIndex == -1){
+				var id =table.segment.id+"#"+index;
+				document.getElementById(id).style.backgroundColor ="blue";
+				$scope.selectedTables.push(table.id);
+			} else {
+				var id =table.segment.id+"#"+index;
+				document.getElementById(id).style.backgroundColor = null;
+				$scope.selectedTables.splice(tableIndex,1);
+			}
+		}
+	}
+	
+	
+	$scope.showView = function(show){
+		$scope.show = show;
+	}
+	
+	$scope.clearTables=function(){
+		$scope.selectedTables = [];
+	}
 	$scope.setSelected = function(selected){
 		if($scope.selected == selected){
 			$scope.selected = null;
@@ -199,11 +270,31 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 		}
 		
 		$scope.makeReservation = false;
+		$scope.selctedSegment = null;
+		$scope.reservation = null;
+		$scope.show = null;
 	}
 	
 	systemManagerService.getRestaurants($rootScope.loggedUser.id).then(function(response){
 		$scope.restaurants = response.data;
 	});
+	
+	guestService.getSegments().then(function(response){
+		$scope.segments = response.data;
+	});
+	
+	guestService.getFriends($rootScope.loggedUser.id).then(function(response){
+		$scope.friends = response.data;
+	});
+	
+	$scope.range = function(min, max, step) {
+	    step = step || 1;
+	    var input = [];
+	    for (var i = min; i < max; i += step) {
+	        input.push(i);
+	    }
+	    return input;
+	};
 	
 }]);
 
