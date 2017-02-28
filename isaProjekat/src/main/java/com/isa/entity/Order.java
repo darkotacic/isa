@@ -46,6 +46,10 @@ public class Order implements Serializable {
 
 	@ManyToOne(optional = false)
 	private Waiter waiter;
+	
+	@ManyToOne
+	private Reservation reservation;
+	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
@@ -70,6 +74,16 @@ public class Order implements Serializable {
 
 	public void setTable(RestaurantTable table) {
 		this.table = table;
+	}
+
+	
+	
+	public Reservation getReservation() {
+		return reservation;
+	}
+
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
 	}
 
 	public void setWaiter(Waiter waiter) {

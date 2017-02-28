@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.entity.Grade;
 import com.isa.entity.Order;
+import com.isa.entity.Segment;
 import com.isa.entity.users.Guest;
 import com.isa.entity.users.User;
 import com.isa.mail.SendEmail;
@@ -174,6 +175,17 @@ public class GuestController {
 	public ResponseEntity<Guest> activate(@RequestParam("email") String email) throws Exception{
 		Guest g = guestService.activate(email);
 		return new ResponseEntity<Guest>(g, HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
+			value="/segments",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Segment>> segments(){
+		List<Segment> tables = guestService.getSegments();
+		return new ResponseEntity<List<Segment>>(tables, HttpStatus.OK);	
 	}
 	
 }

@@ -21,4 +21,26 @@
 			</table>
 		</div>
 	</div>
+	
+	<div ng-if="selected != null">
+		<input class="btn btn-primary" type="button" value="Make reservation" ng-click="showMake()"/>
+	</div>
+	<form name="myForm" novalidate>
+		<div ng-if="makeReservation!=false">
+					<div class="form-group">
+						<label>Reservation date:</label> <input type="date" ng-value="date"
+						step="0.1" min="00.00" max="24.00"
+						ng-Model="reservation.date" class="form-control"
+						placeholder="Enter date" required />
+					</div>
+					
+					<div class="form-group">
+						<label>Start time:</label> <input type="number" name="myDecimal" step="0.1" min="00.00" max="24.00"
+							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-Model="reservation.startTime" class="form-control"
+							placeholder="Enter start time" required />
+							<span ng-show="!myForm.myDecimal.$valid" style="color:red">Valid format is 00-24h with 1 decimal</span>
+					</div>
+		</div>
+	</form>
+	
 </div>

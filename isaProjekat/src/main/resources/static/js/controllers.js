@@ -181,6 +181,26 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 	} else if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
 		$location.path('/changePassword');
 	
+	
+	$scope.selected = null;
+	
+	$scope.makeReservation = false;
+	
+	$scope.showMake = function(){
+		$scope.makeReservation = true;
+	}
+	
+	
+	$scope.setSelected = function(selected){
+		if($scope.selected == selected){
+			$scope.selected = null;
+		} else {
+			$scope.selected = selected;
+		}
+		
+		$scope.makeReservation = false;
+	}
+	
 	systemManagerService.getRestaurants($rootScope.loggedUser.id).then(function(response){
 		$scope.restaurants = response.data;
 	});

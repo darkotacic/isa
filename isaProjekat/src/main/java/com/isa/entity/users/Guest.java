@@ -7,12 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isa.entity.Grade;
+import com.isa.entity.Reservation;
 
 @Entity
 @Table(name="GUEST")
@@ -34,6 +36,24 @@ public class Guest extends User {
 	@JsonIgnore
 	private Set<Grade> grades;
 	
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "people", cascade=CascadeType.ALL)
+	@JsonIgnore
+	private Set<Reservation> reservations;
+	
+	
+	@JsonIgnore
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+
+
+	@JsonProperty
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+
+
+
 	public Guest(){
 		
 	}

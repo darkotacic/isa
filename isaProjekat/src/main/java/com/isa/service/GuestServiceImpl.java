@@ -1,5 +1,7 @@
 package com.isa.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.isa.entity.Order;
+import com.isa.entity.OrderStatus;
+import com.isa.entity.Reservation;
+import com.isa.entity.RestaurantTable;
+import com.isa.entity.Segment;
 import com.isa.entity.users.Friend;
 import com.isa.entity.users.FriendId;
 import com.isa.entity.users.Guest;
@@ -15,6 +22,8 @@ import com.isa.entity.users.GuestStatus;
 import com.isa.entity.users.User;
 import com.isa.repository.FriendRepository;
 import com.isa.repository.GuestRepository;
+import com.isa.repository.ReservationRepository;
+import com.isa.repository.SegmentRepository;
 import com.isa.repository.UserRepository;
 
 
@@ -30,6 +39,12 @@ public class GuestServiceImpl implements GuestService {
 	
 	@Autowired
 	private FriendRepository friendRepository;
+	
+	@Autowired
+	private SegmentRepository segmentRepository;
+	
+	@Autowired
+	private ReservationRepository reservationRepository;
 
 
 	@Override
@@ -197,6 +212,39 @@ public class GuestServiceImpl implements GuestService {
 		old.setStatus(GuestStatus.ACTIVE);
 		Guest g = guestRepository.save(old);
 		return g;
+	}
+
+
+	@Override
+	public List<Segment> getSegments() {
+		List<Segment> segments = (List<Segment>) segmentRepository.findAll();
+		List<Reservation> reservations = (List<Reservation>) reservationRepository.findAll();
+		
+		for(Reservation r : reservations){
+			boolean flag = false;
+			Calendar calendar=Calendar.getInstance();
+			calendar.setTime(new Date());
+			double currentTime=calendar.get(Calendar.HOUR_OF_DAY)+(calendar.get(Calendar.MINUTE)/100.0);
+			if(currentTime > r.getStartTime() && r.getEndTime() < currentTime){
+				flag = true;
+			}
+			for(Order o : r.getOrders()){
+				if(o.getOrderStatus().equals(OrderStatus.NOTPAID)){
+					if(flag){
+						for(Segment s : segments){
+							for(RestaurantTable rt : s.getTables()){
+								if(rt.getId() == o.getTable().getId()){
+									rt.setFree(false);
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return segments;
 	}
 	
 

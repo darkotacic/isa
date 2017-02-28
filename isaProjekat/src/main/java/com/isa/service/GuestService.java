@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.isa.entity.Segment;
 import com.isa.entity.users.Guest;
 
 public interface GuestService {
@@ -13,6 +14,8 @@ public interface GuestService {
 	Guest register(Guest guest);
 	
 	Guest activate(String email);
+	
+	List<Segment> getSegments();
 	
 	ResponseEntity<List<Guest>> getNonFriendsForGuest(Long id);
 	
