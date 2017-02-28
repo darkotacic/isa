@@ -1,11 +1,13 @@
 package com.isa.service;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
 import com.isa.entity.BidderOffer;
+import com.isa.entity.Order;
 import com.isa.entity.Product;
 import com.isa.entity.RequestOffer;
 import com.isa.entity.Restaurant;
@@ -129,6 +131,10 @@ public interface RestaurantManagerService {
 	ResponseEntity<WorkSchedule> getWorkSchedule(Long id);
 
 	ResponseEntity<BidderOffer> getBidderOffer(Long id);
+
+	ResponseEntity<List<Order>> getReservationsForWeek(Long id, String d) throws ParseException;
+
+	ResponseEntity<List<Order>> getReservationsForDay(Long id, String startDate) throws ParseException;
 
 
 }

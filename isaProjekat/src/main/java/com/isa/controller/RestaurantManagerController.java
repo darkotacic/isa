@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.entity.BidderOffer;
+import com.isa.entity.Order;
 import com.isa.entity.Product;
 import com.isa.entity.RequestOffer;
 import com.isa.entity.Restaurant;
@@ -345,18 +346,17 @@ public class RestaurantManagerController {
 	@Transactional
 	public ResponseEntity<RequestOffer> acceptBidderOffer(@RequestParam(value = "bid_id") Long r_id,
 			@RequestParam(value = "req_id") Long q_id) {
-		// http://localhost:8080/!#/bidderOffersForBidder.html
-		List<BidderOffer> biddings = getAllBidderOffersForRequestOffer(r_id).getBody();
+		List<BidderOffer> biddings = this.restaurantManagerService.getAllBidderOffersForRequestOffer(q_id).getBody();
 		for (int i = 0; i < biddings.size(); i++) {
 			if (biddings.get(i).getId() == r_id) {
 				@SuppressWarnings("unused")
 				SendEmail se = new SendEmail(biddings.get(i).getBidder().getEmail(),
-						"<a href=http://localhost:8080/!#/bidderOffersForBidder.html> Check </a>", "Notification",
+						"<a href=http://http://localhost:8080/#!/home> Check </a>", "Notification",
 						"Your bidder offer " + biddings.get(i).getId() + " is accepted. Check here :");
 			} else {
 				@SuppressWarnings("unused")
 				SendEmail se = new SendEmail(biddings.get(i).getBidder().getEmail(),
-						"<a href=http://localhost:8080/!#/bidderOffersForBidder.html> Check </a>", "Notification",
+						"<a href=http://http://localhost:8080/#!/home> Check </a>", "Notification",
 						"Your bidder offer " + biddings.get(i).getId() + " is declined. Check here :");
 			}
 		}
@@ -466,5 +466,19 @@ public class RestaurantManagerController {
 	@Transactional
 	public ResponseEntity<BidderOffer> getBidderOffer(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getBidderOffer(id);
+	}
+	
+	@RequestMapping(value = "/getReservationsForWeek", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Order>> getReservationsForWeek(@RequestParam(value = "id") Long id, @RequestParam(value = "date") String startDate) throws ParseException {
+		return restaurantManagerService.getReservationsForWeek(id, startDate);
+	}
+	
+	@RequestMapping(value = "/getReservationsForDay", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Order>> getReservationsForDay(@RequestParam(value = "id") Long id, @RequestParam(value = "date") String startDate) throws ParseException {
+		return restaurantManagerService.getReservationsForDay(id, startDate);
 	}
 }

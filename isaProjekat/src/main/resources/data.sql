@@ -119,3 +119,11 @@ insert into reservation(id,reservation_start,reservation_end,restaurant_res_id) 
 insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status, reservation_id) values(3,'17-02-28',12.0,11,3,990.6,'PAID',1);
 insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(5,2,8,null,3,1,'DONE');
 insert into ord_it(ord_it_id, ord_it_qua, bartender_user_id, cook_user_id, order_res_ord_id, product_pr_id,status) values(6,1,null,6,3,2,'DONE');
+
+insert into reservation(id, RESERVATION_START, RESERVATION_END) values (1, 20.20, 21.20);
+insert into reservation(id, RESERVATION_START, RESERVATION_END) values (2, 18.20, 20.20);
+insert into reservation(id, RESERVATION_START, RESERVATION_END) values (3, 17.20, 18.20);
+
+insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status, reservation_id) values(3,'17-02-27',17.47,3,3,0,'NOTPAID',1);
+insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status, reservation_id) values(4,'17-02-18',17.47,3,4,0,'NOTPAID',2);
+insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status, reservation_id) values(5,'17-02-28',17.47,3,3,0,'NOTPAID',3);

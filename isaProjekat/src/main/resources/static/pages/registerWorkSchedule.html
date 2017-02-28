@@ -12,29 +12,36 @@
 	<label>Two days shift?</label>
 	<div class="form-group">
 		<label class="radio-inline"> <input type="radio" value=true
-			ng-model="$parent.workSchedule.twoDays" required/ > Yes
+			ng-model="$parent.workSchedule.twoDays"required/ > Yes
 		</label> <label class="radio-inline"> <input type="radio" value=false
-			ng-model="$parent.workSchedule.twoDays" required/> No
+			ng-model="$parent.workSchedule.twoDays" required /> No
 		</label>
 	</div>
 	<div class="form-group">
-		<label>Start time:</label> <input type="number" step="0.1" min="00.00" max="24.00"
-			ng-Model="$parent.workSchedule.startTime" class="form-control"
-			placeholder="Enter start time" required />
+		<label>Start time:</label> <input type="number" step="0.1" min="00.00"
+			max="24.00" ng-Model="$parent.workSchedule.startTime"
+			class="form-control" placeholder="Enter start time" required />
 	</div>
 	<div class="form-group">
-		<label>End time:</label> <input type="number" step="0.1" min="00.00" max="24.00"
-			ng-Model="$parent.workSchedule.endTime" class="form-control"
-			placeholder="Enter end time , format 11.12" required />
+		<label>End time:</label> <input type="number" step="0.1" min="00.00"
+			max="24.00" ng-Model="$parent.workSchedule.endTime"
+			class="form-control" placeholder="Enter end time , format 11.12"
+			required />
 	</div>
-	<label>Worker :</label> <select ng-model="$parent.workSchedule.worker"
-		ng-options="x.id for x in $parent.restaurantWorkers"
-		ng-change="$parent.changeStatusOfWorkerIsWaiter(workSchedule.worker)" required/>
-	</select> <label>Segment :</label> <select
-		ng-model="$parent.workSchedule.segment"
-		ng-options="x.id for x in $parent.restaurantSegments"
-		ng-disabled="!$parent.workerIsWaiter">
-	</select>
+	<label>Worker :</label>
+	<div class="styled-select blue semi-square">
+		<select ng-model="$parent.workSchedule.worker"
+			ng-options="x.id for x in $parent.restaurantWorkers"
+			ng-change="$parent.changeStatusOfWorkerIsWaiter(workSchedule.worker)"
+			required /> </select>
+	</div>
+	<label>Segment :</label>
+	<div class="styled-select blue semi-square">
+		<select ng-model="$parent.workSchedule.segment"
+			ng-options="x.id for x in $parent.restaurantSegments"
+			ng-disabled="!$parent.workerIsWaiter">
+		</select>
+	</div>
 	<div class="form-group">
 		<button type="submit" class="btn btn-success"
 			ng-disabled="(myForm.$invalid || !$parent.enableSubmit)"
@@ -42,11 +49,13 @@
 	</div>
 </form>
 <form name="myForm" novalidate>
-	<label>Replacement :</label> <select
-		ng-model="$parent.workSchedule.replacement"
-		ng-options="x.id for x in $parent.possibleReplacments"
-		ng-disabled="!$parent.enableReplacments">
-	</select>
+	<label>Replacement :</label>
+	<div class="styled-select blue semi-square">
+		<select ng-model="$parent.workSchedule.replacement"
+			ng-options="x.id for x in $parent.possibleReplacments"
+			ng-disabled="!$parent.enableReplacments">
+		</select>
+	</div>
 	<div class="form-group">
 		<button type="submit" class="btn btn-success"
 			ng-disabled="!$parent.enableReplacments || myForm.$invalid"

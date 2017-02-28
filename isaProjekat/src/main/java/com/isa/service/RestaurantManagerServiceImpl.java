@@ -1,6 +1,7 @@
 
 package com.isa.service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.entity.BidderOffer;
 import com.isa.entity.BidderOfferStatus;
+import com.isa.entity.Order;
 import com.isa.entity.Product;
 import com.isa.entity.RequestOffer;
 import com.isa.entity.Restaurant;
@@ -594,6 +596,28 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	@Override
 	public ResponseEntity<BidderOffer> getBidderOffer(Long id) {
 		return new ResponseEntity<BidderOffer>(this.bidderOfferRepository.findOne(id), HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<List<Order>> getReservationsForWeek(Long id, String d) throws ParseException {
+			Date start = formatter.parse(d);
+		    Calendar c = Calendar.getInstance();
+		    c.setTime(start);
+		    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - c.getFirstDayOfWeek();
+		    c.add(Calendar.DAY_OF_MONTH, -dayOfWeek);
+
+		    Date weekStart = c.getTime();
+		    // we do not need the same day a week after, that's why use 6, not 7
+		    c.add(Calendar.DAY_OF_MONTH, 6); 
+		    Date weekEnd = c.getTime();
+		return new ResponseEntity<List<Order>>(this.orderRepository.getReservationsOfRestaurantForWeek(this.restaurantRepository.findOne(id), weekStart, weekEnd), HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<List<Order>> getReservationsForDay(Long id, String startDate) throws ParseException {
+		Date start = formatter.parse(startDate);
+		return new ResponseEntity<List<Order>>(this.orderRepository.getReservationsOfRestaurantForDay(this.restaurantRepository.findOne(id), start), HttpStatus.OK);
+
 	}
 
 

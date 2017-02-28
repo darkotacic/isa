@@ -708,6 +708,21 @@ app
 						});
 					}
 					
+					restaurantManagerService.getReservationsForWeek = function(id, date) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantmanagers/getReservationsForWeek?id='
+									+ id + '&date=' + date
+						});
+					}
+					restaurantManagerService.getReservationsForDay = function(id, date) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantmanagers/getReservationsForDay?id='
+									+ id + '&date=' + date
+						});
+					}
+					
 					return restaurantManagerService;
 
 				});

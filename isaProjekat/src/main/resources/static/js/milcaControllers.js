@@ -323,20 +323,34 @@ app
 							}
 
 							$scope.getBidderOfferForBidderAndRequest = function() {
-								bidderService
-										.getBidderOfferForBidderAndRequest(
-												$scope.selectedRequestOffer.id,
-												$rootScope.loggedUser.id)
-										.then(
-												function(response) {
-													if (response.data) {
-														$scope.show = 3;
-														$scope.editBidderOffer = response.data;
-													} else 
-														{
-														$scope.show = 1;
-														}
-												});
+								bidderService.getRequestOffer(
+										$scope.selectedRequestOffer.id).then(
+										function(response) {
+											if (response.data) {
+												if($scope.selectedRequestOffer.status != response.data.status) {
+													var index = $scope.requestOffers
+													.indexOf($scope.selectedRequestOffer);
+													$scope.requestOffers[index] = response.data;
+													$scope.show = null;
+												}
+												else {
+													bidderService
+													.getBidderOfferForBidderAndRequest(
+															$scope.selectedRequestOffer.id,
+															$rootScope.loggedUser.id)
+													.then(
+															function(response) {
+																if (response.data) {
+																	$scope.show = 3;
+																	$scope.editBidderOffer = response.data;
+																} else 
+																	{
+																	$scope.show = 1;
+																	}
+															});
+												}							
+											}
+										});	
 							}
 
 							$scope.getDetailsOfRequestOffer = function() {
@@ -376,10 +390,10 @@ app
 										function(response) {
 											if (response.data) {
 												if($scope.selectedBidderOffer.offerStatus != response.data.offerStatus) {
-													$scope.selectedBidderOffer = response.data;
 													var index = $scope.bidderOffers
 													.indexOf($scope.selectedBidderOffer);
 													$scope.bidderOffers[index] = response.data;
+													$scope.show = null;
 												}
 												else 		
 													$scope.show = 3;
@@ -1482,6 +1496,91 @@ app
 											}
 										});
 								}
+							
+							$scope.getReservations = function() {
+								var start =  moment($scope.dailyChart.date).format('MM-DD-YYYY');
+								if($scope.dailyChart.base){
+									restaurantManagerService
+									.getReservationsForWeek($scope.restaurant.id, start)
+									.then(
+											function(response) {
+												if(response.data) {
+													if(response.data.length >= 1) {
+														$scope.reservations = response.data;
+														$scope.createChart();
+														$scope.showChart = true;
+													}else {
+														$scope.showChart = false;
+														$scope.noResevations = 'No visits for selected week'
+													}
+												}
+											});
+									} else {
+										restaurantManagerService
+										.getReservationsForDay($scope.restaurant.id, start)
+										.then(
+												function(response) {
+													if(response.data) {
+														if(response.data.length >= 1) {
+															$scope.reservations = response.data;
+															$scope.createChart();
+															$scope.showChart = true;
+														}else {
+															$scope.showChart = false;
+															$scope.noResevations = 'No visits for selected day'
+														}
+													}
+												});
+									}
+								}
+							$scope.createChart = function() {
+								var datesName = [];
+								var startTimes = [];
+								var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+								for(var i = 0; i < $scope.reservations.length; i++) {
+									var temp = $scope.reservations[i];
+									var date = new Date(temp.date);
+									var dayName = days[date.getDay()];
+									startTimes[i] = temp.reservation.startTime;
+									datesName[i] = dayName;			
+								}
+								var counts = {};
+
+								datesName.forEach(function(element) {
+								  counts[element] = (counts[element] || 0) + 1;
+								});
+								var countDay = [];
+								var n = 0;
+								for (var element in counts) {
+								 countDay[n] = counts[element];
+								 n++;
+								} 
+								$scope.labels =  ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+								  $scope.series = ['Series A', 'Series B'];
+								  $scope.data = [
+								    [countDay[0], countDay[1], countDay[2], countDay[3], countDay[4], countDay[5], countDay[6]]
+								  ];
+								  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+								  $scope.options = {
+								    scales: {
+								      yAxes: [
+								        { 
+								        	ticks: {
+								            min: 0,
+								            beginAtZero:true,
+								            max: 10,
+								            stepSize: 1
+								        },
+								          id: 'y-axis-1',
+								          type: 'linear',
+								          display: true,
+								          position: 'left'
+								        }
+								      ]
+								    }
+								  };
+							}
+							
 							
 						} ]);
 
