@@ -27,9 +27,10 @@
 						<div ng-if="shift.worker.userRole != 'WAITER'">Only for
 							waiters</div></td>
 					<td><div ng-if="shift.worker.userRole == 'WAITER' ">
-							<div ng-if="shift.replacment != null ">
-								{{shift.replacment.id}}</div>
-							<div ng-if="shift.replacment == null ">No replacment</div>
+							<div ng-if="shift.replacement != null ">
+								{{shift.replacement.id}}</div>
+							<div ng-if="shift.replacement == null ">No replacement</div>
+							</div>
 							<div ng-if="shift.worker.userRole != 'WAITER'">Only for
 								waiters</div></td>
 				</tr>

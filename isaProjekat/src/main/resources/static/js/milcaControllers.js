@@ -936,7 +936,6 @@ app
 												function(response) {
 													if (response.data) {
 														$scope.restaurantSegments[index].tables = response.data;
-														$scope.showS = 3;
 													}
 												});
 							}
@@ -1138,7 +1137,7 @@ app
 											.then(
 													function(response) {
 														if (response.data) {
-															$scope.error = false;
+															if(response.status == 200){
 															if($scope.workerIsWaiter) {
 																$scope.workSchedule = response.data;
 																restaurantManagerService
@@ -1169,6 +1168,11 @@ app
 															response.data.secondDate =  moment(response.data.secondDate).format('YYYY-MM-DD');
 															$scope.restaurantShifts.push(response.data);
 														} 
+														}else {
+															ngNotify.set('Worker already has shift for that day, try again' , {
+																type : 'info'
+															});
+														}
 													}).catch(function(response) {
 														ngNotify.set('Date must be today, or future, also if not twoDaysShift, than end time must be after start time' , {
 															type : 'error',
