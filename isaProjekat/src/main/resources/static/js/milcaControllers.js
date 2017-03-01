@@ -332,6 +332,7 @@ app
 													.indexOf($scope.selectedRequestOffer);
 													$scope.requestOffers[index] = response.data;
 													$scope.show = null;
+													ngNotify.set('Sorry, this request is no longer open for biddings.');
 												}
 												else {
 													bidderService
@@ -558,6 +559,7 @@ app
 														$scope.managerOffers[index] = response.data;
 														$scope.showR = null;
 														$scope.selectedShift = response.data;
+														ngNotify.set('Sorry this request can not be edited.' );
 													}
 													else 		
 														$scope.showR = 2;
@@ -999,6 +1001,7 @@ app
 													.indexOf($scope.selectedTable);
 													$scope.segmentTables[index] = response.data;
 													$scope.selectedTable = null;
+													ngNotify.set('Sorry , looks like this table is no longer free, so it can not be deleted or edited.');
 												}
 											}
 										});

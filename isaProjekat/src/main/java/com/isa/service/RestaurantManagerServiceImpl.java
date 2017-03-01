@@ -423,13 +423,6 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(Long id) {
-		return new ResponseEntity<List<BidderOffer>>(
-				this.bidderOfferRepository.getBidderOffersForManager(this.restaurantManagerRepository.findOne(id)),
-				HttpStatus.OK);
-	}
-
-	@Override
 	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForRequestOffer(Long id) {
 		return new ResponseEntity<List<BidderOffer>>(
 				this.bidderOfferRepository.findByRequestOffer(this.requestOfferRepository.findOne(id)), HttpStatus.OK);

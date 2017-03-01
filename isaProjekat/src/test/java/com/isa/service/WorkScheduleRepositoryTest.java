@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import com.isa.entity.Segment;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.UserRole;
 import com.isa.entity.users.Waiter;
+import com.isa.repository.RestaurantRepository;
 import com.isa.repository.WorkScheduleRepository;
 
 @RunWith(SpringRunner.class)
@@ -25,6 +27,9 @@ public class WorkScheduleRepositoryTest {
 
 	@Autowired
 	private WorkScheduleRepository workScheduleRepository;
+	
+	@Autowired
+	private RestaurantRepository restaurantRepository;
 	
 	private Date startDate;
 	private Date endDate;
@@ -102,6 +107,24 @@ public class WorkScheduleRepositoryTest {
 		WorkSchedule schedule=workScheduleRepository.getWorkSchedule(waiter, startDate);
 		boolean equal=(schedule.getStartTime()==8.0);
 		assertEquals(equal, true);
+	}
+	
+	@Test
+	public void getWorkScheduleForRestaurant(){
+		List<WorkSchedule> schedules=workScheduleRepository.getWorkScheduleForRestaurant(restaurantRepository.findOne((long) 1));
+		assertEquals(schedules.size(), 14);
+	}
+	
+	@Test
+	public void getReplacements(){
+		List<WorkSchedule> schedules=workScheduleRepository.getReplacements(restaurantRepository.findOne((long) 1),12.00, startDate );
+		assertEquals(schedules.size(), 0);
+	}
+	
+	@Test
+	public void getWorkScheduleBetween(){
+		List<WorkSchedule> schedules=workScheduleRepository.getWorkScheduleBetween(startDate, endDate, restaurant);
+		assertEquals(schedules.size(), 14);
 	}
 	
 }

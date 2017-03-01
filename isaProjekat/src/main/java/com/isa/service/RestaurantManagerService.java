@@ -74,8 +74,6 @@ public interface RestaurantManagerService {
 
 	ResponseEntity<List<RequestOffer>> getAllRequestOffersForManager(Long id);
 
-	ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(Long id);
-
 	ResponseEntity<List<BidderOffer>> getAllBidderOffersForRequestOffer(Long id);
 
 	ResponseEntity<List<Segment>> getAllSegmentsForRestaurant(Long id);
