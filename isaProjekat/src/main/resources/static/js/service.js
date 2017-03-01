@@ -102,17 +102,21 @@ app.factory('GuestService', function guestService($http) {
 			url: '../guests/createReservation?id='+resId,
 			data: {
 					"startTime": reservation.startTime,
-					"endTime": reservation.endTime,
+					"endTime": reservation.endTime
 			}	
 		});
 	}
 	
 	
 	
-	guestService.getSegments = function(){
+	guestService.getSegments = function(date,reservation,resId){
 		return $http({
-			method : 'GET',
-			url: '../guests/segments/'
+			method : 'POST',
+			url: '../guests/segments/'+date+'/'+resId,
+			data: {
+				"startTime": reservation.startTime,
+				"endTime": reservation.endTime
+			}
 		});
 	}
 	

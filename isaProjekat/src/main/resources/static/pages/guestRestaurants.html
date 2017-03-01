@@ -30,23 +30,25 @@
 					<div class="form-group">
 						<label>Reservation date:</label> 
 						<input type="date" ng-value="date"
+						 id = "date"
 						 min="{{currentDate | date:'yyyy-MM-dd'}}")
-						ng-Model="reservation.date" class="form-control"
-						placeholder="Enter date" required />
+						 ng-change="cancel()"
+						 ng-Model="reservation.date" class="form-control"
+						 placeholder="Enter date" required />
 					</div>
 					
 					<div class="form-group">
-						<label>Start time:</label> <input type="number" name="myDecimal" step="0.1" min="00.00" max="24.00"
-							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-Model="reservation.startTime" class="form-control"
+						<label>Start time:</label> <input type="number" name="myDecimal1" step="0.1" min="00.00"
+							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="cancel()" max="{{reservation.endTime}}" ng-Model="reservation.startTime" class="form-control"
 							placeholder="Enter start time" required />
-							<span ng-show="!myForm.myDecimal.$valid" style="color:red">Valid format is 00-24h with 1 decimal</span>
+							<span ng-show="!myForm.myDecimal1.$valid" style="color:red">Valid format is 00-24h with 1 decimal</span>
 					</div>
 					
 					<div class="form-group">
-						<label>End time:</label> <input type="number" name="myDecimal" step="0.1" min="00.00" max="24.00"
-							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-Model="reservation.endTime" class="form-control"
+						<label>End time:</label> <input type="number" ng-change="cancel()" name="myDecimal2" step="0.1"  max="24.00"
+							ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" min="{{reservation.startTime}}" ng-Model="reservation.endTime" class="form-control"
 							placeholder="Enter start time" required />
-							<span ng-show="!myForm.myDecimal.$valid" style="color:red">Valid format is 00-24h with 1 decimal</span>
+							<span ng-show="!myForm.myDecimal2.$valid" style="color:red">Valid format is 00-24h with 1 decimal</span>
 					</div>
 		</div>
 	</form>

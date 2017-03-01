@@ -1,6 +1,6 @@
 package com.isa.service;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +25,7 @@ import com.isa.entity.users.Guest;
 import com.isa.entity.users.GuestStatus;
 import com.isa.entity.users.User;
 import com.isa.entity.users.UserRole;
+import com.isa.mail.SendEmail;
 import com.isa.repository.FriendRepository;
 import com.isa.repository.GradeRepository;
 import com.isa.repository.GuestRepository;
@@ -231,26 +232,25 @@ public class GuestServiceImpl implements GuestService {
 
 
 	@Override
-	public List<Segment> getSegments() {
+	public List<Segment> getSegments(Date date,Reservation re,Long resId) {
 		List<Segment> segments = (List<Segment>) segmentRepository.findAll();
 		List<Reservation> reservations = (List<Reservation>) reservationRepository.findAll();
 		
 		for(Reservation r : reservations){
-			boolean flag = false;
-			Calendar calendar=Calendar.getInstance();
-			calendar.setTime(new Date());
-			double currentTime=calendar.get(Calendar.HOUR_OF_DAY)+(calendar.get(Calendar.MINUTE)/100.0);
-			if(currentTime > r.getStartTime() && r.getEndTime() > currentTime){
-				flag = true;
-			}
-			for(Order o : r.getOrders()){
-				if(o.getOrderStatus().equals(OrderStatus.NOTPAID)){
-					if(flag){
-						for(Segment s : segments){
-							for(RestaurantTable rt : s.getTables()){
-								if(rt.getId() == o.getTable().getId()){
-									rt.setFree(false);
-									break;
+			if(r.getRestaurant().getId() == resId){
+				boolean flag = false;
+				if((re.getStartTime() >= r.getStartTime() && re.getStartTime() <= r.getEndTime()) || (re.getEndTime() >= r.getStartTime() && re.getEndTime() <= r.getEndTime())){
+					flag = true;
+				}
+				for(Order o : r.getOrders()){
+					if(o.getOrderStatus().equals(OrderStatus.NOTPAID) && o.getDate().equals(date)){
+						if(flag){
+							for(Segment s : segments){
+								for(RestaurantTable rt : s.getTables()){
+									if(rt.getId() == o.getTable().getId()){
+										rt.setFree(false);
+										break;
+									}
 								}
 							}
 						}
@@ -329,10 +329,41 @@ public class GuestServiceImpl implements GuestService {
 	public Guest inviteFriend(Long friendId, Long resId) {
 		Guest g = guestRepository.findOne(friendId);
 		Reservation r = reservationRepository.findOne(resId);
+		new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>", "Reservation invitation", "To accept click here:").start();
 		r.getPeople().add(g);
 		reservationRepository.save(r);
 		return g;
 		
+	}
+
+
+	@Override
+	public List<Reservation> getHistory(Long id) {
+		List<Reservation> reservations = (List<Reservation>) reservationRepository.findAll();
+		List<Reservation> history = new ArrayList<Reservation>();
+		
+		for(Reservation r : reservations){
+			boolean guestPresent = false;
+			boolean isHistory = true;
+			for(Guest f : r.getPeople()){
+				if(f.getId()==id){
+					guestPresent = true;
+					break;
+				}
+			}
+			if(guestPresent){
+				for(Order o : r.getOrders()){
+					if(o.getOrderStatus().equals(OrderStatus.NOTPAID)){
+						isHistory = false;
+						break;
+					}
+				}
+				if(isHistory){
+					history.add(r);
+				}
+			}
+		}
+		return history;
 	}
 
 }

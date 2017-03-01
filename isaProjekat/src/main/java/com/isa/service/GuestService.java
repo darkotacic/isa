@@ -1,5 +1,6 @@
 package com.isa.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,17 @@ public interface GuestService {
 	
 	Guest activate(String email);
 	
-	List<Segment> getSegments();
+	List<Reservation> getHistory(Long id);
+	
+	List<Segment> getSegments(Date date,Reservation r, Long resId);
 	
 	Reservation getReservation(Long id);
 	
 	Reservation createReservation(Reservation reservation,Long restaurantId);
 	
 	Guest inviteFriend(Long friendId,Long resId);
+	
+	
 	
 	ResponseEntity<List<Guest>> getNonFriendsForGuest(Long id);
 	

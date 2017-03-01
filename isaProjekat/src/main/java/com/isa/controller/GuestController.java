@@ -1,6 +1,7 @@
 package com.isa.controller;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,7 +156,7 @@ public class GuestController {
 	@Transactional
 	public ResponseEntity<Guest> register(@RequestBody Guest guest) throws Exception{
 		Guest g = guestService.register(guest);
-		new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>", "Aktivacioni link", "Za aktivaciju klik ovde").start();;
+		new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">HERE</a>", "Activation", "For activation click: ").start();
 		return new ResponseEntity<Guest>(g, HttpStatus.CREATED);
 	}
 	@RequestMapping(
@@ -170,18 +171,19 @@ public class GuestController {
 	}
 	
 	@RequestMapping(
-			value="/segments",
-			method=RequestMethod.GET,
-			produces=MediaType.APPLICATION_JSON_VALUE)
+			value="/segments/{date}/{resId}",
+			method=RequestMethod.POST,
+			produces=MediaType.APPLICATION_JSON_VALUE,
+			consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<List<Segment>> segments(){
-		List<Segment> tables = guestService.getSegments();
-		return new ResponseEntity<List<Segment>>(tables, HttpStatus.OK);	
+	public ResponseEntity<List<Segment>> segments(@PathVariable("date")Date date,@RequestBody Reservation r,@PathVariable("resId")Long resId ){
+		List<Segment> segments = guestService.getSegments(date,r,resId);
+		return new ResponseEntity<List<Segment>>(segments, HttpStatus.OK);	
 	}
 	
 	@RequestMapping(
-			value="/createReservation",
+			value="/createReservation", 
 			method=RequestMethod.POST,
 			produces=MediaType.APPLICATION_JSON_VALUE,
 			consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -225,6 +227,16 @@ public class GuestController {
 	@Transactional
 	public ResponseEntity<Guest> inviteFriend(@RequestParam("friendId")Long friendId,@RequestParam("resId")Long resId){
 		return new ResponseEntity<Guest>(this.guestService.inviteFriend(friendId,resId), HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
+			value="/history/{id}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Reservation>> getHistory(@PathVariable("id")Long id){
+		return new ResponseEntity<List<Reservation>>(this.guestService.getHistory(id), HttpStatus.OK);	
 	}
 	
 }

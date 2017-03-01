@@ -219,8 +219,26 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 				    	 $scope.lastAddedFriend = response.data; 
 				      });
 			   });
-		})
+	    		swal({
+	    			  title: "Success!",
+	    			  text: "Reservation made",
+	    			  type: "success",
+	    			  timer: 2000
+	 
+	    			});
+	    		$scope.restaurant = null;
+	    		$scope.makeReservation = false;
+	    		$scope.selected = null;
+	    		$scope.selectedTables = [];
+	    		$scope.selectedFriends = [];
+	    		$scope.show = null;
+			   
+		});
 
+	}
+	
+	$scope.cancel = function(){
+		$scope.show = null;
 	}
 	
 	
@@ -256,6 +274,9 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 	
 	
 	$scope.showView = function(show){
+		if(show==1){
+			$scope.getSegments();
+		}
 		$scope.show = show;
 	}
 	
@@ -279,9 +300,11 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 		$scope.restaurants = response.data;
 	});
 	
-	guestService.getSegments().then(function(response){
-		$scope.segments = response.data;
-	});
+	$scope.getSegments = function(){
+		guestService.getSegments($scope.reservation.date,$scope.reservation,$scope.selected.id).then(function(response){
+			$scope.segments = response.data;
+		});
+	}
 	
 	guestService.getFriends($rootScope.loggedUser.id).then(function(response){
 		$scope.friends = response.data;
