@@ -182,6 +182,37 @@ app.factory('GuestService', function guestService($http) {
 			url: '../guests/sendRequest?user_id='+user_id+'&reciever_id='+reciever_id
 		});
 	}
+	
+	guestService.addGrade = function(grade,reservationId){
+		return $http({
+			method : 'POST',
+			url: '../guests/addGrade/'+reservationId,
+			data: {
+				"gradeOfService": grade.gradeOfService,
+				"gradeOfOrderItem": grade.gradeOfOrderItem,
+				"gradeOfRestaurant": grade.gradeOfRestaurant
+			}
+		});
+	}
+	
+	guestService.editGrade = function(grade,reservationId){
+		return $http({
+			method : 'PUT',
+			url: 'guests/editGrade/'+reservationId,
+			data: {
+				"gradeOfService": grade.gradeOfService,
+				"gradeOfOrderItem": grade.gradeOfOrderItem,
+				"gradeOfRestaurant": grade.gradeOfRestaurant
+			}
+		});
+	}
+	
+	guestService.deleteGrade = function(reservationId){
+		return $http({
+			method : 'DELETE',
+			url: 'guests/deleteGrade/'+reservationId,
+		});
+	}
 
 	return guestService;
 });

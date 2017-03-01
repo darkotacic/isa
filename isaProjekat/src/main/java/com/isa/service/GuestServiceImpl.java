@@ -269,6 +269,11 @@ public class GuestServiceImpl implements GuestService {
 			return new ResponseEntity<>(HttpStatus.METHOD_NOT_ALLOWED);
 		Reservation reservation=reservationRepository.findOne(reservationId);
 		for(Order order:reservation.getOrders()){
+			Grade g=gradeRepository.fingGradeByOrder(order, (Guest)user);
+			if(g!=null)
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		for(Order order:reservation.getOrders()){
 			Grade g=new Grade(grade.getGradeOfService(), grade.getGradeOfOrderItem(), grade.getGradeOfRestaurant());
 			g.setOrder(order);
 			g.setRestaurant(order.getTable().getSegment().getRestaurant());
@@ -287,6 +292,8 @@ public class GuestServiceImpl implements GuestService {
 		Reservation reservation=reservationRepository.findOne(reservationId);
 		for(Order order:reservation.getOrders()){
 			Grade g=gradeRepository.fingGradeByOrder(order, (Guest)user);
+			if(g==null)
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			g.setGradeOfOrderItem(grade.getGradeOfOrderItem());
 			g.setGradeOfRestaurant(grade.getGradeOfRestaurant());
 			g.setGradeOfService(grade.getGradeOfService());
@@ -304,6 +311,8 @@ public class GuestServiceImpl implements GuestService {
 		Reservation reservation=reservationRepository.findOne(reservationId);
 		for(Order order:reservation.getOrders()){
 			Grade g=gradeRepository.fingGradeByOrder(order, (Guest)user);
+			if(g==null)
+				continue;
 			gradeRepository.delete(g);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);

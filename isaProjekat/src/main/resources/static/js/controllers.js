@@ -177,6 +177,13 @@ app.controller('profileController',['$rootScope','$scope','$location','$http','S
 	$scope.confirmEditProfile=function(){
 		sessionService.update($scope.user).then(function(response){
 			$rootScope.loggedUser = response.data;
+			$location.path('/home');
+			swal({
+	  			  title: "Success!",
+	  			  text: 'You have successfully edited your profile.',
+	  			  type: "success",
+	  			  timer: 3000
+	  			});
 		});
 	}
 
@@ -344,6 +351,9 @@ app.controller('historyController',['$rootScope','$scope','$location','$http','G
 	} 
 	
 	$scope.selected = null;
+	$scope.addGrade=null;
+	$scope.editGrade=null;
+	$scope.grade=new Object();
 	
 	guestService.getHistories($rootScope.loggedUser.id).then(function(response){
 		$scope.histories = response.data;
@@ -354,11 +364,53 @@ app.controller('historyController',['$rootScope','$scope','$location','$http','G
 		 });
 	});
 	
-	
 	$scope.selectHistory=function(history){
 		$scope.selected = history;
 	}
-
+	
+	$scope.add=function(){
+		$scope.addGrade=$scope.selected;
+		$scope.editGrade=null;
+	}
+	
+	$scope.edit=function(){
+		$scope.addGrade=null;
+		$scope.editGrade=$scope.selected;
+	}
+	
+	$scope.deleteGrade=function(){
+		guestService.deleteGrade($scope.selected.id).then(function(response){
+			$scope.selected=null;
+			$scope.addGrade=null;
+			$scope.editGrade=null;
+		});
+	}
+	
+	$scope.confirmAddGrade=function(){
+		guestService.addGrade($scope.grade,$scope.addGrade.id).then(function(response){
+			$scope.addGrade=null;
+		}).catch(function(response) {
+			swal({
+				  title: "Add grade",
+				  text: "You have already created grade for this reservation.",
+				  type: "success",
+				  timer: 3000
+			});
+	    });
+	}
+	
+	$scope.confirmEditGrade=function(){
+		guestService.editGrade($scope.grade,$scope.editGrade.id).then(function(response){
+			$scope.editGrade=null;
+		}).catch(function(response) {
+			swal({
+				  title: "Edit grade",
+				  text: "You have not created grade for this reservation.",
+				  type: "success",
+				  timer: 3000
+			});
+	    });
+	}
 	
 }]);
 

@@ -141,7 +141,7 @@ public class GuestController {
 	
 	@RequestMapping(
 			value="/editGrade/{reservationId}",
-			method=RequestMethod.DELETE,
+			method=RequestMethod.PUT,
 			consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
