@@ -33,6 +33,8 @@ app.controller('appController',['$rootScope','$scope','$location','SessionServic
 		} else {
 			if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
 				$location.path('/changePassword');
+			else if(($rootScope.loggedUser.userRole == 'WAITER' || $rootScope.loggedUser.userRole == 'BARTENDER' || $rootScope.loggedUser.userRole == 'COOK') && $rootScope.loggedUser.firstLogIn)
+				$location.path('/profile');
 			else
 				$location.path('/home');
 		}
@@ -57,6 +59,8 @@ app.controller('loginController',['$rootScope','$scope','$location','SessionServ
 	} else {
 		if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
 			$location.path('/changePassword');
+		else if(($rootScope.loggedUser.userRole == 'WAITER' || $rootScope.loggedUser.userRole == 'BARTENDER' || $rootScope.loggedUser.userRole == 'COOK') && $rootScope.loggedUser.firstLogIn)
+			$location.path('/profile');
 		else
 			$location.path('/home');
 	}
@@ -121,6 +125,8 @@ app.controller('homeController',['$rootScope','$scope','$location','$http', 'Res
 		$location.path('/login');
 	}  else if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
 		$location.path('/changePassword');
+	   else if(($rootScope.loggedUser.userRole == 'WAITER' || $rootScope.loggedUser.userRole == 'BARTENDER' || $rootScope.loggedUser.userRole == 'COOK') && $rootScope.loggedUser.firstLogIn)
+		$location.path('/profile');
 	
 	restaurantManagerService
 	.checkIfRequestOfferExpired();
@@ -159,6 +165,8 @@ app.controller('profileController',['$rootScope','$scope','$location','$http','S
 		$location.path('/login');
 	} else if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
 		$location.path('/changePassword');
+	  else if(($rootScope.loggedUser.userRole == 'WAITER' || $rootScope.loggedUser.userRole == 'BARTENDER' || $rootScope.loggedUser.userRole == 'COOK') && $rootScope.loggedUser.firstLogIn)
+		$location.path('/profile');
 	
 	
 	sessionService.getLoggedUser().then(function(response){
@@ -180,6 +188,8 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 		$location.path('/login');
 	} else if($rootScope.loggedUser.userRole == 'BIDDER' && $rootScope.loggedUser.firstLogIn)
 		$location.path('/changePassword');
+	  else if(($rootScope.loggedUser.userRole == 'WAITER' || $rootScope.loggedUser.userRole == 'BARTENDER' || $rootScope.loggedUser.userRole == 'COOK') && $rootScope.loggedUser.firstLogIn)
+		$location.path('/profile');
 	
 	
 	$scope.selected = null;

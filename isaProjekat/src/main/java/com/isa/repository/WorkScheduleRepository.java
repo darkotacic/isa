@@ -14,16 +14,16 @@ import com.isa.entity.users.Worker;
 public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long> {
 	
 	@Query("select ws from Waiter w inner join w.workSchedules as ws where ws.segment=?3 and ws.date=?1 and ws.startTime<=?2 and ws.endTime>=?2")
-	public WorkSchedule getWorkScheduleForWaiter(Date date,double time,Segment segment);
+	public List<WorkSchedule> getWorkSchedulesForSegment(Date date,double time,Segment segment);
 	
 	@Query("select ws from Waiter w inner join w.workSchedules as ws where ws.date between ?1 and ?2 and w.restaurant=?3")
-	public List<WorkSchedule> getWorkScheduleForWaitersBetween(Date stardDate,Date endDate,Restaurant restaurant);
+	public List<WorkSchedule> getWorkScheduleForWaitersBetween(Date startDate,Date endDate,Restaurant restaurant);
 	
 	@Query("select ws from Cook c inner join c.workSchedules as ws where ws.date between ?1 and ?2 and c.restaurant=?3")
-	public List<WorkSchedule> getWorkScheduleForCooksBetween(Date stardDate,Date endDate,Restaurant restaurant);
+	public List<WorkSchedule> getWorkScheduleForCooksBetween(Date startDate,Date endDate,Restaurant restaurant);
 	
 	@Query("select ws from Bartender b inner join b.workSchedules as ws where ws.date between ?1 and ?2 and b.restaurant=?3")
-	public List<WorkSchedule> getWorkScheduleForBartendersBetween(Date stardDate,Date endDate,Restaurant restaurant);
+	public List<WorkSchedule> getWorkScheduleForBartendersBetween(Date startDate,Date endDate,Restaurant restaurant);
 	
 	@Query("select ws from Worker w inner join w.workSchedules as ws where ws.date between ?1 and ?2 and w.restaurant=?3")
 	public List<WorkSchedule> getWorkScheduleBetween(Date stardDate,Date endDate,Restaurant restaurant);

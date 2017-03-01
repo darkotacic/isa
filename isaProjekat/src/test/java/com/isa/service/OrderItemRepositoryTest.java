@@ -32,7 +32,7 @@ public class OrderItemRepositoryTest {
 	
 	@Before
 	public void setUp() throws Exception{
-		restaurant=new Restaurant(1,"Kineski restoran","Dva stapica");
+		restaurant=new Restaurant(1,"Dva stapica","Kineski restoran");
 		order=new Order();
 		order.setId(new Long(1));
 		cook=new Cook();

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -154,7 +155,8 @@ public class WaiterServiceImpl implements WaiterService {
 		Calendar calendar=Calendar.getInstance();
 		calendar.setTime(date);
 		double time=calendar.get(Calendar.HOUR_OF_DAY)+(calendar.get(Calendar.MINUTE)/100.0);
-		return workScheduleRepository.getWorkScheduleForWaiter(date, time, segment);
+		List<WorkSchedule> schedules=workScheduleRepository.getWorkSchedulesForSegment(date, time, segment);
+		return schedules.get(new Random(0).nextInt(schedules.size()));
 	}
 
 }

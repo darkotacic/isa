@@ -23,7 +23,9 @@ import com.isa.entity.OrderStatus;
 import com.isa.entity.Reservation;
 import com.isa.entity.RestaurantTable;
 import com.isa.entity.Segment;
+import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Guest;
+import com.isa.entity.users.Waiter;
 import com.isa.mail.SendEmail;
 import com.isa.service.GuestService;
 import com.isa.service.WaiterService;
@@ -207,9 +209,10 @@ public class GuestController {
 		Calendar calendar=Calendar.getInstance();
 		calendar.setTime(order.getDate());
 		RestaurantTable rt=waiterService.getTable(tableId);
-		//////////////////
-		//order.setWaiter((Waiter)user);
-		/////////////////
+		WorkSchedule ws=waiterService.getWorkScheduleForSegment(rt.getSegment());
+		if(ws==null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		order.setWaiter((Waiter)ws.getWorker());
 		order.setTable(rt);
 		order.setReservation(r);
 		order.setTime(r.getStartTime());

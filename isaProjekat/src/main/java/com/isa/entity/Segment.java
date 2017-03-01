@@ -125,5 +125,9 @@ public class Segment implements Serializable {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+	
+	public void setId(Long id){
+		this.id=id;
+	}
 
 }
