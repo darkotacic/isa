@@ -41,6 +41,9 @@ public class Worker extends User {
 	
 	@ManyToOne
 	protected Restaurant restaurant;
+	
+	@Column(name = "FIRST_LOGIN", columnDefinition = "boolean default true", insertable = true)
+	private boolean firstLogIn;
 
 	public Worker() {
 
@@ -51,6 +54,7 @@ public class Worker extends User {
 		super(name, surname, email, password, date);
 		this.shirtSize = shirtSize;
 		this.shoeNumber = shoeNumber;
+		this.firstLogIn = true;
 	}
 	@JsonIgnore
 	public Set<WorkSchedule> getReplacements() {
@@ -91,6 +95,14 @@ public class Worker extends User {
 
 	public void setRestaurant(Restaurant restaurant) {
 		this.restaurant = restaurant;
+	}
+
+	public boolean isFirstLogIn() {
+		return firstLogIn;
+	}
+
+	public void setFirstLogIn(boolean firstLogIn) {
+		this.firstLogIn = firstLogIn;
 	}
 	
 }

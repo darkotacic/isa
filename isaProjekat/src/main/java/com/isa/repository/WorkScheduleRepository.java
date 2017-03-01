@@ -7,10 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.isa.entity.Restaurant;
+import com.isa.entity.Segment;
 import com.isa.entity.WorkSchedule;
 import com.isa.entity.users.Worker;
 
 public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long> {
+	
+	@Query("select ws from Waiter w inner join w.workSchedules as ws where ws.segment=?3 and ws.date=?1 and ws.startTime<=?2 and ws.endTime>=?2")
+	public WorkSchedule getWorkScheduleForWaiter(Date date,double time,Segment segment);
 	
 	@Query("select ws from Waiter w inner join w.workSchedules as ws where ws.date between ?1 and ?2 and w.restaurant=?3")
 	public List<WorkSchedule> getWorkScheduleForWaitersBetween(Date stardDate,Date endDate,Restaurant restaurant);

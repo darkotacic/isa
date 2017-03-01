@@ -32,5 +32,6 @@ public interface WaiterService {
 	public List<Group> getWorkSchedulesForMonth(int monthNumber,Restaurant restaurant) throws ParseException;
 	public Waiter getWaiter(Long id);
 	public Segment getSegment(Long id);
+	public WorkSchedule getWorkScheduleForSegment(Segment segment);
 	
 }

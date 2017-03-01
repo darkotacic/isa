@@ -105,6 +105,7 @@ public class BartenderController {
 		temp.setDateOfBirth(bartender.getDateOfBirth());
 		temp.setShoeNumber(bartender.getShoeNumber());
 		temp.setShirtSize(bartender.getShirtSize());
+		temp.setFirstLogIn(false);
 		Bartender b=bartenderService.updateBartenderInformation(temp);
 		session.setAttribute("user", temp);
 		return new ResponseEntity<Bartender>(b, HttpStatus.OK);

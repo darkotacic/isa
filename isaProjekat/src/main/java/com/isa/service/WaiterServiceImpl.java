@@ -148,4 +148,13 @@ public class WaiterServiceImpl implements WaiterService {
 		return segmentRepository.findOne(id);
 	}
 
+	@Override
+	public WorkSchedule getWorkScheduleForSegment(Segment segment) {
+		Date date=new Date();
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(date);
+		double time=calendar.get(Calendar.HOUR_OF_DAY)+(calendar.get(Calendar.MINUTE)/100.0);
+		return workScheduleRepository.getWorkScheduleForWaiter(date, time, segment);
+	}
+
 }

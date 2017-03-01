@@ -220,7 +220,14 @@ app.controller('waiterController',['$rootScope','$scope','$location','WaiterServ
 			var index=$scope.orders.indexOf($scope.selected);
 			$scope.orders.splice(index,1);
 			$scope.orders.push(response.data)
-		});
+		}).catch(function(response) {
+			swal({
+				  title: "Edit order error",
+				  text: "There are no waiter allocated for choosen table in this shift.",
+				  type: "success",
+				  timer: 3000
+			});
+	    });
 		$scope.edit=false;
 	}
 	

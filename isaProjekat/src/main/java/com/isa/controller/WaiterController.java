@@ -111,7 +111,12 @@ public class WaiterController {
 		RestaurantTable rt=waiterService.getTable(Long.parseLong(tableId));
 		Order temp=workerService.getOrder(order.getId());
 		temp.setTable(rt);
-		temp.setWaiter((Waiter)user);
+		WorkSchedule ws=waiterService.getWorkScheduleForSegment(rt.getSegment());
+		if(ws==null){
+			System.out.println("NEMA WORK SCHEDULE");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		temp.setWaiter((Waiter)ws.getWorker());
 		Order o=waiterService.updateOrder(temp);
 		return new ResponseEntity<Order>(o, HttpStatus.OK);
 	}
@@ -251,6 +256,7 @@ public class WaiterController {
 		temp.setDateOfBirth(waiter.getDateOfBirth());
 		temp.setShoeNumber(waiter.getShoeNumber());
 		temp.setShirtSize(waiter.getShirtSize());
+		temp.setFirstLogIn(false);
 		Waiter w=waiterService.updateWaiterInformation(temp);
 		session.setAttribute("user", temp);
 		return new ResponseEntity<Waiter>(w, HttpStatus.OK);

@@ -138,6 +138,7 @@ public class CookController {
 		temp.setDateOfBirth(cook.getDateOfBirth());
 		temp.setShoeNumber(cook.getShoeNumber());
 		temp.setShirtSize(cook.getShirtSize());
+		temp.setFirstLogIn(false);
 		Cook c=cookService.updateCookInformation(temp);
 		session.setAttribute("user", temp);
 		return new ResponseEntity<Cook>(c, HttpStatus.OK);
