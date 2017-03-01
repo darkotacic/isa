@@ -123,6 +123,7 @@ insert into reservation(id, RESERVATION_START, RESERVATION_END,restaurant_res_id
 
 
 insert into guest_Reservations(user_id,res_id) values (1,1);
+insert into guest_Reservations(user_id,res_id) values (2,1);
 
 insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status, reservation_id) values(3,'17-02-28',12.0,11,3,990.6,'PAID',1);
 insert into res_ord(res_ord_id, res_ord_date, order_time, table_id, waiter_user_id,price,order_status, reservation_id) values(4,'17-02-27',17.47,3,3,0,'PAID',1);

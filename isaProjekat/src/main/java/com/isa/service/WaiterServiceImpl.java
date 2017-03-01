@@ -156,7 +156,19 @@ public class WaiterServiceImpl implements WaiterService {
 		calendar.setTime(date);
 		double time=calendar.get(Calendar.HOUR_OF_DAY)+(calendar.get(Calendar.MINUTE)/100.0);
 		List<WorkSchedule> schedules=workScheduleRepository.getWorkSchedulesForSegment(date, time, segment);
-		return schedules.get(new Random(0).nextInt(schedules.size()));
+		if(schedules.size()<=0){
+			return null;
+		}
+		return schedules.get(new Random().nextInt(schedules.size()));
 	}
 
+	@Override
+	public WorkSchedule getWorkScheduleForSegment(Segment segment,double startTime,Date date) {
+
+		List<WorkSchedule> schedules=workScheduleRepository.getWorkSchedulesForSegment(date, startTime, segment);
+		if(schedules.size()<=0){
+			return null;
+		}
+		return schedules.get(new Random().nextInt(schedules.size()));
+	}
 }

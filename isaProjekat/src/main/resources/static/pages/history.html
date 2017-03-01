@@ -1,1 +1,22 @@
-HISTORY
+<div class="containter" ng-controller="historyController">
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Restaurant name</th>
+						<th>People</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="history in histories"
+						ng-click="selectHistory(history)"
+						ng-class="{'info' : selected===history}">
+						<td>{{history.restaurant.restaurantName}}</td>
+						<td><p ng-repeat="friend in history.friends">{{friend.userName}} {{friend.surname}}</p></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

@@ -20,6 +20,8 @@ public interface GuestService {
 	
 	List<Reservation> getHistory(Long id);
 	
+	List<Guest> getHistoryFriends(Long resId);
+	
 	List<Segment> getSegments(Date date,Reservation r, Long resId);
 	
 	Reservation getReservation(Long id);

@@ -25,7 +25,6 @@ import com.isa.entity.users.Guest;
 import com.isa.entity.users.GuestStatus;
 import com.isa.entity.users.User;
 import com.isa.entity.users.UserRole;
-import com.isa.mail.SendEmail;
 import com.isa.repository.FriendRepository;
 import com.isa.repository.GradeRepository;
 import com.isa.repository.GuestRepository;
@@ -329,7 +328,7 @@ public class GuestServiceImpl implements GuestService {
 	public Guest inviteFriend(Long friendId, Long resId) {
 		Guest g = guestRepository.findOne(friendId);
 		Reservation r = reservationRepository.findOne(resId);
-		new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>", "Reservation invitation", "To accept click here:").start();
+		//new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>", "Reservation invitation", "To accept click here:").start();
 		r.getPeople().add(g);
 		reservationRepository.save(r);
 		return g;
@@ -364,6 +363,13 @@ public class GuestServiceImpl implements GuestService {
 			}
 		}
 		return history;
+	}
+
+
+	@Override
+	public List<Guest> getHistoryFriends(Long resId) {
+		Reservation r = reservationRepository.findOne(resId);
+		return reservationRepository.getHistoryFriends(r);
 	}
 
 }

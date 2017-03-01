@@ -209,7 +209,7 @@ public class GuestController {
 		Calendar calendar=Calendar.getInstance();
 		calendar.setTime(order.getDate());
 		RestaurantTable rt=waiterService.getTable(tableId);
-		WorkSchedule ws=waiterService.getWorkScheduleForSegment(rt.getSegment());
+		WorkSchedule ws=waiterService.getWorkScheduleForSegment(rt.getSegment(),r.getStartTime(),order.getDate());
 		if(ws==null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		order.setWaiter((Waiter)ws.getWorker());
@@ -240,6 +240,16 @@ public class GuestController {
 	@Transactional
 	public ResponseEntity<List<Reservation>> getHistory(@PathVariable("id")Long id){
 		return new ResponseEntity<List<Reservation>>(this.guestService.getHistory(id), HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
+			value="/historyFriends/{resId}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Guest>> getHistoryFriends(@PathVariable("resId")Long id){
+		return new ResponseEntity<List<Guest>>(this.guestService.getHistoryFriends(id), HttpStatus.OK);	
 	}
 	
 }

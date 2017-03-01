@@ -33,5 +33,6 @@ public interface WaiterService {
 	public Waiter getWaiter(Long id);
 	public Segment getSegment(Long id);
 	public WorkSchedule getWorkScheduleForSegment(Segment segment);
+	WorkSchedule getWorkScheduleForSegment(Segment segment, double startTime,Date date);
 	
 }

@@ -162,6 +162,20 @@ app.factory('GuestService', function guestService($http) {
 		});
 	}
 	
+	guestService.getFriendsForHistory = function(resId){
+		return $http({
+			method : 'GET',
+			url: '../guests/historyFriends/' + resId
+		});
+	}
+	
+	guestService.getHistories = function(userId){
+		return $http({
+			method : 'GET',
+			url: '../guests/history/' + userId
+		});
+	}
+	
 	guestService.sendRequest = function(user_id,reciever_id){
 		return $http({
 			method : 'POST',

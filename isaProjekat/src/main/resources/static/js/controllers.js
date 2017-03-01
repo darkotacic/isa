@@ -229,6 +229,12 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 				    	 $scope.lastAddedFriend = response.data; 
 				      });
 			   });
+			   
+			   
+			      guestService.inviteFriend($rootScope.loggedUser.id,reservation.id).then(function(response){
+				    	 $scope.lastAddedFriend = response.data; 
+				      });
+			   
 	    		swal({
 	    			  title: "Success!",
 	    			  text: "Reservation made",
@@ -328,6 +334,31 @@ app.controller('restaurantController',['$rootScope','$scope','$location','$http'
 	    }
 	    return input;
 	};
+	
+}]);
+
+app.controller('historyController',['$rootScope','$scope','$location','$http','GuestService',function($rootScope,$scope,$location,$http,guestService) {
+	
+	if (!$rootScope.loggedUser) {
+		$location.path('/login');
+	} 
+	
+	$scope.selected = null;
+	
+	guestService.getHistories($rootScope.loggedUser.id).then(function(response){
+		$scope.histories = response.data;
+		 angular.forEach($scope.histories, function(value, key){
+				guestService.getFriendsForHistory(value.id).then(function(response){
+					value.friends=response.data;
+				});
+		 });
+	});
+	
+	
+	$scope.selectHistory=function(history){
+		$scope.selected = history;
+	}
+
 	
 }]);
 
