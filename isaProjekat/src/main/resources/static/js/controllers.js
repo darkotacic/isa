@@ -383,6 +383,12 @@ app.controller('historyController',['$rootScope','$scope','$location','$http','G
 			$scope.selected=null;
 			$scope.addGrade=null;
 			$scope.editGrade=null;
+			swal({
+				  title: "Delete grade",
+				  text: "You have successfully deleted grade for this reservation.",
+				  type: "success",
+				  timer: 3000
+			});
 		});
 	}
 	
@@ -393,7 +399,7 @@ app.controller('historyController',['$rootScope','$scope','$location','$http','G
 			swal({
 				  title: "Add grade",
 				  text: "You have already created grade for this reservation.",
-				  type: "success",
+				  type: "error",
 				  timer: 3000
 			});
 	    });
@@ -406,7 +412,7 @@ app.controller('historyController',['$rootScope','$scope','$location','$http','G
 			swal({
 				  title: "Edit grade",
 				  text: "You have not created grade for this reservation.",
-				  type: "success",
+				  type: "error",
 				  timer: 3000
 			});
 	    });
