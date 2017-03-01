@@ -1,0 +1,20 @@
+<div ng-repeat="seg in restaurantSegments">
+		<h2 ng-init="showSegmentViewTables(seg.id, $index)">Segment {{seg.id}}</h2>
+		<p>Position: {{seg.position}}</p>
+		<p>Smoking allowed: {{seg.smokingAllowed}}</p>
+		<div class="row" ng-repeat="x in range(0,seg.height)">
+			<div class="thumbnail" style="display:inline-block;width:180px" ng-repeat="y in range(0,seg.width)">
+				<div class="caption" ng-if="seg.tables[x*seg.width+y].id!=null">
+					<h3><i>Table</i></h3>
+					<p class="bg-primary">Table: {{seg.tables[x*seg.width+y].id}} </p>
+					<p class="bg-info">Number of chairs: {{seg.tables[x*seg.width+y].numberOfChairs}} </p>
+					<p class="bg-primary">Free: {{seg.tables[x*seg.width+y].free}} </p>
+				</div>
+				<div class="caption" ng-if="seg.tables[x*seg.width+y].id==null">
+					<h3><i>No table</i></h3>
+					<p>There is no table</p> 
+					<p>on this position</p>
+					<p>in the restaurant.</p>
+				</div>
+			</div>
+</div>

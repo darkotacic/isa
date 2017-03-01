@@ -1,0 +1,65 @@
+	<div>
+		<button class="btn btn-primary-outline" ng-click="previousMonth()"><i class="fa fa-arrow-left" class=""></i> Previous month</button>
+		<button class="btn btn-primary-outline pull-right" ng-click="nextMonth()"><i class="fa fa-arrow-right"></i> Next month</button>
+	</div>
+	<div class="container marketing">
+		<h1>Work schedules</h1>
+		<div ng-init="getWorkSchedules()">
+			<div class="row" ng-repeat="x in range(0,15)">
+				<div class="thumbnail" style="display:inline-block; height:250px; width:550px;overflow: auto;" ng-repeat="y in range(0,2)">
+					<div class="caption">
+						<h3><i>{{groups[x*2+y].date}}</i></h3>
+						<table class="table table-stiped" ng-if="groups[x*2+y].schedules.length!=0">
+							<tr>
+								<th>Worker</th>
+								<th>Segment</th>
+								<th>Time</th>
+								<th>End date</th>
+								<th>End time</th> 
+								<th>Replacement</th>
+							</tr>
+							<tr ng-repeat="sch in groups[x*2+y].schedules">
+								<td>{{sch.worker.userName}}</td>
+								<td>{{sch.segment.id}}</td>
+								<td>{{sch.startTime}}</td>
+								<td>{{sch.secondDate}}</td>
+								<td>{{sch.endTime}}</td>
+								<td ng-if="sch.replacement.id!=null">{{sch.replacement.userName}}</td>
+								<td ng-if="sch.replacement.id==null">No replacement</td>
+							</tr>
+						</table>
+						<p ng-if="groups[x*2+y].schedules.length==0">On this day in month there are 
+						no defined work schedules for any {{user.userRole}}.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="thumbnail" style="display:inline-block; height:250px; width:550px;overflow: auto;">
+					<div class="caption">
+						<h3><i>{{groups[groups.length-1].date}}</i></h3>
+						<table class="table table-stiped" ng-if="groups[groups.length-1].schedules.length!=0">
+							<tr>
+								<th>Worker</th>
+								<th>Segment</th>
+								<th>Time</th>
+								<th>End date</th>
+								<th>End time</th> 
+								<th>Replacement</th>
+							</tr>
+							<tr ng-repeat="sch in groups[groups.length-1].schedules">
+								<td>{{sch.worker.userName}}</td>
+								<td>{{sch.segment.id}}</td>
+								<td>{{sch.startTime}}</td>
+								<td>{{sch.secondDate}}</td>
+								<td>{{sch.endTime}}</td>
+								<td ng-if="sch.replacement.id!=null">{{sch.replacement.userName}}</td>
+								<td ng-if="sch.replacement.id==null">No replacement</td>
+							</tr>
+						</table>
+						<p ng-if="groups[groups.length-1].schedules.length==0">On this day in month there are 
+						no defined work schedules for any {{user.userRole}}.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

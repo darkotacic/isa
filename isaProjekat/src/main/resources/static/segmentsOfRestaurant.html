@@ -45,6 +45,7 @@
 						segment tables</button>
 					<button type="button" class="btn btn-primary" ng-click="displaySegment(4)"
 						ng-disabled="!selectedSegment">Add table to segment</button>
+						<button type="button" class="btn btn-primary" ng-click="displaySegment(5)">Graphic view segments</button>
 				</div>
 			</div>
 		</div>
@@ -54,4 +55,5 @@
 	<div ng-show="showS==2" ng-include src="'pages/editSegment.html'"></div>
 	<div ng-show="showS==3" ng-include src="'pages/segmentTables.html'"></div>
 	<div ng-show="showS==4" ng-include src="'pages/registerTable.html'"></div>
+	<div ng-show="showS==5" ng-include src="'pages/viewOfSegments.html'"></div>
 </div>

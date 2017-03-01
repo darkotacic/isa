@@ -609,7 +609,7 @@ app
 					restaurantManagerService.setReplacment = function(id, r_id) {
 						return $http({
 							method : 'POST',
-							url : '../restaurantmanagers/gupdateWorkScheduleSetReplacement?repl_id='
+							url : '../restaurantmanagers/updateWorkScheduleSetReplacement?repl_id='
 									+ r_id + '&ws_id=' + id
 						});
 					}
@@ -619,6 +619,14 @@ app
 							method : 'GET',
 							url : '../restaurantmanagers/getAllWorkSchedulesForRestaurant?id='
 									+ id
+						});
+					}
+					
+					restaurantManagerService.getAllWorkSchedulesCalendar = function(id, m) {
+						return $http({
+							method : 'GET',
+							url : '../restaurantmanagers/getAllWorkSchedulesCalendar?id='
+									+ id + '&month=' + m
 						});
 					}
 					

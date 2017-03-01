@@ -495,7 +495,7 @@ app
 						'RestaurantManagerService',
 						function($rootScope, $scope, $location,ngNotify,
 								restaurantManagerService) {
-
+							$scope.currentMonth=0;
 							$scope.display = function(tab) {
 								$scope.show = tab;
 								$scope.product = null;
@@ -922,6 +922,18 @@ app
 												function(response) {
 													if (response.data) {
 														$scope.segmentTables = response.data;
+														$scope.showS = 3;
+													}
+												});
+							}
+							
+							$scope.showSegmentViewTables = function(id, index) {
+								restaurantManagerService
+										.getTables(id)
+										.then(
+												function(response) {
+													if (response.data) {
+														$scope.restaurantSegments[index].tables = response.data;
 														$scope.showS = 3;
 													}
 												});
@@ -1581,6 +1593,37 @@ app
 								  };
 							}
 							
+
+							$scope.range = function(min, max, step) {
+							    step = step || 1;
+							    var input = [];
+							    for (var i = min; i < max; i += step) {
+							        input.push(i);
+							    }
+							    return input;
+							};
 							
+							$scope.showCalendar = function() {
+								restaurantManagerService
+								.getAllWorkSchedulesCalendar($scope.restaurant.id, $scope.currentMonth)
+								.then(
+										function(response) {
+											if(response.data) {
+													$scope.groups = response.data;
+													$scope.showQ = 3;
+											}
+										});
+							}
+							
+							$scope.nextMonth=function(){
+								$scope.currentMonth+=1;
+								$scope.showCalendar();
+							}
+							
+							$scope.previousMonth=function(){
+								$scope.currentMonth-=1;
+								$scope.showCalendar();
+							}
+
 						} ]);
 

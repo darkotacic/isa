@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import com.isa.entity.BidderOffer;
+import com.isa.entity.Group;
 import com.isa.entity.Order;
 import com.isa.entity.Product;
 import com.isa.entity.RequestOffer;
@@ -68,8 +69,6 @@ public interface RestaurantManagerService {
 	ResponseEntity<RequestOffer> removeRequestOffer(Long ro);
 
 	ResponseEntity<List<Worker>> getAllWorkersForRestaurant(Long id);
-
-	ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id);
 
 	ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForWorker(Long id);
 
@@ -135,6 +134,12 @@ public interface RestaurantManagerService {
 	ResponseEntity<List<Order>> getReservationsForWeek(Long id, String d) throws ParseException;
 
 	ResponseEntity<List<Order>> getReservationsForDay(Long id, String startDate) throws ParseException;
+
+	ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id);
+	
+	ResponseEntity<List<Group>> getAllWorkSchedulesCalendar(int m, Long id) throws ParseException;
+
+	
 
 
 }

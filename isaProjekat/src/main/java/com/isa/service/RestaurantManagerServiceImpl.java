@@ -3,6 +3,7 @@ package com.isa.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.isa.entity.BidderOffer;
 import com.isa.entity.BidderOfferStatus;
+import com.isa.entity.Group;
 import com.isa.entity.Order;
 import com.isa.entity.Product;
 import com.isa.entity.RequestOffer;
@@ -245,8 +247,11 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			cal.add(Calendar.DATE, 1);
 			Date nextDay = cal.getTime();
 			w.setSecondDate(nextDay);
-		} else if (w.getStartTime() > w.getEndTime())
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else if (w.getStartTime() > w.getEndTime()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);}
+		else {
+			w.setSecondDate(w.getDate());
+		}
 		Worker u = this.workerRepository.findOne(worker_id);
 		if (this.workScheduleRepository.findByWorkerAndDate(u, w.getDate()) != null)
 			return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
@@ -276,7 +281,7 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 			temp.setTwoDays(true);
 		} else if (!w.isTwoDays() && temp.isTwoDays()) {
 			temp.setTwoDays(false);
-			temp.setSecondDate(null);
+			temp.setSecondDate(w.getDate());
 		}
 		if (!temp.isTwoDays())
 			if (w.getStartTime() > w.getEndTime())
@@ -391,12 +396,33 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id) {
-		return new ResponseEntity<List<WorkSchedule>>(
-				this.workScheduleRepository.getWorkScheduleForRestaurant(this.restaurantRepository.findOne(id)),
+	public ResponseEntity<List<Group>> getAllWorkSchedulesCalendar(int monthNumber, Long id) throws ParseException {
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(new Date());
+		int year=calendar.get(Calendar.YEAR);
+		int month=calendar.get(Calendar.MONTH)+1+monthNumber;
+		int minDay=1,maxDay=31;
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		Date date1=sdf.parse(year+"-"+month+'-'+minDay);
+		Date date2=sdf.parse(year+"-"+month+'-'+maxDay);
+		List<WorkSchedule> schedules=workScheduleRepository.getWorkScheduleBetween(date1,date2,this.restaurantRepository.findOne(id));
+		Group[] groups=new Group[31];
+		for(int i=0;i<groups.length;i++){
+			groups[i]=new Group(sdf.parse(year+"-"+month+"-"+minDay++));
+			for(WorkSchedule schedule:schedules){
+				if(groups[i].getDateAsDate().compareTo(schedule.getDate())==0)
+					groups[i].addSchedule(schedule);
+			}
+		}	
+		return new ResponseEntity<List<Group>>(Arrays.asList(groups),
 				HttpStatus.OK);
 	}
 
+	@Override
+	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(Long id) {
+		return new ResponseEntity<List<WorkSchedule>>(this.workScheduleRepository.getWorkScheduleForRestaurant(this.restaurantRepository.findOne(id)), HttpStatus.OK);
+	}
+	
 	@Override
 	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForWorker(Long id) {
 		return new ResponseEntity<List<WorkSchedule>>(

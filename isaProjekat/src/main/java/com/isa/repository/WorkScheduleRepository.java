@@ -25,6 +25,9 @@ public interface WorkScheduleRepository extends CrudRepository<WorkSchedule,Long
 	@Query("select ws from Bartender b inner join b.workSchedules as ws where ws.date between ?1 and ?2 and b.restaurant=?3")
 	public List<WorkSchedule> getWorkScheduleForBartendersBetween(Date stardDate,Date endDate,Restaurant restaurant);
 	
+	@Query("select ws from Worker w inner join w.workSchedules as ws where ws.date between ?1 and ?2 and w.restaurant=?3")
+	public List<WorkSchedule> getWorkScheduleBetween(Date stardDate,Date endDate,Restaurant restaurant);
+	
 	WorkSchedule findByWorkerAndDate(Worker w,Date d);
 	
 	@Query("select ws from WorkSchedule ws where ws.worker=?1 and ws.date=?2")

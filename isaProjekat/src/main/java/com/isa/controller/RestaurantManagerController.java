@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.entity.BidderOffer;
+import com.isa.entity.Group;
 import com.isa.entity.Order;
 import com.isa.entity.Product;
 import com.isa.entity.RequestOffer;
@@ -257,12 +258,20 @@ public class RestaurantManagerController {
 		return restaurantManagerService.getAllWorkersForRestaurant(id);
 	}
 
+	@RequestMapping(value = "/getAllWorkSchedulesCalendar", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Group>> getAllWorkSchedulesCalendar(@RequestParam(value = "id") Long id, @RequestParam(value = "month") int m) throws ParseException {
+		return restaurantManagerService.getAllWorkSchedulesCalendar(m, id);
+	}
+	
 	@RequestMapping(value = "/getAllWorkSchedulesForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
-	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(@RequestParam(value = "id") Long id) {
+	public ResponseEntity<List<WorkSchedule>> getAllWorkSchedulesForRestaurant(@RequestParam(value = "id") Long id) throws ParseException {
 		return restaurantManagerService.getAllWorkSchedulesForRestaurant(id);
 	}
+	
 
 	@RequestMapping(value = "/getAllWorkSchedulesForWorker", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -349,15 +358,13 @@ public class RestaurantManagerController {
 		List<BidderOffer> biddings = this.restaurantManagerService.getAllBidderOffersForRequestOffer(q_id).getBody();
 		for (int i = 0; i < biddings.size(); i++) {
 			if (biddings.get(i).getId() == r_id) {
-				@SuppressWarnings("unused")
-				SendEmail se = new SendEmail(biddings.get(i).getBidder().getEmail(),
+				new SendEmail(biddings.get(i).getBidder().getEmail(),
 						"<a href=http://http://localhost:8080/#!/home> Check </a>", "Notification",
-						"Your bidder offer " + biddings.get(i).getId() + " is accepted. Check here :");
+						"Your bidder offer " + biddings.get(i).getId() + " is accepted. Check here :").start();
 			} else {
-				@SuppressWarnings("unused")
-				SendEmail se = new SendEmail(biddings.get(i).getBidder().getEmail(),
+				new SendEmail(biddings.get(i).getBidder().getEmail(),
 						"<a href=http://http://localhost:8080/#!/home> Check </a>", "Notification",
-						"Your bidder offer " + biddings.get(i).getId() + " is declined. Check here :");
+						"Your bidder offer " + biddings.get(i).getId() + " is declined. Check here :").start();
 			}
 		}
 		return restaurantManagerService.acceptBidderOffer(r_id, q_id);
