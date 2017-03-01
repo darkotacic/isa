@@ -72,6 +72,12 @@ public class Restaurant implements Serializable {
 	public Restaurant() {
 
 	}
+	
+	public Restaurant(long id,String restaurantName,String description) {
+		this.id=id;
+		this.restaurantName=restaurantName;
+		this.description=description;
+	}
 
 	public String getRestaurantName() {
 		return restaurantName;

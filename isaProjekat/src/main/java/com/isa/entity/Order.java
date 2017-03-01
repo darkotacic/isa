@@ -76,7 +76,9 @@ public class Order implements Serializable {
 		this.table = table;
 	}
 
-	
+	public void setId(Long id){
+		this.id=id;
+	}
 	
 	public Reservation getReservation() {
 		return reservation;
