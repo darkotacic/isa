@@ -32,4 +32,6 @@ public interface GuestRepository extends CrudRepository<Guest,Long>{
 	@Query("from Guest g where g != ?1")
 	List<Guest> getAllGuests(Guest guest);
 	
+	
+	
 }

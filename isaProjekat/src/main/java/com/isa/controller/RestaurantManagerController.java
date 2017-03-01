@@ -329,11 +329,11 @@ public class RestaurantManagerController {
 		for (int i = 0; i < biddings.size(); i++) {
 			if (biddings.get(i).getId() == r_id) {
 				new SendEmail(biddings.get(i).getBidder().getEmail(),
-						"<a href=http:localhost:8080/#!/home> Check </a>", "Notification",
+						"<a href=http://localhost:8080/#!/home> Check </a>", "Notification",
 						"Your bidder offer " + biddings.get(i).getId() + " is accepted. Check here :").start();
 			} else {
 				new SendEmail(biddings.get(i).getBidder().getEmail(),
-						"<a href=http:localhost:8080/#!/home> Check </a>", "Notification",
+						"<a href=http://localhost:8080/#!/home> Check </a>", "Notification",
 						"Your bidder offer " + biddings.get(i).getId() + " is declined. Check here :").start();
 			}
 		}

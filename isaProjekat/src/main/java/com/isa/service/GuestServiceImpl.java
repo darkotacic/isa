@@ -25,6 +25,7 @@ import com.isa.entity.users.Guest;
 import com.isa.entity.users.GuestStatus;
 import com.isa.entity.users.User;
 import com.isa.entity.users.UserRole;
+import com.isa.mail.SendEmail;
 import com.isa.repository.FriendRepository;
 import com.isa.repository.GradeRepository;
 import com.isa.repository.GuestRepository;
@@ -234,6 +235,7 @@ public class GuestServiceImpl implements GuestService {
 	public List<Segment> getSegments(Date date,Reservation re,Long resId) {
 		List<Segment> segments = (List<Segment>) segmentRepository.findAll();
 		List<Reservation> reservations = (List<Reservation>) reservationRepository.findAll();
+		List<Segment> restaurantSegments = new ArrayList<Segment>();
 		
 		for(Reservation r : reservations){
 			if(r.getRestaurant().getId() == resId){
@@ -258,7 +260,13 @@ public class GuestServiceImpl implements GuestService {
 			}
 		}
 		
-		return segments;
+		for(Segment s : segments){
+			if(s.getRestaurant().getId() == resId){
+				restaurantSegments.add(s);
+			}
+		}
+		
+		return restaurantSegments;
 	}
 
 	
@@ -337,7 +345,7 @@ public class GuestServiceImpl implements GuestService {
 	public Guest inviteFriend(Long friendId, Long resId) {
 		Guest g = guestRepository.findOne(friendId);
 		Reservation r = reservationRepository.findOne(resId);
-		//new SendEmail(g.getEmail(),"<a href=http://localhost:8080/guests/activate?email="+g.getEmail()+">OVDE</a>", "Reservation invitation", "To accept click here:").start();
+		new SendEmail(g.getEmail(),"<a href=http://localhost:8080/#!/home>OVDE</a>", "Reservation invitation", "To accept click here:").start();
 		r.getPeople().add(g);
 		reservationRepository.save(r);
 		return g;
@@ -379,6 +387,25 @@ public class GuestServiceImpl implements GuestService {
 	public List<Guest> getHistoryFriends(Long resId) {
 		Reservation r = reservationRepository.findOne(resId);
 		return reservationRepository.getHistoryFriends(r);
+	}
+
+
+	@Override
+	public Guest getGuest(long id) {
+		return guestRepository.findOne(id);
+	}
+
+
+	@Override
+	public Guest updateGuestInformation(Guest temp) {
+		return guestRepository.save(temp);
+	}
+
+
+	@Override
+	public List<Reservation> getReservationsForGuest(Long userId) {
+		Guest g = guestRepository.findOne(userId);
+		return reservationRepository.getReservationsForGuest(g);
 	}
 
 }

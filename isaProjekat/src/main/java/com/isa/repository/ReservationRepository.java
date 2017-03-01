@@ -12,4 +12,10 @@ public interface ReservationRepository extends CrudRepository<Reservation, Long>
 	
 	@Query("select friends from Reservation r join r.people friends where r=?1")
 	List<Guest> getHistoryFriends(Reservation r);
+	
+	@Query("select r from Reservation r join r.people p where p=?1")
+	List<Reservation>getReservationsForGuest(Guest g);
+
 }
+
+

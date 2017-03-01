@@ -51,4 +51,10 @@ public interface GuestService {
 	ResponseEntity<Grade> editGrade(Grade grade,Long reservationId);
 	
 	ResponseEntity<Grade> deleteGrade(Long reservationId);
+
+	Guest getGuest(long id);
+
+	Guest updateGuestInformation(Guest temp);
+
+	List<Reservation> getReservationsForGuest(Long userId);
 }

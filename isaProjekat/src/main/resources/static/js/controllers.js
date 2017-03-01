@@ -70,7 +70,10 @@ app.controller('loginController',['$rootScope','$scope','$location','SessionServ
 		var user = $scope.user;
 	    sessionService.login(user)
 	    .then(function(response){
-    		$rootScope.logged = true;
+	    	if(response.data.status=='NOT_ACTIVE'){
+	    		swal("ERROR", "NOT ACTIVATED", "error");
+	    		return;
+	    	}
     		$rootScope.loggedUser = response.data;
     		swal({
     			  title: "Success!",

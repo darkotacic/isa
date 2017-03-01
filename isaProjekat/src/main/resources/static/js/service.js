@@ -89,6 +89,14 @@ app.factory('GuestService', function guestService($http) {
 		});
 	}
 	
+	guestService.getReservations = function(userId){
+		return $http({
+			method : 'GET',
+			url: '../guests/getReservations/'+userId
+		
+		});
+	}
+	
 	guestService.inviteFriend = function(friendId,resId){
 		return $http({
 			method : 'POST',

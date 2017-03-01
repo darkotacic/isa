@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +41,9 @@ public class GuestController {
 	
 	@Autowired
 	private WaiterService waiterService;
+	
+	@Autowired
+	private HttpSession session;
 	
 	@RequestMapping(
 			value = "/friends/{id}",
@@ -185,6 +190,17 @@ public class GuestController {
 	}
 	
 	@RequestMapping(
+			value="/getReservations/{userId}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<List<Reservation>> getReservationsForGuest(@PathVariable("userId")Long userId ){
+		List<Reservation> reservations = guestService.getReservationsForGuest(userId);
+		return new ResponseEntity<List<Reservation>>(reservations, HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
 			value="/createReservation", 
 			method=RequestMethod.POST,
 			produces=MediaType.APPLICATION_JSON_VALUE,
@@ -250,6 +266,25 @@ public class GuestController {
 	@Transactional
 	public ResponseEntity<List<Guest>> getHistoryFriends(@PathVariable("resId")Long id){
 		return new ResponseEntity<List<Guest>>(this.guestService.getHistoryFriends(id), HttpStatus.OK);	
+	}
+	
+	@RequestMapping(
+			value = "/update",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	@Transactional
+	public ResponseEntity<Guest> updateInformation(@RequestBody Guest guest){
+		Guest temp=guestService.getGuest(guest.getId());
+		temp.setEmail(guest.getEmail());
+		temp.setUserName(guest.getUserName());
+		temp.setSurname(guest.getSurname());
+		temp.setPassword(guest.getPassword());
+		temp.setDateOfBirth(guest.getDateOfBirth());
+		Guest g=guestService.updateGuestInformation(temp);
+		session.setAttribute("user", temp);
+		return new ResponseEntity<Guest>(g, HttpStatus.OK);
 	}
 	
 }
