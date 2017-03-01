@@ -303,20 +303,6 @@ public class RestaurantManagerServiceImpl implements RestaurantManagerService {
 	}
 
 	@Override
-	public ResponseEntity<WorkSchedule> updateWorkScheduleSetSegment(Long s, Long w) {
-		WorkSchedule ws = this.workScheduleRepository.findOne(w);
-		ws.setSegment(this.segmentRepository.findOne(s));
-		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.OK);
-	}
-
-	@Override
-	public ResponseEntity<WorkSchedule> updateWorkScheduleSetWorker(Long s, Long w) {
-		WorkSchedule ws = this.workScheduleRepository.findOne(w);
-		ws.setWorker(this.workerRepository.findOne(s));
-		return new ResponseEntity<WorkSchedule>(this.workScheduleRepository.save(ws), HttpStatus.OK);
-	}
-
-	@Override
 	public ResponseEntity<WorkSchedule> removeWorkSchedule(Long id) {
 		this.workScheduleRepository.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);

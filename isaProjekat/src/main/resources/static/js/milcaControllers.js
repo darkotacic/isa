@@ -1511,7 +1511,7 @@ app
 							
 							$scope.getReservations = function() {
 								var start =  moment($scope.dailyChart.date).format('MM-DD-YYYY');
-								if($scope.dailyChart.base){
+								if($scope.dailyChart.base == 'true'){
 									restaurantManagerService
 									.getReservationsForWeek($scope.restaurant.id, start)
 									.then(
@@ -1546,54 +1546,83 @@ app
 									}
 								}
 							$scope.createChart = function() {
-								var datesName = [];
-								var startTimes = [];
-								var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-								for(var i = 0; i < $scope.reservations.length; i++) {
-									var temp = $scope.reservations[i];
-									var date = new Date(temp.date);
-									var dayName = days[date.getDay()];
-									startTimes[i] = temp.reservation.startTime;
-									datesName[i] = dayName;			
-								}
-								var counts = {};
+								if($scope.dailyChart.base == 'true') {
+									var datesName = [];
+									var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+									for(var i = 0; i < $scope.reservations.length; i++) {
+										var temp = $scope.reservations[i];
+										var date = new Date(temp.date);
+										var dayName = days[date.getDay()];
+										datesName[i] = dayName;			
+									}
+									var counts = {};
 
-								datesName.forEach(function(element) {
-								  counts[element] = (counts[element] || 0) + 1;
-								});
-								var countDay = [];
-								var n = 0;
-								for (var element in counts) {
-								 countDay[n] = counts[element];
-								 n++;
-								} 
-								$scope.labels =  ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-								  $scope.series = ['Series A', 'Series B'];
-								  $scope.data = [
-								    [countDay[0], countDay[1], countDay[2], countDay[3], countDay[4], countDay[5], countDay[6]]
-								  ];
-								  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
-								  $scope.options = {
-								    scales: {
-								      yAxes: [
-								        { 
-								        	ticks: {
-								            min: 0,
-								            beginAtZero:true,
-								            max: 10,
-								            stepSize: 1
-								        },
-								          id: 'y-axis-1',
-								          type: 'linear',
-								          display: true,
-								          position: 'left'
-								        }
-								      ]
-								    }
-								  };
+									datesName.forEach(function(element) {
+									  counts[element] = (counts[element] || 0) + 1;
+									});
+									var countDay = [];
+									var n = 0;
+									for (var element in counts) {
+									 countDay[n] = counts[element];
+									 n++;
+									} 
+									$scope.labels =  ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+									  $scope.series = ['Series A'];
+									  $scope.data = [
+									    [countDay[0], countDay[1], countDay[2], countDay[3], countDay[4], countDay[5], countDay[6]]
+									  ];
+									  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+									  $scope.options = {
+									    scales: {
+									      yAxes: [
+									        { 
+									        	ticks: {
+									            min: 0,
+									            beginAtZero:true,
+									            max: 10,
+									            stepSize: 1
+									        },
+									          id: 'y-axis-1',
+									          type: 'linear',
+									          display: true,
+									          position: 'left'
+									        }
+									      ]
+									    }
+									  };
+								}else {
+									var startTime = [];
+									var endTime = [];
+									for(var i = 0; i < $scope.reservations.length; i++) {
+										var temp = $scope.reservations[i];
+										startTime[i] = temp.reservation.startTime;
+										endTime[i] = temp.reservation.endTime;
+									}
+									$scope.labels =  startTime;
+									  $scope.series = ['Series A'];
+									  $scope.data =endTime;
+									  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+									  $scope.options = {
+									    scales: {
+									      yAxes: [
+									        { 
+									        	ticks: {
+									            min: 0,
+									            beginAtZero:true,
+									            max : 24
+									        },
+									          id: 'y-axis-1',
+									          type: 'linear',
+									          display: true,
+									          position: 'left'
+									        }
+									      ]
+									    }
+									  };
+									
+								}
 							}
 							
-
 							$scope.range = function(min, max, step) {
 							    step = step || 1;
 							    var input = [];

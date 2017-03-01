@@ -183,22 +183,6 @@ public class RestaurantManagerController {
 		return restaurantManagerService.updateWorkScheduleSetReplacement(s, w);
 	}
 
-	@RequestMapping(value = "/updateWorkScheduleSetSegment", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Transactional
-	public ResponseEntity<WorkSchedule> updateWorkScheduleSetSegment(@RequestParam(value = "segment_id") Long s,
-			@RequestParam(value = "ws_id") Long w) {
-		return restaurantManagerService.updateWorkScheduleSetSegment(s, w);
-	}
-
-	@RequestMapping(value = "/updateWorkScheduleSetWorker", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Transactional
-	public ResponseEntity<WorkSchedule> updateWorkScheduleSetWorker(@RequestParam(value = "worker_id") Long s,
-			@RequestParam(value = "ws_id") Long w) {
-		return restaurantManagerService.updateWorkScheduleSetWorker(s, w);
-	}
-
 	@RequestMapping(value = "/removeWorkSchedule", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
@@ -287,13 +271,6 @@ public class RestaurantManagerController {
 		return restaurantManagerService.getAllRequestOffersForManager(id);
 	}
 
-	@RequestMapping(value = "/getAllBidderOffersForManagerOffers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Transactional
-	public ResponseEntity<List<BidderOffer>> getAllBidderOffersForManagerOffers(@RequestParam(value = "id") Long id) {
-		return restaurantManagerService.getAllBidderOffersForManagerOffers(id);
-	}
-
 	@RequestMapping(value = "/getAllBidderOffersForRequestOffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Transactional
@@ -306,13 +283,6 @@ public class RestaurantManagerController {
 	@Transactional
 	public ResponseEntity<List<Segment>> getAllSegmentsForRestaurant(@RequestParam(value = "id") Long id) {
 		return restaurantManagerService.getAllSegmentsForRestaurant(id);
-	}
-
-	@RequestMapping(value = "/getAllTablesForRestaurant", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Transactional
-	public ResponseEntity<List<RestaurantTable>> getAllTablesForRestaurant(@RequestParam(value = "id") Long id) {
-		return restaurantManagerService.getAllTablesForRestaurant(id);
 	}
 
 	@RequestMapping(value = "/getAllTablesForSegment", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

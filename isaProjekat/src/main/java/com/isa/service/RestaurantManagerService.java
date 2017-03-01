@@ -95,10 +95,6 @@ public interface RestaurantManagerService {
 	ResponseEntity<WorkSchedule> updateWorkSchedule(WorkSchedule w);
 
 	ResponseEntity<WorkSchedule> updateWorkScheduleSetReplacement(Long s, Long w);
-
-	ResponseEntity<WorkSchedule> updateWorkScheduleSetSegment(Long s, Long w);
-
-	ResponseEntity<WorkSchedule> updateWorkScheduleSetWorker(Long s, Long w);
 	
 	ResponseEntity<List<Waiter>> getAllWaitersByNameAndRestaurant(Long id, String name);
 
